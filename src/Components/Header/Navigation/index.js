@@ -1,34 +1,46 @@
 import Button from "@mui/material/Button";
 import { MdOutlineMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { FaAngleDown, FaAngleRight } from "react-icons/fa";
-
+import { FaAngleDown} from "react-icons/fa";
+import { useState } from "react";
 
 const Navigation = () => {
+  const [isOpenSidebarNav, setisOpenSidebarNav] = useState(false); // Mặc định là đóng
+
   return (
     <>
       <nav>
         <div className="container">
           <div className="row">
             <div className="col-sm-3 navPart1">
-              <Button className="allCatTab align-items-center">
+              <Button
+                className="allCatTab align-items-center"
+                onClick={() => setisOpenSidebarNav(!isOpenSidebarNav)}
+              >
                 <span className="menu">
                   <MdOutlineMenu />
                 </span>
                 <span className="text">Tất cả sản phẩm</span>
               </Button>
-              <div className="sidebarNav shadow">
+              <div
+                className={`sidebarNav ${isOpenSidebarNav ? "open" : "closed"}`}
+              >
                 <ul>
-                  <li><Link to="/nam">Nước hoa nam</Link></li>
-                  <li><Link to="/nu">Nước hoa nữ</Link></li>
-                  <li><Link to="/brand">
-                        Thương hiệu
-                        <span className="product-angledown">
-                        <FaAngleRight />
-                        </span>
-                      </Link></li>
-                  <li><Link to="/giftset">Giftset</Link></li>
-                  <li><Link to="/mini">Mini</Link></li>
+                  <li>
+                    <Link to="/nam">Nước hoa nam</Link>
+                  </li>
+                  <li>
+                    <Link to="/nu">Nước hoa nữ</Link>
+                  </li>
+                  <li>
+                    <Link to="/brand">Thương hiệu</Link>
+                  </li>
+                  <li>
+                    <Link to="/giftset">Giftset</Link>
+                  </li>
+                  <li>
+                    <Link to="/mini">Mini</Link>
+                  </li>
                 </ul>
               </div>
             </div>

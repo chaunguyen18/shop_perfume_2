@@ -1,8 +1,9 @@
+import HomeSlider from "../../Components/HomeSlider";
 
 const Home = () => {
     return (
         <>
-          <h1 className="text-danger">Homepage</h1>
+<HomeSlider />
         </>
       );
 }

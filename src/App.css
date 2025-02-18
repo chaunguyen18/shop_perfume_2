@@ -4,6 +4,8 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Allerta&family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Lexend+Mega:wght@100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css');
 
 body {
   font-family: "K2D", serif;
@@ -166,22 +168,40 @@ body {
 .sidebarNav {
   position: absolute;
   width: 100%;
-  height: auto;
   top: 100%;
   left: 0;
   border: solid 1px rgba(0, 0, 0, 0.1);
   background: #fff;
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: visibility 0s 0.3s, opacity 0.3s, height 0.3s;
 }
 
-.sidebarNav ul li {
+.sidebarNav.open {
+  visibility: visible;
+  opacity: 1;
+  height: auto; /* hoặc set chiều cao cụ thể tùy theo nội dung */
+  transition: visibility 0s 0s, opacity 0.3s, height 0.3s;
+}
+
+.sidebarNav.closed {
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+  transition: visibility 0s 0.3s, opacity 0.3s, height 0.3s;
+}
+
+
+.sidebarNav ul li, .sidebar-submenu {
   width: 100%;
   list-style: none;
   padding: 15px;
   font-size: 16px;
-
 }
 
-.sidebarNav ul li a {
+.sidebarNav ul li a{
   color: #04a0ac;
   width: 100%;
   justify-content: flex-start;
@@ -200,6 +220,65 @@ body {
 .sidebarNav ul li a:hover{
   color: #abebef;
 }
+.sidebar-submenu{
+  color: #04a0ac;
+  width: 100%;
+  justify-content: flex-start;
+  text-decoration: none !important;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+  position: relative;
+}
+
+.sidebar-submenu a {
+  color: #04a0ac;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
+  width: 100%; /* Đảm bảo rằng Link chiếm toàn bộ chiều rộng */
+}
+
+.sidebar-submenu a:hover {
+  color: #abebef; 
+  background-color: #1e7379;
+  width: 100%;
+}
+
+.sidebar-submenu ul li:hover{
+  background-color: #1e7379;
+  width: 100%;
+}
+
+.sidebar-submenu .product-angledown {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 14px;
+  color: #abebef; 
+}
+
+.sidebar-submenu a:hover .product-angledown {
+  transform: rotate(90deg); 
+}
+
+.sidebar-submenu-list {
+  display: none;
+  position: absolute;
+  background-color: white;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  min-width: 200px;
+  z-index: 10;
+}
+
+.sidebar-submenu:hover .sidebar-submenu-list {
+  display: block; 
+  left: 100%; 
+  top: 0; 
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 
 /*CSS cho Nav All Categories*/
 
@@ -252,6 +331,7 @@ nav .navPart2 ul li .submenu {
   opacity: 0;
   transition: all 0.3s ease-in-out;
   visibility: hidden;
+  z-index: 100;
 }
 
 nav .navPart2 ul li:hover .submenu {
@@ -416,3 +496,36 @@ nav .navPart2 ul li .product-angledown {
 .locationModal .close_countrylist svg {
   font-size: 40px;
 }
+
+/* HomeSlider */
+
+/* .homeSlider {
+  position: relative;
+  overflow: hidden;
+}
+
+.homeSlider * {
+  outline: none !important;
+}
+
+.homeSlider .span {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px; 
+  color: black; 
+}
+
+.homeSlider .span-left {
+  left: 10px;  
+}
+
+.homeSlider .span-right {
+  right: 10px;
+} */
+
+
