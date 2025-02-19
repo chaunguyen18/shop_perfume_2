@@ -175,6 +175,7 @@ body {
   visibility: hidden;
   opacity: 0;
   height: 0;
+  z-index: 2;
   overflow: hidden;
   transition: visibility 0s 0.3s, opacity 0.3s, height 0.3s;
 }
@@ -499,11 +500,13 @@ nav .navPart2 ul li .product-angledown {
 
 /* HomeSlider */
 
-/* .homeSlider {
-  position: relative;
-  overflow: hidden;
+ .homeSlider {
+  /* position: relative;
+  overflow: hidden; */
+  z-index: 1;
 }
 
+/*
 .homeSlider * {
   outline: none !important;
 }
@@ -528,4 +531,38 @@ nav .navPart2 ul li .product-angledown {
   right: 10px;
 } */
 
+/* CSS Footer */
+.footerWrapper *{
+  color: #fff;
+}
 
+.footerWrapper {
+  border-top: 2px solid #abebef;
+  margin-top: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding-top: 15px;
+  background-color: #04a0ac;
+}
+
+.footerWrapper a{
+  text-decoration: none;
+  padding: 20px;
+}
+
+.footerWrapper h1:hover{
+  font-size: 50px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  color: #abebef !important;
+  background-color: transparent;
+  width: 100%;
+}
+
+.footerWrapper h4, span{
+  display: flex;
+  justify-content: left;
+}
+
+.footerWrapper span{
+  font-size: 20px;
+}
