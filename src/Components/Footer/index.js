@@ -1,36 +1,74 @@
-import React from 'react';
-import Logo from "../../assets/images/logo.png";
+import React from "react";
 import { Link } from "react-router-dom";
+import { IoMail } from "react-icons/io5";
+import { Button } from "@mui/material";
+import { FaPhone } from "react-icons/fa6";
+import { FaFacebook } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+import { FaTiktok } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className='footerWrapper'>
-        <div className='container'>
-        <div className='row'>
-            <div className='logoWrapper col-sm-3 d-flex align-items-center'>
+    <div className="footerWrapper">
+      <div className="container">
+        <div className="row">
+          <div className="newsLetter mb-3 col-6">
             <Link to="/">
-                {/* <img src={Logo} alt="logo"></img> */}
-                <h1>FADE</h1>
-              </Link>
+              <h1>FADE</h1>
+            </Link>
+            <h4 className="text-white">Nơi mùi hương là bạn đồng hành</h4>
+            <p className="text-light mb-1">
+              Đăng ký nhận tin để nhận thông tin mới nhất từ FADE
+            </p>
+            <form className="mt-3 mb-3">
+              <IoMail />
+              <input type="email" placeholder="Email của bạn..." />
+              <Button>Gửi</Button>
+            </form>
+            <p className="text-light mt-2">
+              GỌI ĐẶT MUA: <FaPhone /> 1900 0129 (9:00 - 21:00)
+            </p>
+          </div>
+          <div className="footer-address col-6 p-3">
+            <div className="row p-3">
+              <div className="col-4">
+                <h4>Địa chỉ</h4>
+                <span className="row">Khu II DHCT</span>
+              </div>
+              <div className="col-4">
+                <h4>Liên hệ</h4>
+                <div className="row d-flex justify-content-left">
+                  <span>
+                    <FaFacebook />
+                    FADE
+                  </span>
+                  <span>
+                    <FaInstagram />
+                    FADE
+                  </span>
+                  <span>
+                    <FaTiktok />
+                    FADE
+                  </span>
+                </div>
+              </div>
+              <div className="col-4">
+                <h4>Chính sách</h4>
+                <div className="row d-flex justify-content-left">
+                  <Link src="/">Chính sách đổi trả hàng</Link>
+                  <Link src="/">Chính sách giao hàng</Link>
+                  <Link src="/">Chính sách dành cho khách hàng</Link>
+                </div>
+              </div>
             </div>
-            <div className='col-3'>
-                <h4>Address</h4>
-                <span className='row'>Khu II DHCT</span>
-            </div>
-            <div className='col-3'>
-            <h4>Contact</h4>
-            <span className='row'>Facebook</span>
-            <span className='row'>Tiktok</span>
-            <span className='row'>Instagram</span></div>
-            <div className='col-3'>
-            <h4>Terms</h4>
-            <span className='row'>Chinh sach doi tra hang</span>
-            <span className='row'>Chinh sach giao hang</span>
-            </div>
+          </div>
         </div>
+        <p className="text-center text-white mb-2">
+          Copyright 2024-2025 © FADE. All Rights Reserved.
+        </p>
+      </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
 export default Footer;

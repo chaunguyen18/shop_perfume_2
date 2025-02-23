@@ -62,9 +62,6 @@ const Navigation = () => {
                     <div className="submenu-item">
                       <Link to="/brand">
                         Thương hiệu
-                        <span className="product-angledown">
-                          <FaAngleDown />
-                        </span>
                       </Link>
                       <ul className="submenu-list">
                         <li>
