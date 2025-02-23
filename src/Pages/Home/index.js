@@ -135,7 +135,7 @@ const Home = () => {
                 <span>
                   <MdLocalAtm />
                 </span>
-                <span>Giao dịch an toàn uy tín</span>
+                <span>Giao dịch an toàn</span>
               </div>
               <div className="col d-flex align-items-center">
                 <span>

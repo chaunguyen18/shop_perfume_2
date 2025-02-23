@@ -50,7 +50,7 @@ const Navigation = () => {
                   <Link to="/">Trang chủ</Link>
                 </li>
                 <li className="list-inline-item">
-                  <Link to="/">
+                  <Link to="/cat/:id">
                     Sản phẩm
                     <span className="product-angledown">
                       <FaAngleDown />
