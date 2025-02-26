@@ -4,11 +4,14 @@ import { AiOutlineFullscreen } from "react-icons/ai";
 import { FaRegHeart } from "react-icons/fa";
 import Button from "@mui/material/Button";
 import ProductModal from "../ProductModal";
+import { useNavigate } from "react-router-dom";
 
 const ProductItem = () => {
+  const navigate = useNavigate(); // Hook điều hướng
   const [isOpenProductModal, setIsOpenProductModal] = useState(false);
 
-  const viewProductModal = () => {
+  const viewProductModal = (e) => {
+    e.stopPropagation(); 
     setIsOpenProductModal(true);
   };
 
@@ -16,9 +19,13 @@ const ProductItem = () => {
     setIsOpenProductModal(false);
   };
 
+  const handleProductClick = () => {
+    navigate("/product/:id"); 
+  };
+
   return (
     <div>
-      <div className="item productItem">
+      <div className="item productItem" onClick={handleProductClick}> 
         <div className="imgWrapper">
           <img
             src="https://product.hstatic.net/1000340570/product/versace-eros-for-men_e21f596ba1f6467eb39ace8813943882_master.jpg"
@@ -46,7 +53,7 @@ const ProductItem = () => {
         </div>
       </div>
 
-      {/* Chỉ hiển thị modal khi isOpenProductModal = true */}
+     
       {isOpenProductModal && <ProductModal open={isOpenProductModal} closeProductModal={closeProductModal} />}
     </div>
   );

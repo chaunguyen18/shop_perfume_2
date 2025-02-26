@@ -1369,7 +1369,7 @@ ul {
   color: #1e7379;
 }
 
-.custom-tabs .MuiTab-root:hover{
+.custom-tabs .MuiTab-root:hover {
   color: #04a0ac;
 }
 
@@ -1454,17 +1454,17 @@ ul {
   color: #bbc0c0 !important;
 }
 
-.review-part2 h1{
+.review-part2 h1 {
   font-weight: 600 !important;
   font-size: 40px !important;
 }
 
-.review-part2 h1 svg{
+.review-part2 h1 svg {
   margin-left: 10px;
   margin-bottom: 10px;
 }
 
-.tab-content .review-part3 button{
+.tab-content .review-part3 button {
   color: #1e7379 !important;
   text-transform: uppercase;
   font-weight: 600;
@@ -1472,47 +1472,148 @@ ul {
   padding: 10px;
 }
 
-.tab-content .review-part3 button:hover{
+.tab-content .review-part3 button:hover {
   color: #04a0ac !important;
   border-radius: 20px !important;
 }
 
-.tab-content .review-part3 svg{
+.tab-content .review-part3 svg {
   margin-left: 5px;
   font-size: 15px;
   margin-bottom: 3px;
 }
 
-.tab-content .review-part4 .review-fliter button{
+.tab-content .review-part4 .review-fliter button {
   color: #fff !important;
   background: #1e7379 !important;
   margin-right: 15px;
   margin-bottom: 10px;
 }
 
-.tab-content .review-part4 .review-fliter button:hover{
+.tab-content .review-part4 .review-fliter button:hover {
   color: #04a0ac !important;
   background: #fff !important;
   border: solid 1px #04a0ac !important;
-
 }
 
-.customer-review{
+.customer-review {
   font-size: 20px !important;
 }
 
-.time-review{
+.time-review {
   font-size: 15px;
   opacity: 0.7 !important;
   color: #000 !important;
   font-style: italic;
 }
-.like-review{
+.like-review {
   font-size: 15px !important;
 }
 
-.like-review svg{
+.like-review svg {
   margin-right: 5px !important;
   margin-bottom: 3px !important;
+}
 
+/* ReviewModal */
+
+.reviewModal {
+  font-size: 25px;
+}
+
+.reviewModal span {
+  color: #04a0ac !important;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.reviewModal h3 {
+  font-size: 35px;
+}
+
+.reviewModal h5 {
+  font-size: 25px;
+}
+
+.reviewModal .close_ {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #04a0ac;
+  z-index: 10;
+}
+
+.reviewModal .MuiPaper-elevation {
+  padding: 20px !important;
+  position: relative;
+  max-width: 1200px !important;
+  height: 800px;
+  width: 1000px;
+}
+
+.reviewModal .close_:hover {
+  color: #1e7379;
+}
+
+.reviewModal .reviewBtn svg {
+  margin-right: 7px;
+}
+
+.reviewModal input,
+.reviewModal textarea {
+  font-size: 20px !important;
+}
+
+.reviewBtn button {
+  color: #fff !important;
+  background-color: #1e7379 !important;
+  font-size: 15px !important;
+}
+
+.reviewBtn button:hover {
+  color: #04a0ac !important;
+  background: #fff !important;
+  border: solid 1px #04a0ac !important;
+}
+
+/*Contact*/
+
+.contact{
+  font-family: "K2D", serif !important;
+}
+
+.contact .contact-infor .col-md-4 {
+  background: rgba(0, 0, 0, 0.1) !important;
+padding: 10px;
+}
+
+.contact .contact-infor {
+  font-size: 17px !important;
+}
+
+.contact-infor .col-md-4 {
+  margin-right: 20px;
+}
+
+.contact-infor .col-md-4:last-child {
+  margin-right: 0; 
+}
+
+.contact-form button{
+  color: #fff !important;
+  background-color: #1e7379 !important;
+  font-size: 15px !important;
+  font-family: "K2D", serif !important;
+  width: 100px;
+}
+
+.contact-form button:hover {
+  color: #04a0ac !important;
+  background: #fff !important;
+  border: solid 1px #04a0ac !important;
 }

@@ -26,7 +26,7 @@ const Footer = () => {
               <Button>Gửi</Button>
             </form>
             <p className="text-light mt-2">
-              GỌI ĐẶT MUA: <FaPhone /> 1900 0129 (9:00 - 21:00)
+              GỌI ĐẶT MUA: <FaPhone /> 1900 xxxx (9:00 - 21:00)
             </p>
           </div>
           <div className="footer-address col-6 p-3">

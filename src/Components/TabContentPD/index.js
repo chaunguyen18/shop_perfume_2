@@ -10,6 +10,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import ReviewModal from "../ReviewModal";
 
 function CustomTabPanel({ children, value, index }) {
   return (
@@ -29,6 +30,16 @@ const TabContentPD = () => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const [isOpenProductModal, setIsOpenProductModal] = useState(false);
+
+  const viewProductModal = (e) => {
+    setIsOpenProductModal(true);
+  };
+
+  const closeProductModal = () => {
+    setIsOpenProductModal(false);
   };
 
   return (
@@ -176,9 +187,9 @@ const TabContentPD = () => {
           <div className="row review">
             <div className="review-part1 d-flex align-items-center mb-3">
               <h4 className="mb-0">Đánh giá và nhận xét (3)</h4>
-              <Button className="">
+              <Button className="" onClick={viewProductModal}>
                 <FaPencil />
-                Viết đánh giá
+                Viết đánh giá 
               </Button>
             </div>
             <div className="row review-part2 mt-3 mb-3 ms-2">
@@ -228,6 +239,7 @@ const TabContentPD = () => {
           </div>
         </CustomTabPanel>
       </div>
+      {isOpenProductModal && <ReviewModal open={isOpenProductModal} closeProductModal={closeProductModal} />}
     </div>
   );
 };
