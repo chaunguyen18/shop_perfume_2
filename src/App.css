@@ -3,9 +3,9 @@
   padding: 0px;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Allerta&family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Lexend+Mega:wght@100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css');
+@import url("https://fonts.googleapis.com/css2?family=Allerta&family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Lexend+Mega:wght@100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css");
 
 body {
   font-family: "K2D", serif;
@@ -13,15 +13,18 @@ body {
   overflow-x: hidden;
 }
 
-@media (min-width: 1300px){
-  .container, .container-lg, .container-md, .container-sm, .container-xl{
+@media (min-width: 1300px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
     max-width: 1200px;
   }
 }
 
-
 .bg-black {
-  background: #04a0ac!important;
+  background: #04a0ac !important;
 }
 
 .headerWrapper .top-strip {
@@ -198,15 +201,15 @@ body {
   transition: visibility 0s 0.3s, opacity 0.3s, height 0.3s;
 }
 
-
-.sidebarNav ul li, .sidebar-submenu {
+.sidebarNav ul li,
+.sidebar-submenu {
   width: 100%;
   list-style: none;
   padding: 15px;
   font-size: 16px;
 }
 
-.sidebarNav ul li a{
+.sidebarNav ul li a {
   color: #04a0ac;
   width: 100%;
   justify-content: flex-start;
@@ -216,16 +219,16 @@ body {
   display: block;
 }
 
-.sidebarNav ul li:hover{
+.sidebarNav ul li:hover {
   background-color: #1e7379;
   width: 100%;
   transition: 0.3s ease-in-out;
 }
 
-.sidebarNav ul li a:hover{
+.sidebarNav ul li a:hover {
   color: #abebef;
 }
-.sidebar-submenu{
+.sidebar-submenu {
   color: #04a0ac;
   width: 100%;
   justify-content: flex-start;
@@ -245,12 +248,12 @@ body {
 }
 
 .sidebar-submenu a:hover {
-  color: #abebef; 
+  color: #abebef;
   background-color: #1e7379;
   width: 100%;
 }
 
-.sidebar-submenu ul li:hover{
+.sidebar-submenu ul li:hover {
   background-color: #1e7379;
   width: 100%;
 }
@@ -259,11 +262,11 @@ body {
   display: inline-block;
   margin-left: 5px;
   font-size: 14px;
-  color: #abebef; 
+  color: #abebef;
 }
 
 .sidebar-submenu a:hover .product-angledown {
-  transform: rotate(90deg); 
+  transform: rotate(90deg);
 }
 
 .sidebar-submenu-list {
@@ -278,12 +281,11 @@ body {
 }
 
 .sidebar-submenu:hover .sidebar-submenu-list {
-  display: block; 
-  left: 100%; 
-  top: 0; 
+  display: block;
+  left: 100%;
+  top: 0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 
 /*CSS cho Nav All Categories*/
 
@@ -339,6 +341,10 @@ nav .navPart2 ul li .submenu {
   z-index: 100;
 }
 
+nav .navPart2 svg {
+  color: #04a0ac !important;
+}
+
 nav .navPart2 ul li:hover .submenu {
   opacity: 1;
   visibility: inherit;
@@ -349,7 +355,6 @@ nav .navPart2 ul li .submenu a {
   display: block;
   width: 100%;
   border-radius: 0px !important;
-
 }
 
 nav .navPart2 ul li a {
@@ -376,7 +381,6 @@ nav .navPart2 ul li .product-angledown {
 }
 
 /*CSS cho submenu-list*/
-
 
 .submenu-item {
   position: relative;
@@ -420,7 +424,6 @@ nav .navPart2 ul li .product-angledown {
   color: #abebef;
   background-color: #1e7379;
 }
-
 
 /*CSS cho LocationModal*/
 
@@ -517,7 +520,7 @@ nav .navPart2 ul li .product-angledown {
   background-color: #04a0ac;
 }
 
-.footerWrapper h1:hover{
+.footerWrapper h1:hover {
   font-size: 50px;
   font-weight: 600;
   transition: all 0.2s ease-in-out;
@@ -526,69 +529,68 @@ nav .navPart2 ul li .product-angledown {
   width: 100%;
 }
 
-.footerWrapper h1{
+.footerWrapper h1 {
   color: #fff;
 }
 
-.footer-address h4, span{
+.footer-address h4,
+span {
   display: flex;
   justify-content: center;
   color: #fff;
 }
 
-.footerWrapper h4{
+.footerWrapper h4 {
   text-transform: uppercase;
 }
 
-.footer-address span{
+.footer-address span {
   font-size: 20px;
 }
 
-.footer-address svg{
+.footer-address svg {
   font-size: 20px;
   margin-top: 3px;
   margin-right: 10px;
 }
 
-.footer-address a{
+.footer-address a {
   color: #fff !important;
   font-size: 20px !important;
   text-decoration: none !important;
 }
 
-.footer-address a:hover{
+.footer-address a:hover {
   color: #abebef !important;
   transition: all 0.3s ease-in-out;
 }
 
 /* CSS cho NewsLetter */
 
-
-.newsLetter{
+.newsLetter {
   height: 400px;
 }
 
-.newsLetter p{
+.newsLetter p {
   font-size: 16px;
 }
 
-.newsLetter p.text-light{
+.newsLetter p.text-light {
   color: #fff;
   opacity: 0.7;
-
 }
 
-.newsLetter a{
+.newsLetter a {
   padding: 20px;
-  text-decoration: none;;
+  text-decoration: none;
 }
 
-.newsLetter h4{
+.newsLetter h4 {
   font-size: 35px;
   font-weight: 600;
 }
 
-.newsLetter form{
+.newsLetter form {
   width: 100%;
   height: 60px;
   background: #fff;
@@ -597,7 +599,7 @@ nav .navPart2 ul li .product-angledown {
   border-radius: 10px;
 }
 
-.newsLetter form svg{
+.newsLetter form svg {
   position: absolute;
   top: 20px;
   left: 20px;
@@ -605,7 +607,7 @@ nav .navPart2 ul li .product-angledown {
   color: #04a0ac !important;
 }
 
-.newsLetter form input{
+.newsLetter form input {
   width: 100%;
   height: 30px;
   margin-top: 5px;
@@ -618,7 +620,7 @@ nav .navPart2 ul li .product-angledown {
   font-size: 18px;
 }
 
-.newsLetter form button{
+.newsLetter form button {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -631,46 +633,46 @@ nav .navPart2 ul li .product-angledown {
   font-weight: 600;
 }
 
-.newsLetter form button:hover{
+.newsLetter form button:hover {
   color: #abebef !important;
   transition: all 0.3s ease-in-out;
 }
 
 /*CSS cho HomeProduct*/
 
-.homeProduct { 
+.homeProduct {
   padding: 25px 25px;
   width: 100%;
 }
 
-.homeProduct svg{
+.homeProduct svg {
   margin-bottom: 4px;
 }
 
-.info h2{
+.info h2 {
   font-weight: 600;
   text-transform: uppercase;
 }
-.info p{
+.info p {
   margin-top: 10px;
   font-size: 20px;
 }
 
-.viewAllBtn{
+.viewAllBtn {
   padding: 8px 15px !important;
   border: solid 1px #1e7379 !important;
   border-radius: 30px !important;
-  color:#04a0ac !important;
+  color: #04a0ac !important;
   margin-left: auto !important;
 }
 
-.viewAllBtn:hover{
+.viewAllBtn:hover {
   background-color: #1e7379 !important;
   color: #abebef !important;
   transition: 0.3s ease-in-out;
 }
 
-.productItem{
+.productItem {
   height: auto;
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -679,7 +681,7 @@ nav .navPart2 ul li .product-angledown {
   position: relative;
 }
 
-.productItem .badge{
+.productItem .badge {
   display: inline-block;
   padding: 10px;
   position: absolute !important;
@@ -692,10 +694,10 @@ nav .navPart2 ul li .product-angledown {
   font-size: 14px;
 }
 
-.productItem .action{
+.productItem .action {
   position: absolute;
   top: 10px;
-  right: -100%; 
+  right: -100%;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -706,14 +708,14 @@ nav .navPart2 ul li .product-angledown {
   transition: all 0.3s ease-in-out;
 }
 
-.productItem .imgWrapper:hover .action{
+.productItem .imgWrapper:hover .action {
   opacity: 1;
   right: 10px;
 
   visibility: visible;
 }
 
-.productItem .action button{
+.productItem .action button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -723,38 +725,39 @@ nav .navPart2 ul li .product-angledown {
   border-radius: 50%;
   border: solid #04a0ac 1px !important;
   background: #fff;
-  box-shadow: 0 1px 3px rgb( 0 0 0 /12%);
+  box-shadow: 0 1px 3px rgb(0 0 0 /12%);
   font-size: 20px;
   color: #04a0ac;
 }
 
-.productItem .action button:hover{
+.productItem .action button:hover {
   background: #1e7379;
   color: #abebef;
 }
 
-.productItem .info{
+.productItem .info {
   padding: 15px;
 }
 
-.productItem .info h4{
+.productItem .info h4 {
   font-size: 18px;
   font-weight: 600;
 }
 
-.product-detail .oldPrice, .productItem .oldPrice{
+.product-detail .oldPrice,
+.productItem .oldPrice {
   text-decoration: line-through;
   color: #ccc;
   font-size: 20px;
 }
 
- .productItem .newPrice{
+.productItem .newPrice {
   text-decoration: none;
   font-size: 20px;
   margin-left: 10px;
 }
 
-.swiper{
+.swiper {
   padding-right: 2px;
 }
 
@@ -765,21 +768,20 @@ nav .navPart2 ul li .product-angledown {
   width: 100%;
 }
 
-.homeBrand h2{
+.homeBrand h2 {
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.homeBrand svg{
+.homeBrand svg {
   margin-bottom: 7px;
 }
-.homeBrand .swiper .item{
+.homeBrand .swiper .item {
   padding: 20px;
   width: 100%;
   height: auto;
   background: transparent;
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
-
 }
 
 /*CSS ProductRow2*/
@@ -799,11 +801,10 @@ nav .navPart2 ul li .product-angledown {
   text-align: center;
 }
 
-
 .productRow2 .productItem img {
   width: 100%; /* Đảm bảo hình ảnh co đúng kích thước */
   height: auto;
-  object-fit: cover; 
+  object-fit: cover;
 }
 
 .productRow2 .productItem .action {
@@ -829,17 +830,17 @@ nav .navPart2 ul li .product-angledown {
 
 /*CSS cho HomeNews*/
 
-.homeNews{
+.homeNews {
   width: 100%;
 }
-.homeNews h2{
+.homeNews h2 {
   font-weight: 600;
   text-transform: uppercase;
 }
 
 /*CSS cho NewsItem*/
 
-.newsItem{
+.newsItem {
   height: auto;
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -858,11 +859,10 @@ nav .navPart2 ul li .product-angledown {
   justify-content: center;
 }
 
-
 .homeNews .newsItem .imgWrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
 }
 
 .newsItem .info {
@@ -875,7 +875,7 @@ nav .navPart2 ul li .product-angledown {
   font-weight: 600;
 }
 
-.newsItem .badge{
+.newsItem .badge {
   display: inline-block;
   padding: 10px;
   position: absolute !important;
@@ -890,30 +890,30 @@ nav .navPart2 ul li .product-angledown {
 
 /* CSS cho HomeTerms*/
 
-.homeTerms{
+.homeTerms {
   padding-top: 10px;
   width: 100%;
   text-align: center;
   align-items: center;
 }
 
-.homeTerms .col{
+.homeTerms .col {
   border-right: solid 1px rgba(13, 178, 211, 0.3) !important;
   padding: 10px 15px !important;
   padding-left: 40px !important;
 }
 
-.homeTerms .col:last-child{
+.homeTerms .col:last-child {
   border-right: 0px !important;
 }
 
-.homeTerms span{
+.homeTerms span {
   color: #04a0ac !important;
   font-size: 20px;
   opacity: 0.7;
 }
 
-.homeTerms svg{
+.homeTerms svg {
   margin-right: 10px;
   margin-top: 5px;
 }
@@ -923,7 +923,7 @@ nav .navPart2 ul li .product-angledown {
 .productModal .MuiPaper-elevation {
   padding: 25px !important;
   position: relative;
-  max-width: 1200px !important; 
+  max-width: 1200px !important;
   height: 800px;
   width: 1000px;
 }
@@ -992,20 +992,22 @@ nav .navPart2 ul li .product-angledown {
   height: auto !important;
 }
 
-.addToCartBtn svg, .addToWishlistBtn svg, .compareBtn svg{
+.addToCartBtn svg,
+.addToWishlistBtn svg,
+.compareBtn svg {
   margin-right: 5px;
 }
 
-.addToCartBtn{
+.addToCartBtn {
   padding: 10px 15px !important;
   border: solid 1px #1e7379 !important;
   border-radius: 30px !important;
-  color:#abebef !important;
+  color: #abebef !important;
   background-color: #1e7379 !important;
   width: 200px;
 }
 
-.addToCartBtn:hover{
+.addToCartBtn:hover {
   background-color: transparent !important;
   color: #04a0ac !important;
   transition: 0.3s ease-in-out;
@@ -1014,10 +1016,10 @@ nav .navPart2 ul li .product-angledown {
 .quantityDrop {
   width: 100px;
   gap: 10px;
-  margin-right: auto; 
-  }
+  margin-right: auto;
+}
 
-.quantityDrop button{
+.quantityDrop button {
   min-width: 40px !important;
   color: #04a0ac;
   font-size: 20px;
@@ -1028,12 +1030,12 @@ nav .navPart2 ul li .product-angledown {
   border: 1px solid #04a0ac;
 }
 
-.quantityDrop button:hover{
+.quantityDrop button:hover {
   background-color: #1e7379;
   color: #abebef;
 }
 
-.quantityDrop input{
+.quantityDrop input {
   color: #04a0ac;
   font-size: 20px;
   width: 40px;
@@ -1045,13 +1047,13 @@ nav .navPart2 ul li .product-angledown {
   text-align: center;
 }
 
-.addToWishlistBtn, .compareBtn{
+.addToWishlistBtn,
+.compareBtn {
   padding: 8px 15px !important;
   border: solid 1px #1e7379 !important;
   border-radius: 30px !important;
-  color:#04a0ac !important;
+  color: #04a0ac !important;
 }
-
 
 .addToWishlistBtn:hover,
 .compareBtn:hover {
@@ -1060,35 +1062,33 @@ nav .navPart2 ul li .product-angledown {
   transition: 0.3s ease-in-out;
 }
 
-
-.product-detail-info .old-Price{
+.product-detail-info .old-Price {
   color: #000;
   opacity: 0.6;
   text-decoration: line-through;
 }
 
-.product-detail-info .new-Price{
+.product-detail-info .new-Price {
   color: red;
   font-weight: 600;
-  font-size: 30px; 
+  font-size: 30px;
   margin-left: 10px;
 }
 
-.product-detail-info .badge{
+.product-detail-info .badge {
   border: 1px solid #04a0ac;
   background: #04a0ac;
   color: #fff;
   text-transform: uppercase;
 }
 
-.product-detail-info p{
+.product-detail-info p {
   font-size: 18px;
 }
 
 /*CSS PD-Page*/
 
-
-.pd-sidebar{
+.pd-sidebar {
   border: solid 1px rgba(0, 0, 0, 0.1);
   color: #04a0ac !important;
   font-size: 20px;
@@ -1097,82 +1097,84 @@ nav .navPart2 ul li .product-angledown {
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
 }
 
-.pd-sidebar h1{
+.pd-sidebar h1 {
   font-size: 25px;
   color: #1e7379;
   text-transform: uppercase;
 }
 
-.pd-sidebar .filter-box{
+.pd-sidebar .filter-box {
   color: #04a0ac;
 }
 
-.pd-listing-page .content-right h1{
+.pd-listing-page .content-right h1 {
   font-size: 30px;
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.pd-listing-page .content-right h1 svg{
+.pd-listing-page .content-right h1 svg {
   margin-bottom: 5px;
 }
 
-.pd-sidebar .scroll{
+.pd-sidebar .scroll {
   padding-left: 10px;
   max-height: 250px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-.pd-sidebar .scroll::-webkit-scrollbar{
-height: 5px;
-width: 5px;
+.pd-sidebar .scroll::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
 }
 
-.pd-sidebar .scroll ul li{
+.pd-sidebar .scroll ul li {
   list-style: none;
   margin-bottom: 5px;
   width: 100%;
 }
 
-ol, ul {
+ol,
+ul {
   padding: 0px;
 }
 
-.text-blue{
+.text-blue {
   color: #1e7379;
 }
 
-.range-slider .range-slider__thumb, .range-slider .range-slider__range{
+.range-slider .range-slider__thumb,
+.range-slider .range-slider__range {
   background: #04a0ac !important;
 }
 
-.range-slider .range-slider__thumb{
+.range-slider .range-slider__thumb {
   width: 20px !important;
   height: 20px !important;
 }
 
-.priceRange{
+.priceRange {
   height: 20px;
   padding: 5px;
 }
 
-.priceRange span{
+.priceRange span {
   color: #04a0ac;
 }
 
-.priceRange .price2{
-margin-left: auto;
+.priceRange .price2 {
+  margin-left: auto;
 }
 
-.pd-listing-page .content-right .showBy{
+.pd-listing-page .content-right .showBy {
   width: 100%;
   height: auto;
   background: #caf4f7;
   padding: 15px 25px;
 }
 
-.pd-listing-page .content-right .showBy .btnWrapper button{
+.pd-listing-page .content-right .showBy .btnWrapper button {
   min-width: 35px !important;
   height: 35px !important;
   width: 35px !important;
@@ -1180,22 +1182,22 @@ margin-left: auto;
   color: #1e7379;
 }
 
-.pd-listing-page .content-right .showBy button svg{
+.pd-listing-page .content-right .showBy button svg {
   color: #1e7379;
   font-size: 20px !important;
   opacity: 0.5;
 }
 
-.pd-listing-page .content-right .showBy button svg:hover{
+.pd-listing-page .content-right .showBy button svg:hover {
   opacity: 1;
 }
 
-.showByFilter button{
+.showByFilter button {
   min-width: auto !important;
   color: #1e7379;
 }
 
-.showByFilter button svg{
+.showByFilter button svg {
   opacity: 0.5;
   color: #1e7379;
   margin-left: 5px;
@@ -1214,7 +1216,7 @@ margin-left: auto;
   grid-template-columns: repeat(3, 1fr);
 }
 
-.pd-sidebar .sticky{
+.pd-sidebar .sticky {
   position: sticky;
   top: 20px;
 }
@@ -1231,7 +1233,7 @@ margin-left: auto;
   border-radius: 30px;
 }
 
-.product-detail .badge1{
+.product-detail .badge1 {
   font-size: 15px;
   color: #fff;
   border: none;
@@ -1242,17 +1244,17 @@ margin-left: auto;
   padding: 5px 10px;
 }
 
-.product-size{
+.product-size {
   width: 100%;
   height: auto;
   padding: 25px 0px;
 }
 
-.product-size ul li{
+.product-size ul li {
   margin-right: 10px !important;
 }
 
-.product-size ul li a{
+.product-size ul li a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1261,40 +1263,41 @@ margin-left: auto;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none !important;
-  color:#04a0ac !important;
+  color: #04a0ac !important;
   font-size: 16px !important;
   transition: all 0.3s ease-in-out;
 }
 
-.product-size ul li a.active{
+.product-size ul li a.active {
   background: #1e7379 !important;
   color: #fff !important;
 }
 
-.product-detail span, .product-detail p{
+.product-detail span,
+.product-detail p {
   font-size: 20px;
 }
 
-.product-detail .newPrice{
+.product-detail .newPrice {
   font-size: 40px;
 }
 
-.product-detail .addToCartBtn{
+.product-detail .addToCartBtn {
   padding: 10px 15px !important;
   border: solid 1px #1e7379 !important;
   border-radius: 30px !important;
-  color:#abebef !important;
+  color: #abebef !important;
   background-color: #1e7379 !important;
   width: 200px;
 }
 
-.product-detail .addToCartBtn:hover{
+.product-detail .addToCartBtn:hover {
   background-color: transparent !important;
   color: #04a0ac !important;
   transition: 0.3s ease-in-out;
 }
 
-.product-detail .btn-circle{
+.product-detail .btn-circle {
   min-width: 40px !important;
   height: 40px;
   width: 40px;
@@ -1305,7 +1308,7 @@ margin-left: auto;
   padding: 5px !important;
 }
 
-.product-detail .btn-circle svg{
+.product-detail .btn-circle svg {
   color: #04a0ac;
   opacity: 0.7;
   font-size: 20px;
@@ -1319,4 +1322,93 @@ margin-left: auto;
 .product-detail .btn-circle:hover svg {
   color: #abebef !important;
   opacity: 1;
+}
+
+.product-detail .pd-part2 span {
+  color: #000;
+}
+
+.product-detail .pd-part2 .pd-sale-price {
+  color: #fff;
+}
+
+.product-detail .pd-part2 .addToCartBtn svg {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 20px;
+}
+
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  padding-left: 20px;
+}
+
+.table td:first-child {
+  font-weight: bold;
+  background-color: #f3f5f5;
+}
+
+.table td:first-child,
+.table th:first-child {
+  width: 250px;
+  min-width: 150px;
+  max-width: 250px;
+  white-space: nowrap;
+}
+
+.custom-tabs .MuiTab-root {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "K2D", serif;
+}
+
+.gototop {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  background-color: #1e7379 !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+  min-width: 50px !important;
+  min-height: 50px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  z-index: 1000; /* Đảm bảo hiển thị trên cùng */
+}
+
+.gototop:hover {
+  background-color: #fff !important;
+  color: #04a0ac !important;
+  border: solid 1px #04a0ac !important;
+}
+
+.tab-content ul {
+  font-weight: 600;
+}
+
+.tab-content li {
+  font-size: 17px;
+  padding: 5px;
+  font-weight: 400 !important;
+}
+
+.tab-content .review-part1 button {
+  margin-left: auto;
+}
+
+.tab-content .review-part1 svg,
+.tab-content .review-part4 svg {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 15px;
 }

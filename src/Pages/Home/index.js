@@ -14,6 +14,7 @@ import { IoIosGift } from "react-icons/io";
 import { MdLocalAtm } from "react-icons/md";
 import { IoShieldCheckmark } from "react-icons/io5";
 
+
 const Home = () => {
   return (
     <>
@@ -117,6 +118,7 @@ const Home = () => {
           </div>
           
         </div>
+
         <div className="homeTerms mt-3 p-4">
             <div className="row container justify-content-between w-100">
               <div className="col d-flex align-items-center">
@@ -146,6 +148,7 @@ const Home = () => {
             </div>
           </div>
       </div>
+      
     </>
   );
 };

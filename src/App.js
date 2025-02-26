@@ -6,6 +6,7 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Listing from "./Pages/Listing";
 import ProductDetails from "./Pages/ProductDetails";
+import GoToTop from "./Components/GoToTop";
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
         <Route path="/cat/:id" element={<Listing />} />
         <Route path="/product/:id" element={<ProductDetails/>} />
       </Routes>
+      <GoToTop />
       <Footer />
+
     </BrowserRouter>
   );
 }
