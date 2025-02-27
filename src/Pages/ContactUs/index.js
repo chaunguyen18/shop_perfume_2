@@ -25,7 +25,7 @@ const ContactForm = () => {
   return (
     <div className="mt-3 mb-3 container contact">
       <div className="d-flex flex-column">
-        <h4>Liên Hệ</h4>
+        <h1>Liên Hệ</h1>
         <div className="contact-infor mt-2 row d-flex flex-nowrap">
           <div className="col-md-4">
             <b>Hotline</b>

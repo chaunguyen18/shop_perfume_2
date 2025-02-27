@@ -11,8 +11,8 @@ const Footer = () => {
   return (
     <div className="footerWrapper">
       <div className="container">
-        <div className="row">
-          <div className="newsLetter mb-3 col-6">
+        <div className="row d-flex">
+          <div className="newsLetter mb-3 col-md-6">
             <Link to="/">
               <h1>FADE</h1>
             </Link>
@@ -29,15 +29,15 @@ const Footer = () => {
               GỌI ĐẶT MUA: <FaPhone /> 1900 xxxx (9:00 - 21:00)
             </p>
           </div>
-          <div className="footer-address col-6 p-3">
+          <div className="footer-address col-md-6 p-3">
             <div className="row p-3">
-              <div className="col-4">
+              <div className="col-md-3">
                 <h4>Địa chỉ</h4>
-                <span className="row">Khu II DHCT</span>
+                <span className="mb-3 flex-column d-flex justify-content-left">Khu II DHCT</span>
               </div>
-              <div className="col-4">
+              <div className="col-md-3">
                 <h4>Liên hệ</h4>
-                <div className="row d-flex justify-content-left">
+                <div className="flex-column d-flex justify-content-left">
                   <span>
                     <FaFacebook />
                     FADE
@@ -46,18 +46,18 @@ const Footer = () => {
                     <FaInstagram />
                     FADE
                   </span>
-                  <span>
+                  <span className="mb-3">
                     <FaTiktok />
                     FADE
                   </span>
                 </div>
               </div>
-              <div className="col-4">
+              <div className="col-md-6">
                 <h4>Chính sách</h4>
-                <div className="row d-flex justify-content-left">
-                  <Link src="/">Chính sách đổi trả hàng</Link>
-                  <Link src="/">Chính sách giao hàng</Link>
-                  <Link src="/">Chính sách dành cho khách hàng</Link>
+                <div className="d-flex justify-content-left flex-column">
+                  <Link to="/terms/chinh-sach-doi-tra">Chính sách đổi trả hàng</Link>
+                  <Link to="/terms/chinh-sach-giao-hang">Chính sách giao hàng</Link>
+                  <Link to="/terms/chinh-sach-khach-hang">Chính sách dành cho khách hàng</Link>
                 </div>
               </div>
             </div>

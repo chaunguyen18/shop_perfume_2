@@ -536,7 +536,7 @@ nav .navPart2 ul li .product-angledown {
 .footer-address h4,
 span {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   color: #fff;
 }
 
@@ -1583,13 +1583,17 @@ ul {
 
 /*Contact*/
 
-.contact{
+.contact {
   font-family: "K2D", serif !important;
+}
+
+.contact h1 {
+  color: #1e7379 !important;
 }
 
 .contact .contact-infor .col-md-4 {
   background: rgba(0, 0, 0, 0.1) !important;
-padding: 10px;
+  padding: 10px;
 }
 
 .contact .contact-infor {
@@ -1601,10 +1605,10 @@ padding: 10px;
 }
 
 .contact-infor .col-md-4:last-child {
-  margin-right: 0; 
+  margin-right: 0;
 }
 
-.contact-form button{
+.contact-form button {
   color: #fff !important;
   background-color: #1e7379 !important;
   font-size: 15px !important;
@@ -1617,3 +1621,261 @@ padding: 10px;
   background: #fff !important;
   border: solid 1px #04a0ac !important;
 }
+
+/*About*/
+
+.about h1 {
+  color: #1e7379 !important;
+}
+
+.about h2 {
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.about img {
+  height: 500px !important;
+}
+
+.about p {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: justify;
+  margin-top: 10px;
+}
+
+.about .about-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.term .term-content h2 {
+  font-weight: 600;
+}
+
+.term .term-content-children {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+.term .list-group-item {
+  border: none !important;
+  background-color: transparent;
+}
+
+.term a {
+  text-decoration: none !important;
+  color: #1e7379;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: justify;
+}
+
+.term a:hover {
+  color: #abebef !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease-in;
+}
+
+/*Account*/
+
+.account {
+  font-size: 25px;
+  font-weight: 600;
+}
+.account .account-menu ul li {
+  color: #1e7379;
+  list-style: none;
+}
+
+.account .account-menu .my-account li {
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+.account .account-menu h3 {
+  font-size: 25px;
+  font-weight: 600;
+  color: #1e7379;
+}
+
+.account .account-menu a {
+  text-decoration: none !important;
+  color: #1e7379;
+}
+
+.account .account-menu ul li:hover,
+.account .account-menu a:hover {
+  color: #abebef;
+  cursor: pointer;
+}
+
+.account .account-menu svg {
+  margin-right: 10px;
+}
+
+.account .account-content {
+  font-size: 25px !important;
+  font-weight: 400 !important;
+}
+
+.account .account-content h3 {
+  font-size: 25px;
+  font-weight: 600;
+  color: #000;
+}
+
+.account .account-content p {
+  color: #000;
+  opacity: 0.7;
+  font-size: 15px;
+}
+
+.account .account-content .profile-content span {
+  color: #000 !important;
+  margin-left: 10px;
+}
+
+.account .account-content .profile-content label {
+  font-weight: 500 !important;
+  font-size: 17px;
+  opacity: 0.7;
+}
+
+.account .account-content .profile-content button,
+.account .account-content .uploadBtn {
+  color: #fff !important;
+  background-color: #1e7379 !important;
+  border-radius: 20px !important;
+  font-family: "K2D", serif;
+}
+
+.account .account-content .profile-content button:hover,
+.account .account-content .uploadBtn:hover {
+  color: #04a0ac !important;
+  background-color: #fff !important;
+  border: 1px solid #04a0ac !important;
+  cursor: pointer;
+}
+
+.account .account-content .avatar-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+}
+.account .account-content .uploadBtn {
+  margin-top: 10px; /* Đảm bảo nó không dính vào avatar */
+}
+
+.reset-pw-cus {
+  padding: 10px;
+}
+
+.reset-pw-cus input {
+  padding: 10px;
+  margin-bottom: 20px !important;
+  font-size: 20px;
+}
+
+.reset-pw-cus h3 {
+  font-size: 25px;
+  font-weight: 600;
+  color: #000;
+}
+
+.reset-pw-cus .updateBtn {
+  color: #fff !important;
+  background-color: #1e7379 !important;
+  border-radius: 20px !important;
+  font-family: "K2D", serif;
+  width: 200px;
+  display: block;
+  margin: 0 auto;
+}
+
+.reset-pw-cus .updateBtn:hover {
+  color: #04a0ac !important;
+  background-color: #fff !important;
+  border: 1px solid #04a0ac !important;
+  cursor: pointer;
+}
+
+.address-cus .address-action .edit-btn {
+  color: #fff !important;
+  background-color: #1e7379 !important;
+  border-radius: 20px !important;
+  font-family: "K2D", serif;
+  font-size: 15px;
+  padding: 10px;
+}
+
+.address-cus .address-action svg {
+  color: #fff;
+  font-size: 17px;
+  margin-right: 5px;
+}
+
+.address-cus .edit-btn:hover {
+  color: #04a0ac !important;
+  background-color: #fff !important;
+  border: 1px solid #04a0ac !important;
+  cursor: pointer;
+}
+
+.address-cus .edit-btn:hover svg {
+  color: #04a0ac !important;
+}
+
+.order-cus .search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.order-cus input {
+  padding: 10px 40px 10px 10px; 
+  font-size: 20px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.order-cus input::placeholder{
+  font-style: italic;
+  margin-left: 5px;
+}
+
+.order-cus svg{
+  position: absolute;
+  right: 10px;
+  color: gray;
+  cursor: pointer;
+}
+
+.table-container {
+  max-height: 700px; 
+  overflow-y: auto; 
+  border: 1px solid #ccc; 
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: left;
+}
+
+/*Login*/
+
+.login-data img{
+}
+

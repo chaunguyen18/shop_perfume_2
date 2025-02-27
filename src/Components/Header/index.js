@@ -32,7 +32,7 @@ const Header = () => {
               <SearchBox />
               <div className="part3 d-flex align-items-center ml-auto">
                 <Button className="circle mr-3">
-                  <FaUserAlt />
+                  <Link to="/account"><FaUserAlt /></Link>
                 </Button>
                 <div className="ml-auto cartTab d-flex align-items-center">
                   <span className="price">$50</span>
