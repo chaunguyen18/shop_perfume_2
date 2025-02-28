@@ -13,6 +13,7 @@ import Terms from "./Pages/Terms";
 import Account from "./Pages/Account";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
+import Authentication from "./Pages/Authentication";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cat/:id" element={<Listing />} />
+        <Route path="/authentication" element={<Authentication />} />
         <Route path="/product/:id" element={<ProductDetails/>} />
       </Routes>
       <GoToTop />

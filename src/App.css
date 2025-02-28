@@ -1732,7 +1732,7 @@ ul {
 .account .account-content p {
   color: #000;
   opacity: 0.7;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .account .account-content .profile-content span {
@@ -1764,8 +1764,8 @@ ul {
 
 .account .account-content .avatar-container {
   display: flex;
-  flex-direction: column; 
-  align-items: center; 
+  flex-direction: column;
+  align-items: center;
 }
 .account .account-content .uploadBtn {
   margin-top: 10px; /* Đảm bảo nó không dính vào avatar */
@@ -1837,7 +1837,7 @@ ul {
 }
 
 .order-cus input {
-  padding: 10px 40px 10px 10px; 
+  padding: 10px 40px 10px 10px;
   font-size: 20px;
   width: 100%;
   border: 1px solid #ccc;
@@ -1846,12 +1846,12 @@ ul {
   margin-top: 20px;
 }
 
-.order-cus input::placeholder{
+.order-cus input::placeholder {
   font-style: italic;
   margin-left: 5px;
 }
 
-.order-cus svg{
+.order-cus svg {
   position: absolute;
   right: 10px;
   color: gray;
@@ -1859,9 +1859,9 @@ ul {
 }
 
 .table-container {
-  max-height: 700px; 
-  overflow-y: auto; 
-  border: 1px solid #ccc; 
+  max-height: 700px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
 }
 
 .table {
@@ -1869,13 +1869,172 @@ ul {
   border-collapse: collapse;
 }
 
-.table th, .table td {
+.table th,
+.table td {
   padding: 10px;
   text-align: left;
 }
 
 /*Login*/
 
-.login-data img{
+.login,
+.register {
+  width: 700px;
+  margin-bottom: 20px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.login h1,
+.register h1 {
+  text-align: center;
+  color: #1e7379;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.login .login-data input,
+.register .register-data input {
+  padding: 15px;
+  width: 400px;
+  border-radius: 20px;
+  border: 1px solid #04a0ac;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.login .login-data input::placeholder,
+.register .register-data input::placeholder {
+  margin-left: 10px;
+  font-style: italic;
+  font-size: 20px;
+  color: #1e7379;
+}
+
+.login .loginBtn,
+.register .registerBtn {
+  color: #fff;
+  background-color: #1e7379;
+  border-radius: 20px;
+  font-family: "K2D", serif;
+  font-size: 15px;
+  padding: 10px;
+  width: 200px;
+  font-size: 20px;
+  display: block;
+  margin: 0 auto;
+}
+
+.login .loginBtn:hover,
+.register .registerBtn:hover {
+  color: #04a0ac !important;
+  background-color: #fff !important;
+  border: 1px solid #04a0ac;
+}
+
+.login .login-link a,
+.register .register-link a {
+  margin-top: 20px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #1e7379;
+}
+
+.register .register-link {
+  display: block;
+  margin: 0 auto;
+}
+
+.login .login-link a:hover,
+.register .register-link a:hover {
+  color: #abebef;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login .login-other,
+.register .register-other {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  padding-top: 15px;
+}
+
+.login .login-other button,
+.register .register-other button {
+  color: #04a0ac;
+  border: solid 1px #04a0ac;
+  border-radius: 50%;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.login .login-other button:hover,
+.register .register-other button:hover {
+  color: #abebef;
+  background-color: #1e7379;
+}
+
+.login .login-other a,
+.register .register-other a {
+  color: #04a0ac;
+}
+
+.login .login-other button:hover svg,
+.register .register-other button:hover svg {
+  color: #abebef;
+}
+
+
+/*Authen*/
+
+.auth {
+
+}
+
+.auth h1{
+  color: #1e7379;
+}
+
+.auth .auth-data input{
+  padding: 15px;
+  width: 500px;
+  font-size: 20px;
+  border-radius: 20px;
+  border: solid 1px #1e7379;
+  margin-bottom: 10px;
+}
+
+.auth .auth-data input::placeholder{
+  color: #1e7379;
+  font-style: italic;
+}
+
+.auth .auth-data .sendBtn{
+  color: #fff;
+  background-color: #1e7379;
+  border-radius: 20px;
+  font-family: "K2D", serif;
+  font-size: 15px;
+  padding: 5px;
+  width: 100px;
+  font-size: 20px;
+  display: block;
+  margin: 0 auto;
+}
+
+.auth .auth-data .sendBtn:hover{
+  color: #04a0ac !important;
+  background-color: #fff !important;
+  border: 1px solid #04a0ac;
+}
