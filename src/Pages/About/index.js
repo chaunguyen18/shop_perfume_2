@@ -1,7 +1,12 @@
 import React from "react";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 const About = () => {
   return (
+    <>
+    <Header />
+    
     <div className="container mt-3 mb-3 about">
       <div className="d-flex flex-column">
         <h1>Giới thiệu</h1>
@@ -95,6 +100,8 @@ const About = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

@@ -13,11 +13,14 @@ import { FaClockRotateLeft } from "react-icons/fa6";
 import { IoIosGift } from "react-icons/io";
 import { MdLocalAtm } from "react-icons/md";
 import { IoShieldCheckmark } from "react-icons/io5";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 
-const Home = () => {
+const Customer = () => {
   return (
     <>
+    <Header />
       <HomeSlider />
       <HomeBrand />
       <div className="container">
@@ -148,9 +151,9 @@ const Home = () => {
             </div>
           </div>
       </div>
-      
+      <Footer />
     </>
   );
 };
 
-export default Home;
+export default Customer;

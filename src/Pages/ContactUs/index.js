@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +25,9 @@ const ContactForm = () => {
   };
 
   return (
+    <>
+      <Header />
+      
     <div className="mt-3 mb-3 container contact">
       <div className="d-flex flex-column">
         <h1>Liên Hệ</h1>
@@ -117,6 +122,9 @@ const ContactForm = () => {
         </div>
       </div>
     </div>
+
+    <Footer />
+    </>
   );
 };
 

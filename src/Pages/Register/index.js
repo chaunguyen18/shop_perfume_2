@@ -1,11 +1,37 @@
 import { Button } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { MdSms } from "react-icons/md";
+import axios from "axios";
 
 const Register = () => {
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegister = async () => {
+    if (!username || !password) {
+      alert("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/register", { name: username, password });
+      
+      if (response.data.success) {
+        alert("Đăng ký thành công! Đang chuyển hướng...");
+        navigate("/"); 
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert("Lỗi hệ thống! Vui lòng thử lại sau.");
+    }
+  };
+
   return (
     <div className="container register mt-3 ">
       <div className="d-flex flex-column p-4 border rounded bg-white">
@@ -17,12 +43,14 @@ const Register = () => {
             className="rounded-circle mb-3"
             style={{ width: "120px", height: "120px" }}
           />
-          <input type="text" placeholder="Username" />
-          <input type="password" placeholder="Password" />
+          <input type="text" placeholder="Username" value={username}
+            onChange={(e) => setUsername(e.target.value)} />
+          <input type="password" placeholder="Password" value={password}
+            onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <Button className="registerBtn">Đăng ký</Button>
+        <Button className="registerBtn" onClick={handleRegister}>Đăng ký</Button>
         <div className="register-link d-flex">
-          <Link to="../login">Đã có tài khoản?</Link>
+          <Link to="../">Đã có tài khoản?</Link>
         </div>
         <div className="register-other">
                   <Button>

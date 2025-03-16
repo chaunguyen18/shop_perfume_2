@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="container">
         <div className="row d-flex">
           <div className="newsLetter mb-3 col-md-6">
-            <Link to="/">
+            <Link to="/customer-home">
               <h1>FADE</h1>
             </Link>
             <h4 className="text-white">Nơi mùi hương là bạn đồng hành</h4>

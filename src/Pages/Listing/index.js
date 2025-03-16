@@ -10,6 +10,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ProductItem from "../../Components/ProductItem";
 import Pagination from '@mui/material/Pagination';
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 const Listing = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,6 +26,9 @@ const Listing = () => {
   const [gridCols, setGridCols] = useState(3); // Mặc định 2 sản phẩm mỗi hàng
 
   return (
+    <>
+    <Header />
+    
     <div className="pd-listing-page">
       <div className="container">
         <div className="row">
@@ -91,6 +96,9 @@ const Listing = () => {
         </div>
       </div>
     </div>
+
+    <Footer />
+    </>
   );
 };
 

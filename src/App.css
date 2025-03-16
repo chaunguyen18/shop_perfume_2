@@ -11,6 +11,7 @@ body {
   font-family: "K2D", serif;
   font-size: 14px;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 @media (min-width: 1300px) {
@@ -1998,11 +1999,14 @@ ul {
 
 /*Authen*/
 
-.auth {
-
+.auth .auth-data {
+  border: 1px solid #cecece;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.auth h1{
+.auth .auth-data h1{
   color: #1e7379;
 }
 
@@ -2012,7 +2016,8 @@ ul {
   font-size: 20px;
   border-radius: 20px;
   border: solid 1px #1e7379;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 15px;
 }
 
 .auth .auth-data input::placeholder{
@@ -2037,4 +2042,21 @@ ul {
   color: #04a0ac !important;
   background-color: #fff !important;
   border: 1px solid #04a0ac;
+}
+
+.auth .auth-data a{
+  font-size: 20px;
+  text-decoration: none;
+  color:#1e7379;
+}
+
+.auth .auth-data a:hover{
+  text-decoration: underline;
+  cursor: pointer;
+  color: #abebef;
+
+}
+
+.auth .auth-data  svg{
+  margin-right: 10px;
 }

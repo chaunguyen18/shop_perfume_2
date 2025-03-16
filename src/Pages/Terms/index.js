@@ -1,12 +1,16 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import termsData from "./termsData";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 const Terms = () => {
   const { policy } = useParams();
   const term = termsData[policy] || "Chọn một chính sách để xem nội dung";
 
   return (
+    <div >
+    <Header />
     <div className="container term">
       <div className="row d-flex">
         <div className="col-md-4 mt-2 ">
@@ -37,6 +41,8 @@ const Terms = () => {
           )}
         </div>
       </div>
+    </div>
+    <Footer />
     </div>
   );
 };

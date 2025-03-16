@@ -8,6 +8,8 @@ import ProfileCustomer from "../../Components/ProfileCustomer";
 import ResetPwCustomer from "../../Components/ResetPwCustomer";
 import AddressCustomer from "../../Components/AddressCustomer";
 import OrderCustomer from "../../Components/OrderCustomer";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 
 const Account = () => {
@@ -79,6 +81,8 @@ const Account = () => {
   };
 
   return (
+    <>
+    <Header />
     <div className="container account mb-3 mt-3">
       <div className="row">
         
@@ -127,6 +131,8 @@ const Account = () => {
         </div>
       </div>
     </div>
+<Footer />
+    </>
   );
 };
 

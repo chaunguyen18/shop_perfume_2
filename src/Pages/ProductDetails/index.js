@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import { FaRegHeart } from "react-icons/fa6";
 import TabContentPD from "../../Components/TabContentPD";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 const ProductDetails = (props) => {
   const [activeSize, setActiveSize] = useState(null);
@@ -17,6 +19,7 @@ const ProductDetails = (props) => {
 
   return (
     <div>
+      <Header />
       <div className="product-detail">
         <div className="container">
           <div className="row mb-2 mt-3">
@@ -124,6 +127,8 @@ const ProductDetails = (props) => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

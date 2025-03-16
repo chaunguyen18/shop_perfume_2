@@ -47,7 +47,7 @@ const Navigation = () => {
             <div className="col-sm-9 navPart2 d-flex ml-auto">
               <ul className="list list-inline w-100">
                 <li className="list-inline-item">
-                  <Link to="/">Trang chủ</Link>
+                  <Link to="/customer-home">Trang chủ</Link>
                 </li>
                 <li className="list-inline-item">
                   <Link to="/cat/:id">
