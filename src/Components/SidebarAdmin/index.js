@@ -5,7 +5,7 @@ import { FaUsers } from "react-icons/fa";
 import { FaBox } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa";
 import { GrSort } from "react-icons/gr";
-import { BiSolidReport } from "react-icons/bi";
+import { FaChartSimple } from "react-icons/fa6";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GrStorage } from "react-icons/gr";
 import { FaBars } from "react-icons/fa";
@@ -43,13 +43,13 @@ const SidebarAdmin = () => {
                 <GrStorage className='mx-3 mb-1'/>Quản lý kho hàng
               </div>
               <div className='sidebar-admin-content-action'>
-                <BiSolidReport className='mx-3 mb-1'/>Thống kê
+                <FaChartSimple className='mx-3 mb-1'/>Thống kê
               </div>
               <div className='sidebar-admin-content-action'>
                 <TbReportAnalytics className='mx-3 mb-1'/>Báo cáo
               </div>
             </div>
-            <div className='d-flex justify-content-center align-items-center'>
+            <div className='sidebar-admin-footer'>
               <h5><FaCopyright className='mx-2 mb-1'/>Bản quyền thuộc về FADE Perfume 2025</h5>
             </div>
         </div>

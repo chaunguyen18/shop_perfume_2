@@ -2071,6 +2071,9 @@ ul {
   color: #abebef;
   font-size: 23px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .sidebar-admin h1{
@@ -2088,6 +2091,15 @@ ul {
   color: #fff;
   background-color: #124f53;
   cursor: pointer;
+}
+
+.sidebar-admin-content{
+  flex-grow: 1;
+}
+
+.sidebar-admin-footer {
+  text-align: center;
+  padding: 10px 0;
 }
 
 .admin-content{
