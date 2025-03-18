@@ -1,23 +1,19 @@
 import React from 'react'
-import HeaderAdmin from '../../Components/HeaderAdmin'
-import FooterAdmin from '../../Components/FooterAdmin'
 import SidebarAdmin from '../../Components/SidebarAdmin'
 
 const Admin = () => {
   return (
     <div>
-      <HeaderAdmin />
       <div className='container-fluid'>
-        <div className='row'>
-          <div className='col-md-5'>
+        <div className='row admin'>
+          <div className='col-md-3'>
             <SidebarAdmin />
           </div>
-          <div className='col-md-7 admin-content'>
-            Admin content
+          <div className='col-md-9 admin-content'>
+            <h1>Chào mừng đến với trang admin</h1>
           </div>
         </div>
       </div>
-      <FooterAdmin />
     </div>
   )
 }

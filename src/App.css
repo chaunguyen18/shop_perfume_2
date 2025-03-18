@@ -2060,3 +2060,36 @@ ul {
 .auth .auth-data  svg{
   margin-right: 10px;
 }
+
+/* --------------- ADMIN ----------------- */
+
+/* Sidebar Admin*/
+
+.sidebar-admin{
+  background-color: #1e7379;
+  min-height: 100vh;
+  color: #abebef;
+  font-size: 23px;
+  padding: 20px;
+}
+
+.sidebar-admin h1{
+  text-align: center;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+.sidebar-admin-content-action{
+  padding: 20px;
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar-admin-content-action:hover{
+  color: #fff;
+  background-color: #124f53;
+  cursor: pointer;
+}
+
+.admin-content{
+  padding: 10px;
+}
