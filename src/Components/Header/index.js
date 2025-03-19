@@ -37,9 +37,11 @@ const Header = () => {
                 <div className="ml-auto cartTab d-flex align-items-center">
                   <span className="price">$50</span>
                   <div className="position-relative ml-2">
+                  <Link to="/cart">
                     <Button className="circle">
                       <FaCartShopping />
                     </Button>
+                    </Link>
                     <span className="count align-items-center">1</span>
                   </div>
                 </div>

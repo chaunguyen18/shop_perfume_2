@@ -1,5 +1,4 @@
-import React from 'react'
-import Logo from '../../assets/images/logo.png'
+import React, { useState } from 'react'
 import { FaUserAlt } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { FaBox } from "react-icons/fa";
@@ -11,18 +10,28 @@ import { GrStorage } from "react-icons/gr";
 import { FaBars } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { FaCopyright } from "react-icons/fa6";
+import { IoLogOut } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 const SidebarAdmin = () => {
+
+  const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate();
+
+  const handleLogout =() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    navigate('/');
+
+  }
+
   return (
-    <div>
-        <div className='sidebar-admin'>
-            <h1>Quản lý</h1>
-            <FaBars />
-            <IoClose />
-            {/* <img src={Logo} 
-            alt="login-ava"
-            className="img-fluid rounded-circle mb-3"
-            style={{ maxWidth: "120px", height: "auto" }}/> */}
+    <div className='sidebar-admin'>
+      {isOpen ? (
+        <div className=''>
+            <IoClose className='icon-close' onClick={() => setIsOpen(false)}/>
+            <h1 className='sidebar-title'>Quản lý</h1>            
             <div className='row sidebar-admin-content'>
               <div className='sidebar-admin-content-action'>
                 <FaUserAlt className='mx-3 mb-1'/>Quản lý tài khoản
@@ -48,11 +57,17 @@ const SidebarAdmin = () => {
               <div className='sidebar-admin-content-action'>
                 <TbReportAnalytics className='mx-3 mb-1'/>Báo cáo
               </div>
+              <div className='sidebar-admin-content-action' onClick={handleLogout}>
+                <IoLogOut className='mx-3 mb-1'/>Đăng xuất
+              </div>
             </div>
             <div className='sidebar-admin-footer'>
               <h5><FaCopyright className='mx-2 mb-1'/>Bản quyền thuộc về FADE Perfume 2025</h5>
             </div>
         </div>
+      ) : (
+        <FaBars className='icon-menu' onClick={() => setIsOpen(true)}/>
+      )}
     </div>
   )
 }

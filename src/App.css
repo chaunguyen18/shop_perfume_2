@@ -24,6 +24,8 @@ body {
   }
 }
 
+/* --------------- CUSTOMER ----------------- */
+
 .bg-black {
   background: #04a0ac !important;
 }
@@ -168,6 +170,38 @@ body {
 }
 
 /*CSS cho SidebarNav*/
+
+.header-customer .icon-close {
+  font-size: 30px;
+  position: absolute;
+  top: 70px;
+  right: 30px;
+  cursor: pointer;
+  color: #abebef;
+  transition: all 0.3s ease-in-out;
+}
+
+.header-customer .icon-close:hover {
+  color: #fff;
+}
+
+.header-customer .icon-menu {
+  font-size: 30px;
+  position: absolute;
+  top: 60px;
+  right: 30px;
+  cursor: pointer;
+  color: #1e7379;
+  transition: all 0.3s ease-in-out;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.header-customer .icon-menu:hover {
+  box-shadow: 6px 6px 15px #abebef;
+}
 
 .navPart1 {
   position: relative;
@@ -1996,7 +2030,6 @@ ul {
   color: #abebef;
 }
 
-
 /*Authen*/
 
 .auth .auth-data {
@@ -2006,11 +2039,11 @@ ul {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.auth .auth-data h1{
+.auth .auth-data h1 {
   color: #1e7379;
 }
 
-.auth .auth-data input{
+.auth .auth-data input {
   padding: 15px;
   width: 500px;
   font-size: 20px;
@@ -2020,12 +2053,12 @@ ul {
   margin-top: 15px;
 }
 
-.auth .auth-data input::placeholder{
+.auth .auth-data input::placeholder {
   color: #1e7379;
   font-style: italic;
 }
 
-.auth .auth-data .sendBtn{
+.auth .auth-data .sendBtn {
   color: #fff;
   background-color: #1e7379;
   border-radius: 20px;
@@ -2038,34 +2071,129 @@ ul {
   margin: 0 auto;
 }
 
-.auth .auth-data .sendBtn:hover{
+.auth .auth-data .sendBtn:hover {
   color: #04a0ac !important;
   background-color: #fff !important;
   border: 1px solid #04a0ac;
 }
 
-.auth .auth-data a{
+.auth .auth-data a {
   font-size: 20px;
   text-decoration: none;
-  color:#1e7379;
+  color: #1e7379;
 }
 
-.auth .auth-data a:hover{
+.auth .auth-data a:hover {
   text-decoration: underline;
   cursor: pointer;
   color: #abebef;
-
 }
 
-.auth .auth-data  svg{
+.auth .auth-data svg {
   margin-right: 10px;
 }
+
+/* Cart */
+
+.cart {
+  font-size: 20px;
+}
+
+.cart .cart-header h1{
+  color: #1e7379;
+}
+
+.cart .cart-infor h3 {
+  color: #1e7379;
+}
+
+.cart .cart-item{
+  color: #1e7379;
+  border-bottom: solid 1px #04a0ac;
+  text-transform: uppercase;
+  padding: 5px;
+  font-weight: 600;
+}
+
+.cart .cart-address,
+.cart .cart-payment,
+.cart .cart-checkout {
+  border: solid 1px #04a0ac;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 25px;
+}
+
+.cart-content .cart-item .cart-item-infor{
+  color: #1e7379;
+}
+
+.btnCheckout{
+  border: solid 1px #04a0ac;
+  padding: 10px;
+  width: 100%;
+  background-color: #04a0ac;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s ease-in-out;
+  text-transform: uppercase;
+}
+
+.btnDeleteCartItem{
+  cursor: pointer;
+}
+
+.btnCheckout:hover,
+.cart-infor .cart-sale .btnSale:hover {
+  background-color: #1e7379;
+  color: #abebef;
+}
+
+.cart .cart-payment .form-check-input:checked {
+  background-color: #04a0ac !important;
+  border-color: #04a0ac !important;
+  box-shadow: 0 0 0 0.2rem rgba(4, 160, 172, 0.25) !important; /* Hiệu ứng viền */
+}
+
+.cart-address h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-infor .cart-sale h3{
+  color: #1e7379;
+}
+
+.cart-infor .cart-sale input{
+  margin-top: 5px;
+  padding: 15px;
+  width: 100%;
+  color: #000;
+  border: 1px solid #04a0ac;
+}
+
+.cart-infor .cart-sale .btnSale{
+  border: solid 1px #04a0ac;
+  padding: 10px;
+  background-color: #04a0ac;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 0;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
 
 /* --------------- ADMIN ----------------- */
 
 /* Sidebar Admin*/
 
-.sidebar-admin{
+.sidebar-admin {
   background-color: #1e7379;
   min-height: 100vh;
   color: #abebef;
@@ -2076,24 +2204,53 @@ ul {
   justify-content: space-between;
 }
 
-.sidebar-admin h1{
+.sidebar-admin .icon-close {
+  font-size: 30px;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  color: #abebef;
+}
+
+.sidebar-admin h1 {
   text-align: center;
   padding: 10px;
   text-transform: uppercase;
+  margin-top: 30px;
 }
 
-.sidebar-admin-content-action{
+.sidebar-admin .icon-menu {
+  font-size: 40px;
+  color: #abebef;
+  position: fixed;
+  top: 20px;
+  left: 30px;
+  cursor: pointer;
+  border: solid 1px #1e7379;
+  padding: 5px;
+  border-radius: 50%;
+  background-color: #1e7379;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-admin .icon-menu:hover {
+  cursor: pointer;
+  box-shadow: 6px 6px 15px rgba(171, 235, 239, 0.8);
+}
+
+.sidebar-admin-content-action {
   padding: 20px;
   transition: all 0.2s ease-in-out;
 }
 
-.sidebar-admin-content-action:hover{
+.sidebar-admin-content-action:hover {
   color: #fff;
   background-color: #124f53;
   cursor: pointer;
 }
 
-.sidebar-admin-content{
+.sidebar-admin-content {
   flex-grow: 1;
 }
 
@@ -2102,6 +2259,6 @@ ul {
   padding: 10px 0;
 }
 
-.admin-content{
+.admin-content {
   padding: 10px;
 }
