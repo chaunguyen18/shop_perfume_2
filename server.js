@@ -60,10 +60,12 @@ app.get("/api/product", (req, res) => {
       sanpham.LSP_MA, 
       sanpham.SP_DIENGIAI, 
       MIN(sanpham.SP_DIENGIAI) AS image, 
-      dongia.DG_GIANIEMYET 
+      dongia.DG_GIANIEMYET,
+      brand.BRAND_TEN
     FROM sanpham
     LEFT JOIN hinhanh ON sanpham.SP_MA = hinhanh.SP_MA
     LEFT JOIN dongia ON sanpham.SP_MA = dongia.SP_MA
+    LEFT JOIN brand ON sanpham.BRAND_ID = brand.BRAND_ID
     GROUP BY sanpham.SP_MA
   `;
 
@@ -75,6 +77,7 @@ app.get("/api/product", (req, res) => {
     }
   });
 });
+
 
 // CHẠY SERVER
 

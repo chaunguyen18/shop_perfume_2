@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import HomeSlider from "../../Components/HomeSlider";
 import { FaAngleRight } from "react-icons/fa6";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -16,11 +16,10 @@ import { IoShieldCheckmark } from "react-icons/io5";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 
-
 const Customer = () => {
   return (
     <>
-    <Header />
+      <Header />
       <HomeSlider />
       <HomeBrand />
       <div className="container">
@@ -41,18 +40,9 @@ const Customer = () => {
             </Button>
           </div>
           <div className="product_row w-100 mt-4">
-            <Swiper
-              slidesPerView={5}
-              spaceBetween={30}
-              navigation={true}
-              slidesPerGroup={3}
-              modules={[Navigation]}
-              className="mySwiper"
-            >
-              <SwiperSlide>
-                <ProductItem />
-              </SwiperSlide>
-            </Swiper>
+            <div className="productRow2 w-100 mt-4 d-flex">
+              <ProductItem />
+            </div>
           </div>
           <div className="d-flex align-items-center justify-content-between w-100 mt-4 mb-4">
             <div className="info">
@@ -103,37 +93,36 @@ const Customer = () => {
               </div>
             </div>
           </div>
-          
         </div>
 
         <div className="homeTerms mt-3 p-4">
-            <div className="row container justify-content-between w-100">
-              <div className="col d-flex align-items-center">
-                <span>
-                  <FaClockRotateLeft />
-                </span>
-                <span>Đổi trả trong 24h</span>
-              </div>
-              <div className="col d-flex align-items-center">
-                <span>
-                  <IoShieldCheckmark />
-                </span>
-                <span>100% Chính hãng</span>
-              </div>
-              <div className="col d-flex align-items-center">
-                <span>
-                  <MdLocalAtm />
-                </span>
-                <span>Giao dịch an toàn</span>
-              </div>
-              <div className="col d-flex align-items-center">
-                <span>
-                  <IoIosGift />
-                </span>
-                <span>Ưu đãi độc quyền</span>
-              </div>
+          <div className="row container justify-content-between w-100">
+            <div className="col d-flex align-items-center">
+              <span>
+                <FaClockRotateLeft />
+              </span>
+              <span>Đổi trả trong 24h</span>
+            </div>
+            <div className="col d-flex align-items-center">
+              <span>
+                <IoShieldCheckmark />
+              </span>
+              <span>100% Chính hãng</span>
+            </div>
+            <div className="col d-flex align-items-center">
+              <span>
+                <MdLocalAtm />
+              </span>
+              <span>Giao dịch an toàn</span>
+            </div>
+            <div className="col d-flex align-items-center">
+              <span>
+                <IoIosGift />
+              </span>
+              <span>Ưu đãi độc quyền</span>
             </div>
           </div>
+        </div>
       </div>
       <Footer />
     </>

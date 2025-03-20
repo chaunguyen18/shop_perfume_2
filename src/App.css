@@ -24,6 +24,9 @@ body {
   }
 }
 
+
+
+
 /* --------------- CUSTOMER ----------------- */
 
 .bg-black {
@@ -675,6 +678,17 @@ span {
 
 /*CSS cho HomeProduct*/
 
+.product-list {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép xuống hàng nếu không đủ chỗ */
+  gap: 16px; /* Khoảng cách giữa các sản phẩm */
+  justify-content: center; /* Căn giữa */
+}
+.productItem {
+  width: calc(25% - 16px); /* Hiển thị 4 sản phẩm trên một hàng */
+}
+
+
 .homeProduct {
   padding: 25px 25px;
   width: 100%;
@@ -779,8 +793,14 @@ span {
   font-weight: 600;
 }
 
-.product-detail .oldPrice,
-.productItem .oldPrice {
+.productItem .oldPrice{
+  text-decoration: line-through;
+  color: #ccc;
+  font-size: 15px;
+}
+
+.product-detail .oldPrice
+ {
   text-decoration: line-through;
   color: #ccc;
   font-size: 20px;
@@ -1238,18 +1258,6 @@ ul {
   margin-left: 5px;
 }
 
-.pd-listing {
-  display: grid;
-  gap: 20px;
-}
-
-.grid-cols-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.grid-cols-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
 
 .pd-sidebar .sticky {
   position: sticky;
