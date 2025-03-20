@@ -84,9 +84,7 @@ const Listing = () => {
 
             <div className={`pd-listing grid-cols-${gridCols}`}>
               <ProductItem />
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
+
             </div>
 
             <div className="d-flex align-items-center justify-content-center mt-4 mb-4">

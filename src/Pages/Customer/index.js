@@ -52,18 +52,6 @@ const Customer = () => {
               <SwiperSlide>
                 <ProductItem />
               </SwiperSlide>
-              <SwiperSlide>
-                <ProductItem />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductItem />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductItem />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductItem />
-              </SwiperSlide>
             </Swiper>
           </div>
           <div className="d-flex align-items-center justify-content-between w-100 mt-4 mb-4">
@@ -82,10 +70,6 @@ const Customer = () => {
             </Button>
           </div>
           <div className="productRow2 w-100 mt-4 d-flex">
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
             <ProductItem />
           </div>
           <div className="homeNews mt-3">

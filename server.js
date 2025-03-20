@@ -51,6 +51,31 @@ app.post("/register", (req, res) => {
   });
 });
 
+
+app.get("/api/product", (req, res) => {
+  const sql = `
+    SELECT 
+      sanpham.SP_MA, 
+      sanpham.SP_TEN, 
+      sanpham.LSP_MA, 
+      sanpham.SP_DIENGIAI, 
+      MIN(sanpham.SP_DIENGIAI) AS image, 
+      dongia.DG_GIANIEMYET 
+    FROM sanpham
+    LEFT JOIN hinhanh ON sanpham.SP_MA = hinhanh.SP_MA
+    LEFT JOIN dongia ON sanpham.SP_MA = dongia.SP_MA
+    GROUP BY sanpham.SP_MA
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 // CHẠY SERVER
 
 app.listen(5000, () => {
