@@ -14,10 +14,11 @@ import axios from "axios";
 const ProductModal = ({ open, closeProductModal, productId }) => {
   const [product, setProduct] = useState(null);
 
+
   useEffect(() => {
     if (productId && open) {
       axios
-        .get(`/api/product/${productId}`)
+        .get(`http://localhost:5000/api/product/${productId}`)
         .then((response) => {
           setProduct(response.data);
         })
@@ -25,7 +26,8 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
           console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
         });
     }
-  }, [productId, open]);
+  }, [productId, open]); // Thêm `productId` vào dependency
+  
 
   return (
     <Dialog open={open} className="productModal" onClose={closeProductModal}>
@@ -54,12 +56,12 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
           <hr />
           <div className="row mt-2 productDetailModal">
             <div className="col-md-6">
-              <ProductZoom image={product.image} />
+              <ProductZoom />
             </div>
             <div className="col-md-6 product-detail-info">
               <div className="d-flex mb-2 align-items-center">
-                <span className="old-Price">$20</span>
-                <span className="new-Price">${product.DG_GIANIEMYET}</span>
+                <span className="old-Price">{product.DG_GIANIEMYET.toLocaleString()}₫</span>
+                <span className="new-Price">{(product.DG_GIANIEMYET * 0.5).toLocaleString()}đ</span>
               </div>
               <span className="badge">Còn hàng</span>
               <p className="mt-3 mb-3">{product.SP_DIENGIAI}</p>

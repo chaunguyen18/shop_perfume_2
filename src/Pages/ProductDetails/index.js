@@ -15,7 +15,7 @@ import axios from "axios";
 
 const ProductDetails = (props) => {
 
-  const { id } = useParams(); // Lấy productId từ URL
+  const { id } = useParams(); 
   const [product, setProduct] = useState(null);
 
   const [activeSize, setActiveSize] = useState(null);
@@ -44,7 +44,7 @@ const ProductDetails = (props) => {
         <div className="container">
           <div className="row mb-2 mt-3">
             <div className="col-md-6 mb-3">
-              <ProductZoom />
+              <ProductZoom productId={id}/>
             </div>
             <div className="col-md-6 p-3 pd-part2">
               <div className="d-flex align-items-center">

@@ -23,20 +23,20 @@ const ProductItem = () => {
       });
   }, []);
 
-  const viewProductModal = (e) => {
-    e.stopPropagation();
-    setIsOpenProductModal(true);
-  };
+
 
   const closeProductModal = () => {
     setIsOpenProductModal(false);
   };
 
-  // onClick={handleProductClick}
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
-  // const handleProductClick = () => {
-  //   navigate("/product/:id");
-  // };
+  const viewProductModal = (e, productId) => {
+    e.stopPropagation();
+    setSelectedProductId(productId);
+    setIsOpenProductModal(true);
+  };
+  
 
   return (
     <div className="product-list">
@@ -54,7 +54,7 @@ const ProductItem = () => {
             />
             <span className="badge">-50%</span>
             <div className="action">
-              <Button onClick={viewProductModal}>
+              <Button onClick={(e) => viewProductModal(e, product.SP_MA)}>
                 <AiOutlineFullscreen />
               </Button>
               <Button>
@@ -82,6 +82,7 @@ const ProductItem = () => {
         <ProductModal
           open={isOpenProductModal}
           closeProductModal={closeProductModal}
+          productId={selectedProductId}
         />
       )}
     </div>
