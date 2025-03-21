@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Rating from "@mui/material/Rating";
 import ProductZoom from "../../Components/ProductZoom";
 import { FaCartShopping } from "react-icons/fa6";
@@ -10,12 +10,32 @@ import { FaRegHeart } from "react-icons/fa6";
 import TabContentPD from "../../Components/TabContentPD";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const ProductDetails = (props) => {
+
+  const { id } = useParams(); // Lấy productId từ URL
+  const [product, setProduct] = useState(null);
+
   const [activeSize, setActiveSize] = useState(null);
   const isActive = (index) => {
     setActiveSize(index);
   };
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/product/${id}`);
+        setProduct(res.data);
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  if (!product) return <p>Đang tải...</p>;
 
   return (
     <div>
@@ -28,7 +48,7 @@ const ProductDetails = (props) => {
             </div>
             <div className="col-md-6 p-3 pd-part2">
               <div className="d-flex align-items-center">
-                <h2 className="text-capitalize">Ten sp</h2>
+                <h2 className="text-capitalize">{product.SP_TEN}</h2>
                 <span className="badge2 ms-4 mb-3">Còn hàng</span>
               </div>
 
@@ -36,7 +56,7 @@ const ProductDetails = (props) => {
                 <li className="list-inline-item">
                   <div className="d-flex align-items-center">
                     <span className="text-dark my-2">Brands:</span>
-                    <span className="ms-2">Welch's</span>
+                    <span className="ms-2">{product.BRAND_TEN}</span>
                   </div>
                 </li>
                 <li className="list-inline-item">
@@ -53,15 +73,15 @@ const ProductDetails = (props) => {
                 <li className="list-inline-item">
                   <div className="d-flex align-items-center ms-2">
                     <span className="ms-2 text-dark">Mã:</span>
-                    <span className="ms-2">kfhdskfk</span>
+                    <span className="ms-2">{product.SP_MA}</span>
                   </div>
                 </li>
               </ul>
 
               <div className="d-flex ">
                 <span className="text-dark">Giá:</span>
-                <span className="newPrice text-danger ms-2">$20</span>
-                <span className="oldPrice ms-2 me-1">$10</span>
+                <span className="newPrice text-danger ms-2">{(product.DG_GIANIEMYET * 0.5).toLocaleString()}đ</span>
+                <span className="oldPrice ms-2 me-1">{product.DG_GIANIEMYET.toLocaleString()}₫</span>
                 <span className="badge1 ms-3 pd-sale-price">-50%</span>
               </div>
 

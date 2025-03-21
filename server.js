@@ -8,9 +8,9 @@ app.use(express.json());
 
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",   
-  password: "",   
-  database: "db_perfumeshop", 
+  user: "root",
+  password: "",
+  database: "db_perfumeshop",
 });
 
 // API ĐĂNG NHẬP
@@ -18,7 +18,7 @@ const db = mysql.createConnection({
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const sql = "SELECT * FROM login WHERE NAME = ? AND PASSWORD = ?";
-  
+
   db.query(sql, [username, password], (err, result) => {
     if (err) return res.json({ success: false, message: "Lỗi server!" });
 
@@ -38,19 +38,22 @@ app.post("/register", (req, res) => {
   const role = "customer";
 
   if (!name || !password) {
-    return res.status(400).json({ success: false, message: "Vui lòng nhập đầy đủ thông tin!" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Vui lòng nhập đầy đủ thông tin!" });
   }
 
   const sql = "INSERT INTO login (NAME, PASSWORD, role) VALUES (?, ?, ?)";
   db.query(sql, [name, password, role], (err, result) => {
     if (err) {
       console.error("Lỗi đăng ký:", err);
-      return res.status(500).json({ success: false, message: "Đăng ký thất bại!" });
+      return res
+        .status(500)
+        .json({ success: false, message: "Đăng ký thất bại!" });
     }
     res.status(201).json({ success: true, message: "Đăng ký thành công!" });
   });
 });
-
 
 app.get("/api/product", (req, res) => {
   const sql = `
@@ -75,6 +78,32 @@ app.get("/api/product", (req, res) => {
     } else {
       res.json(results);
     }
+  });
+});
+
+app.get("/api/product/:id", async (req, res) => {
+  const productId = req.params.id;
+  const query = `SELECT 
+      sanpham.SP_MA, sanpham.SP_TEN, sanpham.LSP_MA, sanpham.SP_DIENGIAI, 
+      dongia.DG_GIANIEMYET, brand.BRAND_TEN, 
+      GROUP_CONCAT(hinhanh.HA_PATH ORDER BY hinhanh.HA_MA SEPARATOR '|') AS HA_PATHS 
+      FROM sanpham 
+      LEFT JOIN hinhanh ON sanpham.SP_MA = hinhanh.SP_MA 
+      LEFT JOIN dongia ON sanpham.SP_MA = dongia.SP_MA 
+      LEFT JOIN brand ON sanpham.BRAND_ID = brand.BRAND_ID 
+      WHERE sanpham.SP_MA = ? 
+      GROUP BY sanpham.SP_MA`;
+
+  db.query(query, [productId], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      if (result.length > 0) {
+          let product = result[0];
+          product.HA_PATHS = product.HA_PATHS ? product.HA_PATHS.split("|") : []; 
+          res.json(product);
+      } else {
+          res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+      }
   });
 });
 

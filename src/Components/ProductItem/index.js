@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProductItem = () => {
-  const navigate = useNavigate(); // Hook điều hướng
+  const navigate = useNavigate(); 
   const [isOpenProductModal, setIsOpenProductModal] = useState(false);
   const [products, setProducts] = useState([]);
 

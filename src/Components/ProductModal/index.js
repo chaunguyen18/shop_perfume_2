@@ -14,7 +14,6 @@ import axios from "axios";
 const ProductModal = ({ open, closeProductModal, productId }) => {
   const [product, setProduct] = useState(null);
 
-  // Gọi API để lấy thông tin sản phẩm theo productId
   useEffect(() => {
     if (productId && open) {
       axios
