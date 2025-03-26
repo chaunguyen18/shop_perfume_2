@@ -68,10 +68,10 @@ const ProductItem = () => {
             <span className="text-success block">Còn hàng</span>
             <div className="d-flex">
               <span className="oldPrice">
-                {(product.DG_GIANIEMYET * 0.5).toLocaleString()}đ
+              {product.DG_GIANIEMYET.toLocaleString()}đ
               </span>
               <span className="newPrice text-danger">
-                {product.DG_GIANIEMYET.toLocaleString()}đ
+              {(product.DG_GIANIEMYET * 0.5).toLocaleString()}đ
               </span>
             </div>
           </div>

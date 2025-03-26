@@ -1,13 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import InnerImageZoom from "react-inner-image-zoom";
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const ProductZoom = () => {
-
   const [product, setProduct] = useState(null);
-  const { id } = useParams(); 
+  const { id } = useParams();
+
+  const zoomSliderBig = useRef();
+  const zoomSlider = useRef();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,114 +23,59 @@ const ProductZoom = () => {
     fetchProduct();
   }, [id]);
 
+  const goto = (index) => {
+    if (zoomSliderBig.current) {
+      zoomSliderBig.current.slickGoTo(index);
+    }
+  };
+
+  useEffect(() => {
+    window.zoomSliderBig = zoomSliderBig;
+  }, []);
+
   if (!product) return <p>Đang tải...</p>;
 
-    useEffect(() => {
-        window.zoomSliderBig = zoomSliderBig; 
-      }, []);
-    
-      var settings = {
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        fade: false,
-        arrows: true,
-      };
-    
-      var settings2 = {
-        dots: false,
-        infinite: false,
-        speed: 700,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        fade: false,
-        arrows: false,
-      };
-      
-    
-      const zoomSliderBig = useRef();
-      const zoomSlider = useRef();
-    
-      const goto = (index) => {
-        if (zoomSliderBig.current) {
-          zoomSliderBig.current.slickGoTo(index);
-        }
-      };
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    fade: false,
+    arrows: true,
+  };
+
+  const settings2 = {
+    dots: false,
+    infinite: false,
+    speed: 700,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    fade: false,
+    arrows: false,
+  };
 
   return (
-    <div className='productZoom'>
-                  <div className="productZoom">
-          <Slider {...settings2} ref={(slider) => (zoomSliderBig.current = slider)} >
+    <div className="productZoom">
+      <div className="productZoom">
+        <Slider {...settings2} ref={zoomSliderBig}>
+          {product.HA_PATHS.map((img, index) => (
+            <div className="item" key={index}>
+              <InnerImageZoom zoomType="hover" zoomScale={1} src={img} className="w-100" alt={`product-${index}`} />
+            </div>
+          ))}
+        </Slider>
+      </div>
 
-              <div className="item">
-                <InnerImageZoom
-                  zoomType="hover"
-                  zoomScale={1}
-                  src={product.HA_PATHS[0]}
-                  className="w-100"
-                  alt="product1"
-                />
-              </div>
-              <div className="item">
-                <InnerImageZoom
-                  zoomType="hover"
-                  zoomScale={1}
-                  src={product.HA_PATHS[1]}
-                  className="w-100"
-                  alt="product1"
-                />
-              </div>
-              <div className="item">
-                <InnerImageZoom
-                  zoomType="hover"
-                  zoomScale={1}
-                  src={product.HA_PATHS[2]}
-                  className="w-100"
-                  alt="product1"
-                />
-              </div>
-            </Slider>
+      <Slider {...settings} className="zoomSlider" ref={zoomSlider}>
+        {product.HA_PATHS.map((img, index) => (
+          <div className="item" key={index}>
+            <img src={img} className="w-100" alt={`product-${index}`} onClick={() => goto(index)} />
           </div>
-          <Slider {...settings} className="zoomSlider" ref={zoomSlider}>
-            <div className="item">
-              <img
-                src={product.HA_PATHS[0]}
-                className="w-100"
-                alt="product1"
-                onClick={() => {
-                  console.log("Đã nhấn vào ảnh nhỏ, index:", 0);
-                  goto(0);
-                }}
-              />
-            </div>
-            <div className="item">
-              <img
-                src={product.HA_PATHS[1]}
-                className="w-100"
-                alt="product1"
-                onClick={() => {
-                  console.log("Đã nhấn vào ảnh nhỏ, index:", 1);
-                  goto(1);
-                }}
-              />
-            </div>
-            <div className="item">
-              <img
-                src={product.HA_PATHS[2]}
-                className="w-100"
-                alt="product1"
-                onClick={() => {
-                  console.log("Đã nhấn vào ảnh nhỏ, index:", 2);
-                  goto(2);
-                }}
-              />
-            </div>
-          </Slider>
-        </div>
+        ))}
+      </Slider>
+    </div>
+  );
+};
 
-  )
-}
-
-export default ProductZoom
+export default ProductZoom;

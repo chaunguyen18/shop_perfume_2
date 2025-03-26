@@ -58,7 +58,7 @@ const Navigation = () => {
                     <Link to="/customer-home">Trang chủ</Link>
                   </li>
                   <li className="list-inline-item">
-                    <Link to="/cat/:id">
+                    <Link to="/cat">
                       Sản phẩm
                       <span className="product-angledown"><FaAngleDown /></span>
                     </Link>

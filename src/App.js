@@ -14,9 +14,19 @@ import Authentication from "./Pages/Authentication";
 import Customer from "./Pages/Customer";
 import Admin from "./Pages/Admin";
 import Cart from "./Pages/Cart";
+import { CartProvider } from "./Components/CartContext/CartContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   return (
+
+    <CartProvider>
+
+<ToastContainer />
+
+
     <BrowserRouter>
       
       <Routes>
@@ -31,7 +41,7 @@ function App() {
         <Route path="/admin-home" element={<Admin />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/cat/:id" element={<Listing />} />
+        <Route path="/cat" element={<Listing />} />
         <Route path="/authentication" element={<Authentication />} />
         <Route path="/product/:id" element={<ProductDetails/>} />
       </Routes>
@@ -39,6 +49,8 @@ function App() {
       
 
     </BrowserRouter>
+
+    </CartProvider>
   );
 }
 

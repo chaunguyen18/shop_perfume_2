@@ -24,9 +24,6 @@ body {
   }
 }
 
-
-
-
 /* --------------- CUSTOMER ----------------- */
 
 .bg-black {
@@ -688,7 +685,6 @@ span {
   width: calc(25% - 16px); /* Hiển thị 4 sản phẩm trên một hàng */
 }
 
-
 .homeProduct {
   padding: 25px 25px;
   width: 100%;
@@ -793,14 +789,13 @@ span {
   font-weight: 600;
 }
 
-.productItem .oldPrice{
+.productItem .oldPrice {
   text-decoration: line-through;
   color: #ccc;
   font-size: 15px;
 }
 
-.product-detail .oldPrice
- {
+.product-detail .oldPrice {
   text-decoration: line-through;
   color: #ccc;
   font-size: 20px;
@@ -1257,7 +1252,6 @@ ul {
   color: #1e7379;
   margin-left: 5px;
 }
-
 
 .pd-sidebar .sticky {
   position: sticky;
@@ -2107,7 +2101,7 @@ ul {
   font-size: 20px;
 }
 
-.cart .cart-header h1{
+.cart .cart-header h1 {
   color: #1e7379;
 }
 
@@ -2115,7 +2109,7 @@ ul {
   color: #1e7379;
 }
 
-.cart .cart-item{
+.cart .cart-item {
   color: #1e7379;
   border-bottom: solid 1px #04a0ac;
   text-transform: uppercase;
@@ -2132,11 +2126,11 @@ ul {
   padding: 25px;
 }
 
-.cart-content .cart-item .cart-item-infor{
+.cart-content .cart-item .cart-item-infor {
   color: #1e7379;
 }
 
-.btnCheckout{
+.btnCheckout {
   border: solid 1px #04a0ac;
   padding: 10px;
   width: 100%;
@@ -2150,7 +2144,7 @@ ul {
   text-transform: uppercase;
 }
 
-.btnDeleteCartItem{
+.btnDeleteCartItem {
   cursor: pointer;
 }
 
@@ -2172,11 +2166,11 @@ ul {
   align-items: center;
 }
 
-.cart-infor .cart-sale h3{
+.cart-infor .cart-sale h3 {
   color: #1e7379;
 }
 
-.cart-infor .cart-sale input{
+.cart-infor .cart-sale input {
   margin-top: 5px;
   padding: 15px;
   width: 100%;
@@ -2184,7 +2178,7 @@ ul {
   border: 1px solid #04a0ac;
 }
 
-.cart-infor .cart-sale .btnSale{
+.cart-infor .cart-sale .btnSale {
   border: solid 1px #04a0ac;
   padding: 10px;
   background-color: #04a0ac;
@@ -2196,6 +2190,17 @@ ul {
   transition: all 0.2s ease-in-out;
 }
 
+.cart-empty-content svg {
+  font-size: 400px;
+  color: #04a0ac;
+}
+
+.cart-empty-content p{ 
+  margin-top: 20px;
+  font-size: 40px;
+  font-weight: 500;
+  color: #04a0ac;
+}
 
 /* --------------- ADMIN ----------------- */
 
