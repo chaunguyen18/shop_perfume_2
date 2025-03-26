@@ -6,8 +6,12 @@ import { FaUserAlt } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import SearchBox from "./SearchBox";
 import Navigation from "./Navigation";
+import { useCart } from "../CartContext/CartContext";
 
 const Header = () => {
+
+  // const { cartCount } = useCart();
+
   return (
     <>
       <div className="headerWrapper">
@@ -42,7 +46,7 @@ const Header = () => {
                       <FaCartShopping />
                     </Button>
                     </Link>
-                    <span className="count align-items-center">1</span>
+                    {/* <span className="count align-items-center">{cartCount}</span> */}
                   </div>
                 </div>
               </div>

@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import { FaPencilAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import axios from "axios";
 
 const Cart = () => {
+  // const updateQuantity = (id, newQuantity) => {
+  //     const qty = Math.max(1, parseInt(newQuantity) || 1); // Không cho phép nhỏ hơn 1
+  //     setCartItems(
+  //       cartItems.map((item) =>
+  //         item.id === id ? { ...item, quantity: qty } : item
+  //       )
+  //     );
+  //   };
 
-    // const updateQuantity = (id, newQuantity) => {
-    //     const qty = Math.max(1, parseInt(newQuantity) || 1); // Không cho phép nhỏ hơn 1
-    //     setCartItems(
-    //       cartItems.map((item) =>
-    //         item.id === id ? { ...item, quantity: qty } : item
-    //       )
-    //     );
-    //   };
+  
 
-      
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/cart`);
+        setProduct(res.data);
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    };
+    fetchProduct();
+  });
+
+  if (!product) return <p>Đang tải...</p>;
+
   return (
     <div>
       <Header />
@@ -35,7 +52,6 @@ const Cart = () => {
                   <div className="col-md-2">Xóa</div>
                 </div>
 
-                
                 <div className="row align-items-center  d-flex justify-content-center py-2">
                   <div className="col-md-2">
                     <img
@@ -48,7 +64,6 @@ const Cart = () => {
                   <div className="col-md-2">
                     <input
                       type="number"
-                      
                       className="form-control w-50"
                       //value={item.quantity}
                       //onChange={(e) => updateQuantity(item.id, e.target.value)}

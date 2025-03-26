@@ -1,11 +1,30 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Slider from "react-slick";
 import InnerImageZoom from "react-inner-image-zoom";
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const ProductZoom = () => {
 
+  const [product, setProduct] = useState(null);
+  const { id } = useParams(); 
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/product/${id}`);
+        setProduct(res.data);
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  if (!product) return <p>Đang tải...</p>;
+
     useEffect(() => {
-        window.zoomSliderBig = zoomSliderBig; // Gán ref vào window để debug
+        window.zoomSliderBig = zoomSliderBig; 
       }, []);
     
       var settings = {
@@ -47,7 +66,7 @@ const ProductZoom = () => {
                 <InnerImageZoom
                   zoomType="hover"
                   zoomScale={1}
-                  src={`https://product.hstatic.net/1000340570/product/versace-eros-edt-200ml_8acc6bef0af0444c8c233e73a994be6c_master.jpg`}
+                  src={product.HA_PATHS[0]}
                   className="w-100"
                   alt="product1"
                 />
@@ -56,7 +75,7 @@ const ProductZoom = () => {
                 <InnerImageZoom
                   zoomType="hover"
                   zoomScale={1}
-                  src={`https://product.hstatic.net/1000340570/product/versace-eros-for-men-1_3288f952b910477ba621b0ffee1e1e80_master.jpg`}
+                  src={product.HA_PATHS[1]}
                   className="w-100"
                   alt="product1"
                 />
@@ -65,7 +84,7 @@ const ProductZoom = () => {
                 <InnerImageZoom
                   zoomType="hover"
                   zoomScale={1}
-                  src={`https://product.hstatic.net/1000340570/product/versace-eros-for-men-tester_64667f61adb14935b9bdce4dd9194320_master.jpg`}
+                  src={product.HA_PATHS[2]}
                   className="w-100"
                   alt="product1"
                 />
@@ -75,7 +94,7 @@ const ProductZoom = () => {
           <Slider {...settings} className="zoomSlider" ref={zoomSlider}>
             <div className="item">
               <img
-                src={`https://product.hstatic.net/1000340570/product/versace-eros-edt-200ml_8acc6bef0af0444c8c233e73a994be6c_master.jpg`}
+                src={product.HA_PATHS[0]}
                 className="w-100"
                 alt="product1"
                 onClick={() => {
@@ -86,7 +105,7 @@ const ProductZoom = () => {
             </div>
             <div className="item">
               <img
-                src={`https://product.hstatic.net/1000340570/product/versace-eros-for-men-1_3288f952b910477ba621b0ffee1e1e80_master.jpg`}
+                src={product.HA_PATHS[1]}
                 className="w-100"
                 alt="product1"
                 onClick={() => {
@@ -97,7 +116,7 @@ const ProductZoom = () => {
             </div>
             <div className="item">
               <img
-                src={`https://product.hstatic.net/1000340570/product/versace-eros-for-men-tester_64667f61adb14935b9bdce4dd9194320_master.jpg`}
+                src={product.HA_PATHS[2]}
                 className="w-100"
                 alt="product1"
                 onClick={() => {

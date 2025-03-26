@@ -59,7 +59,7 @@ const ProductDetails = (props) => {
                     <span className="ms-2">{product.BRAND_TEN}</span>
                   </div>
                 </li>
-                <li className="list-inline-item">
+                {/* <li className="list-inline-item">
                   <div className="d-flex align-items-center ms-2">
                     <Rating
                       name="half-rating"
@@ -69,11 +69,17 @@ const ProductDetails = (props) => {
                     />
                     <span className="ms-2">1 đánh giá</span>
                   </div>
-                </li>
+                </li> */}
                 <li className="list-inline-item">
                   <div className="d-flex align-items-center ms-2">
                     <span className="ms-2 text-dark">Mã:</span>
                     <span className="ms-2">{product.SP_MA}</span>
+                  </div>
+                </li>
+                <li className="list-inline-item">
+                  <div className="d-flex align-items-center ms-2">
+                    <span className="ms-2 text-dark">Loại sản phẩm:</span>
+                    <span className="ms-2">{product.LSP_TEN}</span>
                   </div>
                 </li>
               </ul>

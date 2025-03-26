@@ -55,6 +55,8 @@ app.post("/register", (req, res) => {
   });
 });
 
+/* API LẤY DANH SÁCH SẢN PHẨM */
+
 app.get("/api/product", (req, res) => {
   const sql = `
     SELECT 
@@ -81,16 +83,20 @@ app.get("/api/product", (req, res) => {
   });
 });
 
+/* API LẤY DANH SÁCH SẢN PHẨM THEO LOẠI */
+
 app.get("/api/product/:id", async (req, res) => {
   const productId = req.params.id;
   const query = `SELECT 
       sanpham.SP_MA, sanpham.SP_TEN, sanpham.LSP_MA, sanpham.SP_DIENGIAI, 
       dongia.DG_GIANIEMYET, brand.BRAND_TEN, 
+      loaisp.LSP_TEN,
       GROUP_CONCAT(hinhanh.HA_PATH ORDER BY hinhanh.HA_MA SEPARATOR '|') AS HA_PATHS 
       FROM sanpham 
       LEFT JOIN hinhanh ON sanpham.SP_MA = hinhanh.SP_MA 
       LEFT JOIN dongia ON sanpham.SP_MA = dongia.SP_MA 
       LEFT JOIN brand ON sanpham.BRAND_ID = brand.BRAND_ID 
+      LEFT JOIN loaisp ON sanpham.LSP_MA = loaisp.LSP_MA
       WHERE sanpham.SP_MA = ? 
       GROUP BY sanpham.SP_MA`;
 
@@ -104,6 +110,31 @@ app.get("/api/product/:id", async (req, res) => {
       } else {
           res.status(404).json({ message: "Không tìm thấy sản phẩm" });
       }
+  });
+});
+
+/* API render ra giỏ hàng */
+
+app.get("/api/cart", (req, res) => {
+  const sql = `
+    SELECT 
+      sanpham.SP_MA, sanpham.SP_TEN, sanpham.LSP_MA, sanpham.SP_DIENGIAI, 
+      dongia.DG_GIANIEMYET, brand.BRAND_TEN, 
+      GROUP_CONCAT(hinhanh.HA_PATH ORDER BY hinhanh.HA_MA SEPARATOR '|') AS HA_PATHS 
+      FROM sanpham 
+      LEFT JOIN hinhanh ON sanpham.SP_MA = hinhanh.SP_MA 
+      LEFT JOIN dongia ON sanpham.SP_MA = dongia.SP_MA 
+      LEFT JOIN brand ON sanpham.BRAND_ID = brand.BRAND_ID 
+      WHERE sanpham.SP_MA = ? 
+      GROUP BY sanpham.SP_MA
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
   });
 });
 

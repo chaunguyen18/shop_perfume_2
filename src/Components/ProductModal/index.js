@@ -26,7 +26,7 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
           console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
         });
     }
-  }, [productId, open]); // Thêm `productId` vào dependency
+  }, [productId, open]); 
   
 
   return (
@@ -44,14 +44,16 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
               <span className="ms-2 me-2">
                 <b>{product.BRAND_TEN}</b>
               </span>
+              <span className="ms-2 text-dark">Loại sản phẩm:</span>
+                    <span className="ms-2"><strong>{product.LSP_TEN}</strong></span>
             </div>
-            <Rating
+            {/* <Rating
               name="read-only"
               value={5}
               size="small"
               precision={0.5}
               readOnly
-            />
+            /> */}
           </div>
           <hr />
           <div className="row mt-2 productDetailModal">
@@ -64,8 +66,8 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
                 <span className="new-Price">{(product.DG_GIANIEMYET * 0.5).toLocaleString()}đ</span>
               </div>
               <span className="badge">Còn hàng</span>
-              <p className="mt-3 mb-3">{product.SP_DIENGIAI}</p>
-              <div className="d-flex align-items-center mb-3">
+              {/* <p className="mt-3 mb-3">{product.SP_DIENGIAI}</p> */}
+              <div className="d-flex align-items-center mb-3 mt-3">
                 <QuantityBox />
                 <Button className="addToCartBtn" style={{ marginLeft: "50px" }}>
                   <FaPlus />
