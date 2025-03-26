@@ -102,7 +102,7 @@ const Cart = () => {
                     >
                       <div className="col-md-2">{item.product.SP_TEN}</div>
                       <div className="col-md-2">{item.size}</div>
-                      <div className="col-md-2">{item.price.toLocaleString()} VNĐ</div>
+                      <div className="col-md-2">{item.price.toLocaleString()}đ</div>
 
                       <div className="col-md-2">
                         <input
@@ -116,7 +116,7 @@ const Cart = () => {
                         />
                       </div>
                       <div className="col-md-2">
-                      {(item.price * (quantities[item.product.SP_MA] || item.quantity)).toLocaleString()} VNĐ
+                      {(item.price * (quantities[item.product.SP_MA] || item.quantity)).toLocaleString()}đ
                       </div>
                       <div className="col-md-2">
                         <MdDelete
@@ -164,13 +164,13 @@ const Cart = () => {
                           0
                         )
                         .toLocaleString()}{" "}
-                      VND
+                      đ
                     </p>
                   </div>
 
                   <div className="cart-payment">
                     <h3>Phương thức thanh toán</h3>
-                    <div className="form-check">
+                    {/* <div className="form-check">
                       <input
                         className="form-check-input"
                         type="radio"
@@ -180,7 +180,7 @@ const Cart = () => {
                       <label className="form-check-label" htmlFor="cod">
                         Thanh toán khi nhận hàng (COD)
                       </label>
-                    </div>
+                    </div> */}
                     <div className="form-check">
                       <input
                         className="form-check-input"
@@ -207,7 +207,7 @@ const Cart = () => {
 
                   <div className="d-block mt-3">
                     <button type="button" className="btn btnCheckout">
-                      Đặt hàng
+                     Đặt hàng
                     </button>
                   </div>
                 </div>

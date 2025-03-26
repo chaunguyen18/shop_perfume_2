@@ -42,6 +42,25 @@ const ProductDetails = (props) => {
     console.log("Sản phẩm thêm vào:", product);
     console.log("Số lượng:", quantity);
 
+    if (!activeSize) {
+      toast.warning("Vui lòng chọn size!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    if (product.CTSP_SOLUONG < quantity) {
+      toast.error(
+        `Sản phẩm trong kho chỉ còn ${product.CTSP_SOLUONG}. Vui lòng đặt ít hơn!`,
+        {
+          position: "top-right",
+          autoClose: 5000,
+        }
+      );
+      return;
+    }
+
     if (product) {
       addToCart(product, activeSize, quantity, newPrice);
 
@@ -109,10 +128,10 @@ const ProductDetails = (props) => {
               <div className="d-flex ">
                 <span className="text-dark">Giá:</span>
                 <span className="newPrice text-danger ms-2">
-                  {newPrice.toLocaleString()} VND
+                  {newPrice.toLocaleString()}đ
                 </span>
                 <span className="oldPrice ms-2 me-1">
-                  {product.DG_GIANIEMYET.toLocaleString()} VND
+                  {product.DG_GIANIEMYET.toLocaleString()}đ
                 </span>
                 <span className="badge1 ms-3 pd-sale-price">-50%</span>
               </div>

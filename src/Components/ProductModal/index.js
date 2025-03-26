@@ -44,11 +44,30 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
     console.log("Sản phẩm thêm vào:", product);
     console.log("Số lượng:", quantity);
 
+    if (!activeSize) {
+      toast.warning("Vui lòng chọn size!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    if (product.CTSP_SOLUONG < quantity) {
+      toast.error(
+        `Sản phẩm trong kho chỉ còn ${product.CTSP_SOLUONG}. Vui lòng đặt ít hơn!`,
+        {
+          position: "top-right",
+          autoClose: 5000,
+        }
+      );
+      return;
+    }
+
     if (product) {
       addToCart(product, activeSize, quantity, newPrice);
 
       toast.success(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`, {
-        position: "bottom-left",
+        position: "top-right",
         autoClose: 3000,
       });
 
