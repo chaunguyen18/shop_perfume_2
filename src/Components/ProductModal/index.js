@@ -21,7 +21,6 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
   const { addToCart } = useCart();
   const newPrice = product ? product.DG_GIANIEMYET * 0.5 : 0;
 
-
   useEffect(() => {
     const fetchProduct = async () => {
       if (productId && open) {
@@ -41,16 +40,16 @@ const ProductModal = ({ open, closeProductModal, productId }) => {
 
   const handleAddToCart = () => {
     console.log("Gọi handleAddToCart");
-    console.log("addToCart:", addToCart); // Kiểm tra addToCart có tồn tại không
+    console.log("addToCart:", addToCart);
     console.log("Sản phẩm thêm vào:", product);
     console.log("Số lượng:", quantity);
 
     if (product) {
-      addToCart(product, activeSize, quantity);
+      addToCart(product, activeSize, quantity, newPrice);
 
-      toast.success(`🛒 Đã thêm ${quantity} sản phẩm vào giỏ hàng!`, {
-        position: "bottom-right",
-        autoClose: 3000, // Tự động tắt sau 3 giây
+      toast.success(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`, {
+        position: "bottom-left",
+        autoClose: 3000,
       });
 
       closeProductModal();

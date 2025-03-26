@@ -17,11 +17,13 @@ export const CartProvider = ({ children }) => {
     localStorage.removeItem("cart");
   };
 
-  const addToCart = (product, size, quantity) => {
+  const addToCart = (product, size, quantity, newPrice) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find(
         (item) => item.product.SP_MA === product.SP_MA && item.size === size
       );
+
+      const price = newPrice || product.DG_GIANIEMYET || 0;
 
       if (existingProduct) {
         return prevCart.map((item) =>
@@ -30,19 +32,26 @@ export const CartProvider = ({ children }) => {
             : item
         );
       } else {
-        return [...prevCart, { product, size, quantity, total: product.price * quantity }];
+        return [
+          ...prevCart,
+          { product, size, price, quantity, total: price * quantity },
+        ];
       }
     });
   };
 
   const removeFromCart = (productId, size) => {
     setCart((prevCart) =>
-      prevCart.filter((item) => !(item.product.SP_MA === productId && item.size === size))
+      prevCart.filter(
+        (item) => !(item.product.SP_MA === productId && item.size === size)
+      )
     );
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, resetCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, setCart, resetCart }}
+    >
       {children}
     </CartContext.Provider>
   );

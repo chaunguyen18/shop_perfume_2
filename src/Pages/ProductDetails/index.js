@@ -12,16 +12,17 @@ import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useCart } from "../../Components/CartContext/CartContext";
 
 const ProductDetails = (props) => {
-
-  const { id } = useParams(); 
+  const [quantity, setQuantity] = useState(1);
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
 
-  const [activeSize, setActiveSize] = useState(null);
-  const isActive = (index) => {
-    setActiveSize(index);
-  };
+  const { addToCart } = useCart();
+  const newPrice = product ? product.DG_GIANIEMYET * 0.5 : 0;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -35,6 +36,27 @@ const ProductDetails = (props) => {
     fetchProduct();
   }, [id]);
 
+  const handleAddToCart = () => {
+    console.log("Gọi handleAddToCart");
+    console.log("addToCart:", addToCart);
+    console.log("Sản phẩm thêm vào:", product);
+    console.log("Số lượng:", quantity);
+
+    if (product) {
+      addToCart(product, activeSize, quantity, newPrice);
+
+      toast.success(`🛒 Đã thêm ${quantity} sản phẩm vào giỏ hàng!`, {
+        position: "bottom-left",
+        autoClose: 3000,
+      });
+    }
+  };
+
+  const [activeSize, setActiveSize] = useState(null);
+  const isActive = (size) => {
+    setActiveSize(size);
+  };
+
   if (!product) return <p>Đang tải...</p>;
 
   return (
@@ -44,7 +66,7 @@ const ProductDetails = (props) => {
         <div className="container">
           <div className="row mb-2 mt-3">
             <div className="col-md-6 mb-3">
-              <ProductZoom productId={id}/>
+              <ProductZoom productId={id} />
             </div>
             <div className="col-md-6 p-3 pd-part2">
               <div className="d-flex align-items-center">
@@ -86,8 +108,12 @@ const ProductDetails = (props) => {
 
               <div className="d-flex ">
                 <span className="text-dark">Giá:</span>
-                <span className="newPrice text-danger ms-2">{(product.DG_GIANIEMYET * 0.5).toLocaleString()}đ</span>
-                <span className="oldPrice ms-2 me-1">{product.DG_GIANIEMYET.toLocaleString()}₫</span>
+                <span className="newPrice text-danger ms-2">
+                  {newPrice.toLocaleString()} VND
+                </span>
+                <span className="oldPrice ms-2 me-1">
+                  {product.DG_GIANIEMYET.toLocaleString()} VND
+                </span>
                 <span className="badge1 ms-3 pd-sale-price">-50%</span>
               </div>
 
@@ -96,38 +122,22 @@ const ProductDetails = (props) => {
               <div className="product-size d-flex align-items-center">
                 <span className="text-dark me-3">Size:</span>
                 <ul className="list-inline-item mb-0">
-                  <li className="list-inline-item">
-                    <a
-                      href="#"
-                      className={`tag ${activeSize === 0 ? "active" : ""}`}
-                      onClick={() => isActive(0)}
-                    >
-                      5ml
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      href="#"
-                      className={`tag ${activeSize === 1 ? "active" : ""}`}
-                      onClick={() => isActive(1)}
-                    >
-                      30ml
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a
-                      href="#"
-                      className={`tag ${activeSize === 2 ? "active" : ""}`}
-                      onClick={() => isActive(2)}
-                    >
-                      100ml
-                    </a>
-                  </li>
+                  {["5ml", "30ml", "100ml"].map((size) => (
+                    <li key={size} className="list-inline-item">
+                      <a
+                        href="#"
+                        className={`tag ${activeSize === size ? "active" : ""}`}
+                        onClick={() => isActive(size)}
+                      >
+                        {size}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="d-flex align-items-center mb-3">
-                <QuantityBox />
-                <Button className="addToCartBtn ms-2">
+                <QuantityBox onQuantityChange={setQuantity} />
+                <Button className="addToCartBtn ms-2" onClick={handleAddToCart}>
                   <FaCartShopping />
                   Thêm vào giỏ
                 </Button>

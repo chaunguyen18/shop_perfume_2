@@ -6,11 +6,37 @@ import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import { useCart } from "../../Components/CartContext/CartContext";
 import { FaSadCry } from "react-icons/fa";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Cart = () => {
-  const { cart, removeFromCart } = useCart();
+  const { cart, setCart, removeFromCart } = useCart();
   const [product, setProduct] = useState(null);
+  const [quantities, setQuantities] = useState(() => {
+    return cart.reduce((acc, item) => {
+      acc[item.product.SP_MA] = item.quantity;
+      return acc;
+    }, {});
+  });
+  
+
+  const handleQuantityChange = (productId, newQuantity) => {
+    if (newQuantity < 1) return; 
+  
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: newQuantity,
+    }));
+  
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.product.SP_MA === productId
+          ? { ...item, quantity: newQuantity, total: item.price * newQuantity }
+          : item
+      )
+    );
+  };
+  
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -24,6 +50,18 @@ const Cart = () => {
     fetchProduct();
   }, []);
 
+  const handleRemoveItem = (product, size) => {
+    removeFromCart(product.SP_MA, size);
+    toast.success(`Đã xóa sản phẩm "${product.SP_TEN}" ra khỏi giỏ hàng!`, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
   if (!product) return <p>Đang tải...</p>;
 
   return (
@@ -35,9 +73,9 @@ const Cart = () => {
             <div className="cart-empty-content text-center mt-4 d-flex flex-column justify-content-center align-items-center">
               <FaSadCry />
               <p>Giỏ hàng trống</p>
-              
+
               <a href="http://localhost:3000/cat" className="btn btn-primary">
-                Vào mua sắm ngay thôi 
+                Vào mua sắm ngay thôi
               </a>
             </div>
           ) : (
@@ -64,28 +102,27 @@ const Cart = () => {
                     >
                       <div className="col-md-2">{item.product.SP_TEN}</div>
                       <div className="col-md-2">{item.size}</div>
-                      <div className="col-md-2">
-                        {item.price.toLocaleString()} VNĐ
-                      </div>{" "}
-                      {/* ✅ Sửa lỗi undefined */}
+                      <div className="col-md-2">{item.price.toLocaleString()} VNĐ</div>
+
                       <div className="col-md-2">
                         <input
                           type="number"
                           className="form-control w-50"
                           value={item.quantity}
                           min="1"
-                          readOnly
+                          onChange={(e) =>
+                            handleQuantityChange(item.product.SP_MA, parseInt(e.target.value, 10))
+                          }
                         />
                       </div>
                       <div className="col-md-2">
-                        {(item.price * item.quantity).toLocaleString()} VNĐ{" "}
-                        {/* ✅ Sửa lỗi undefined */}
+                      {(item.price * (quantities[item.product.SP_MA] || item.quantity)).toLocaleString()} VNĐ
                       </div>
                       <div className="col-md-2">
                         <MdDelete
                           className="text-danger btnDeleteCartItem"
                           onClick={() =>
-                            removeFromCart(item.product.SP_MA, item.size)
+                            handleRemoveItem(item.product, item.size)
                           }
                         />
                       </div>
@@ -127,7 +164,7 @@ const Cart = () => {
                           0
                         )
                         .toLocaleString()}{" "}
-                      VNĐ {/* ✅ Sửa lỗi undefined */}
+                      VND
                     </p>
                   </div>
 
