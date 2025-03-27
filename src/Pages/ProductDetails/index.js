@@ -65,7 +65,7 @@ const ProductDetails = (props) => {
       addToCart(product, activeSize, quantity, newPrice);
 
       toast.success(`🛒 Đã thêm ${quantity} sản phẩm vào giỏ hàng!`, {
-        position: "bottom-left",
+        position: "top-right",
         autoClose: 3000,
       });
     }

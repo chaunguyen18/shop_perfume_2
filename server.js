@@ -171,130 +171,68 @@ app.get("/api/cart", (req, res) => {
   });
 });
 
-// app.get("/api/cart", (req, res) => {
-//   const sql = `
-//     SELECT 
-//       sp.SP_MA, sp.SP_TEN, sp.LSP_MA, sp.SP_DIENGIAI, 
-//       dg.DG_GIANIEMYET, br.BRAND_TEN, 
-//       kh.KH_MA, kh.KH_HOTEN, kh.KH_SDT, kh.KH_DIACHI
-//     FROM sanpham sp
-//     LEFT JOIN hinhanh ha ON sp.SP_MA = ha.SP_MA 
-//     LEFT JOIN dongia dg ON sp.SP_MA = dg.SP_MA 
-//     LEFT JOIN brand br ON sp.BRAND_ID = br.BRAND_ID
-//     LEFT JOIN donhang dh ON sp.DH = dh.DH_ID
-//     LEFT JOIN chitietdh ctdh ON chitietdh.SP_MA = dh.SP_MA
-//     LEFT JOIN khachhang kh ON dh.KH_MA = kh.KH_MA
-//     GROUP BY sp.SP_MA, kh.KH_MA
-//   `;
 
-//   db.query(sql, (err, results) => {
-//     if (err) {
-//       res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
-//     } else {
-//       res.json(results);
-//     }
-//   });
-// });
+app.get("/api/cart/:KH_MA", (req, res) => {
+  const { KH_MA } = req.params;
+  const sql = `
+    SELECT 
+      gh.SP_MA, 
+      sp.SP_TEN, 
+      sp.SP_DVT, 
+      sp.SP_GIA, 
+      gh.SOLUONG, 
+      (sp.SP_GIA * gh.SOLUONG) AS THANH_TIEN
+    FROM giohang gh
+    JOIN sanpham sp ON gh.SP_MA = sp.SP_MA
+    WHERE gh.KH_MA = ?
+  `;
+
+  db.query(sql, [KH_MA], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi lấy giỏ hàng" });
+    } else {
+      // Tính tổng tiền của giỏ hàng
+      const tongTien = results.reduce((sum, item) => sum + item.THANH_TIEN, 0);
+      res.json({ items: results, tongTien });
+    }
+  });
+});
+
 
 
 /* API đặt hàng */
 
-// app.post("/payment", (req, res) => {
-//   const { KH_MA, DH_THANHTIEN, cartItems } = req.body;
+app.post("/api/order", (req, res) => {
+  const { KH_MA, cart, totalPrice, paymentMethod } = req.body;
 
-//   // Lấy HD_MA lớn nhất hiện có trong bảng hoadon
-//   const getMaxDHIDQuery = `SELECT MAX(DH_ID) AS maxDHID FROM donhang`;
+  if (!KH_MA || !cart || cart.length === 0) {
+    return res.status(400).json({ error: "Dữ liệu đơn hàng không hợp lệ!" });
+  }
 
-//   db.query(getMaxDHIDQuery, (err, result) => {
-//     if (err) {
-//       console.error("Lỗi khi lấy DH_ID lớn nhất:", err);
-//       return res.status(500).send("Lỗi máy chủ nội bộ");
-//     }
+  // Lấy ID trạng thái "Chờ xác nhận"
+  const TT_ID_DEFAULT = 1; 
 
-    
-//     const currentMaxDHID = result[0].maxDHID;
-//     let newDHID;
-//     if (!currentMaxDHID) {
-//       newDHID = "DH001";
-//     } else {
-//       const currentNumber = parseInt(currentMaxDHID.slice(2));
-//       newDHID = `DH${(currentNumber + 1).toString().padStart(3, "0")}`;
-//     }
+  const sqlDonHang = `INSERT INTO donhang (KH_MA, DH_TONGTIEN, DH_NGAYDAT, TT_ID, DH_THANHTOAN) VALUES (?, ?, NOW(), ?, ?)`;
 
-    
-//     const DH_NGAYLAP = new Date(); 
-//     const DH_GIOLAP = new Date().toLocaleTimeString("vi-VN"); 
+  db.query(sqlDonHang, [KH_MA, totalPrice, TT_ID_DEFAULT, paymentMethod], (err, result) => {
+    if (err) return res.status(500).json({ error: "Lỗi khi tạo đơn hàng!" });
 
-//     const invoiceQuery = `
-//       INSERT INTO donhang (DH_MA, DH_NGAYLAP, DH_GIOLAP DH_THANHTIEN, KH_MA) VALUES (?, ?, ?, ?)`;
+    const DH_ID = result.insertId;
 
-//     db.query(
-//       invoiceQuery,
-//       [newDHID, DH_NGAYLAP, DH_GIOLAP, DH_THANHTIEN, KH_MA],
-//       (err) => {
-//         if (err) {
-//           console.error("Lỗi khi tạo hóa đơn:", err);
-//           return res.status(500).send("Lỗi máy chủ nội bộ");
-//         }
+    const sqlChiTietDH = `INSERT INTO chitietdh (DH_ID, SP_MA, CT_SOLUONG, CT_GIA) VALUES ?`;
+    const values = cart.map((item) => [DH_ID, item.product.SP_MA, item.quantity, item.product.DG_GIANIEMYET]);
 
- 
-//         const DH_ID = newDHID;
+    db.query(sqlChiTietDH, [values], (err) => {
+      if (err) return res.status(500).json({ error: "Lỗi khi lưu chi tiết đơn hàng!" });
 
-    
-//         const detailsQuery = `
-//         INSERT INTO chitietdh (DH_ID, SP_MA, CTDH_DVT, CTDH_SOLUONG, CTDH_DONGIA) VALUES ?`;
+      db.query(`DELETE FROM giohang WHERE KH_MA = ?`, [KH_MA], (err) => {
+        if (err) console.error("Lỗi khi xóa giỏ hàng:", err);
+        res.json({ message: "Đặt hàng thành công!", DH_ID });
+      });
+    });
+  });
+});
 
-     
-//         const values = cartItems.map((item) => [
-//           DH_ID, 
-//           item.SP_MA,
-//           item.CTDH_DVT,
-//           item.CTDH_SOLUONG,
-//           item.CTDH_DONGIA,
-//         ]);
-
-//         db.query(detailsQuery, [values], (err) => {
-//           if (err) {
-//             console.error("Lỗi khi chèn chi tiết hóa đơn:", err);
-//             return res.status(500).send("Lỗi máy chủ nội bộ");
-//           }
-//           const updateProductQuantityQuery = `
-//           UPDATE chitietsp 
-//           SET CTSP_SOLUONG = CTSP_SOLUONG - ?
-//           WHERE SP_MA = ? AND CTSP_SOLUONG >= ?`;
-
-//         const updatePromises = cartItems.map((item) => {
-//           return new Promise((resolve, reject) => {
-//             db.query(
-//               updateProductQuantityQuery,
-//               [item.CTDH_SOLUONG, item.SP_MA, item.CTDH_SOLUONG],
-//               (err, result) => {
-//                 if (err) {
-//                   console.error(
-//                     `Lỗi khi cập nhật số lượng chi tiết sản phẩm (${item.SP_MA}):`,
-//                     err
-//                   );
-//                   return reject(err);
-//                 }
-
-//                 if (result.affectedRows === 0) {
-//                   return reject(
-//                     `Sản phẩm ${item.SP_MA} không đủ số lượng trong kho chi tiết`
-//                   );
-//                 }
-
-//                 resolve();
-//               }
-//             );
-//           });
-//         });
-
-//           res.status(201).send("Hóa đơn đã được tạo thành công");
-//         });
-//       }
-//     );
-//   });
-// });
 
 // CHẠY SERVER
 
