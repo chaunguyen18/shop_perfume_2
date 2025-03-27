@@ -13,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // Dùng để chuyển hướng
 
+
   const handleLogin = async () => {
     try {
       const res = await axios.post("http://localhost:5000/login", {
@@ -21,12 +22,15 @@ const Login = () => {
       });
 
       if (res.data.success) {
-        localStorage.setItem("user", JSON.stringify(res.data.user)); // Lưu user vào localStorage
+        // localStorage.setItem("user", JSON.stringify(res.data.user));
+        const user = res.data.user;
+      localStorage.setItem("userId", user.KH_MA); // Lưu userId vào localStorage
+      localStorage.setItem("user", JSON.stringify(user));
 
         if (res.data.user.role === "admin") {
-          navigate("/admin-home"); // Chuyển đến trang admin
+          navigate("/admin-home"); 
         } else {
-          navigate("/customer-home"); // Chuyển đến trang customer
+          navigate("/customer-home"); 
         }
       } else {
         alert("Sai tài khoản hoặc mật khẩu!");

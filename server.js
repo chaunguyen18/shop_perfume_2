@@ -171,67 +171,76 @@ app.get("/api/cart", (req, res) => {
   });
 });
 
+/* API thanh toán */
 
-app.get("/api/cart/:KH_MA", (req, res) => {
-  const { KH_MA } = req.params;
-  const sql = `
-    SELECT 
-      gh.SP_MA, 
-      sp.SP_TEN, 
-      sp.SP_DVT, 
-      sp.SP_GIA, 
-      gh.SOLUONG, 
-      (sp.SP_GIA * gh.SOLUONG) AS THANH_TIEN
-    FROM giohang gh
-    JOIN sanpham sp ON gh.SP_MA = sp.SP_MA
-    WHERE gh.KH_MA = ?
-  `;
+app.get("/api/checkout/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = "SELECT KH_HOTEN, KH_SDT, KH_DIACHI FROM khachhang WHERE KH_MA = ?";
 
-  db.query(sql, [KH_MA], (err, results) => {
+  db.query(sql, [id], (err, results) => {
     if (err) {
-      res.status(500).json({ error: "Lỗi lấy giỏ hàng" });
-    } else {
-      // Tính tổng tiền của giỏ hàng
-      const tongTien = results.reduce((sum, item) => sum + item.THANH_TIEN, 0);
-      res.json({ items: results, tongTien });
+      console.error("Lỗi truy vấn cơ sở dữ liệu:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
     }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Không tìm thấy khách hàng" });
+    }
+
+    res.json(results[0]); // Trả về một object thay vì array
   });
 });
+
 
 
 
 /* API đặt hàng */
 
-app.post("/api/order", (req, res) => {
-  const { KH_MA, cart, totalPrice, paymentMethod } = req.body;
+app.post("api/checkout", async (req, res) => {
+  const { KH_MA, cart, PTTT_ID } = req.body;
 
-  if (!KH_MA || !cart || cart.length === 0) {
-    return res.status(400).json({ error: "Dữ liệu đơn hàng không hợp lệ!" });
+  if (!KH_MA || !cart || cart.length === 0 || !PTTT_ID) {
+    return res.status(400).json({ error: "Thông tin đơn hàng không hợp lệ" });
   }
 
-  // Lấy ID trạng thái "Chờ xác nhận"
-  const TT_ID_DEFAULT = 1; 
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const sqlDonHang = `INSERT INTO donhang (KH_MA, DH_TONGTIEN, DH_NGAYDAT, TT_ID, DH_THANHTOAN) VALUES (?, ?, NOW(), ?, ?)`;
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
 
-  db.query(sqlDonHang, [KH_MA, totalPrice, TT_ID_DEFAULT, paymentMethod], (err, result) => {
-    if (err) return res.status(500).json({ error: "Lỗi khi tạo đơn hàng!" });
+    // 1️⃣ Tạo đơn hàng mới
+    const [orderResult] = await conn.query(
+      "INSERT INTO donhang (KH_MA, DH_NGAYLAP, DH_GIOLAP, DH_THANHTIEN, TT_ID, PTTT_ID) VALUES (?, NOW(), NOW(), ?, 1, ?)",
+      [KH_MA, totalPrice, PTTT_ID]
+    );
+    const DH_ID = orderResult.insertId;
 
-    const DH_ID = result.insertId;
+    // 2️⃣ Thêm chi tiết đơn hàng
+    const orderDetails = cart.map((item) => [
+      DH_ID,
+      item.SP_MA,   // Lấy trực tiếp SP_MA, không cần item.product.SP_MA
+      item.size,
+      item.quantity,
+      item.price,
+    ]);
 
-    const sqlChiTietDH = `INSERT INTO chitietdh (DH_ID, SP_MA, CT_SOLUONG, CT_GIA) VALUES ?`;
-    const values = cart.map((item) => [DH_ID, item.product.SP_MA, item.quantity, item.product.DG_GIANIEMYET]);
+    await conn.query(
+      "INSERT INTO chitietdh (DH_ID, SP_MA, SIZE, CT_SOLUONG, CT_GIA) VALUES ?",
+      [orderDetails]
+    );
 
-    db.query(sqlChiTietDH, [values], (err) => {
-      if (err) return res.status(500).json({ error: "Lỗi khi lưu chi tiết đơn hàng!" });
-
-      db.query(`DELETE FROM giohang WHERE KH_MA = ?`, [KH_MA], (err) => {
-        if (err) console.error("Lỗi khi xóa giỏ hàng:", err);
-        res.json({ message: "Đặt hàng thành công!", DH_ID });
-      });
-    });
-  });
+    await conn.commit();
+    res.status(201).json({ message: "Đặt hàng thành công!", DH_ID });
+  } catch (error) {
+    await conn.rollback();
+    console.error("Lỗi đặt hàng:", error);
+    res.status(500).json({ error: "Lỗi đặt hàng", details: error.message });
+  } finally {
+    conn.release();
+  }
 });
+
 
 
 // CHẠY SERVER
