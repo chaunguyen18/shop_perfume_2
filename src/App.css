@@ -2258,7 +2258,8 @@ ul {
   justify-content: space-between;
 }
 
-.sidebar-admin .icon-close {
+/* Icon đóng sidebar */
+.sidebar-icon-close {
   font-size: 30px;
   cursor: pointer;
   position: absolute;
@@ -2274,7 +2275,8 @@ ul {
   margin-top: 30px;
 }
 
-.sidebar-admin .icon-menu {
+/* Icon menu khi sidebar ẩn */
+.sidebar-icon-menu {
   font-size: 40px;
   color: #abebef;
   position: fixed;
@@ -2286,9 +2288,10 @@ ul {
   border-radius: 50%;
   background-color: #1e7379;
   transition: all 0.3s ease-in-out;
+  z-index: 1000;
 }
 
-.sidebar-admin .icon-menu:hover {
+.sidebar-icon-menu:hover {
   cursor: pointer;
   box-shadow: 6px 6px 15px rgba(171, 235, 239, 0.8);
 }
@@ -2315,4 +2318,9 @@ ul {
 
 .admin-content {
   padding: 10px;
+}
+
+/* Khi sidebar ẩn */
+.d-none {
+  display: none !important;
 }

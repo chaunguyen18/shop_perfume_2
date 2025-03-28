@@ -10,6 +10,7 @@ import AddressCustomer from "../../Components/AddressCustomer";
 import OrderCustomer from "../../Components/OrderCustomer";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
+import { IoExitOutline } from "react-icons/io5";
 
 
 const Account = () => {
@@ -121,6 +122,12 @@ const Account = () => {
               onClick={() => navigate("/account/voucher")}
             >
               <IoTicket /> Kho voucher
+            </li>
+            <li
+              className="list-group-item"
+              onClick={() => navigate("/")}
+            >
+              <IoExitOutline /> Đăng xuất
             </li>
           </ul>
         </div>
