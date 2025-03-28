@@ -2258,7 +2258,6 @@ ul {
   justify-content: space-between;
 }
 
-/* Icon đóng sidebar */
 .sidebar-icon-close {
   font-size: 30px;
   cursor: pointer;
@@ -2275,7 +2274,6 @@ ul {
   margin-top: 30px;
 }
 
-/* Icon menu khi sidebar ẩn */
 .sidebar-icon-menu {
   font-size: 40px;
   color: #abebef;
@@ -2320,7 +2318,6 @@ ul {
   padding: 10px;
 }
 
-/* Khi sidebar ẩn */
 .d-none {
   display: none !important;
 }
