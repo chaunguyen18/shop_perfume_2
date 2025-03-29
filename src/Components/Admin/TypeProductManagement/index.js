@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TypeProductManagement = () => {
   const [typeProducts, setTypeProducts] = useState([]);
@@ -41,6 +43,10 @@ const TypeProductManagement = () => {
         setNewProductName("");
         setShowModal(null);
         fetchTypeProducts();
+        toast.success("Thêm loại sản phẩm thành công!", {
+                  position: "top-right",
+                  autoClose: 3000,
+                });
       })
       .catch((error) => console.error("Lỗi khi thêm:", error));
   };
@@ -53,6 +59,10 @@ const TypeProductManagement = () => {
       .then(() => {
         setShowModal(null);
         fetchTypeProducts();
+        toast.success("Cập nhật tên loại sản phẩm thành công!", {
+                  position: "top-right",
+                  autoClose: 3000,
+                });
       })
       .catch((error) => console.error("Lỗi khi sửa:", error));
   };
@@ -65,6 +75,10 @@ const TypeProductManagement = () => {
       .then(() => {
         setShowModal(null);
         fetchTypeProducts();
+        toast.success("Xóa loại sản phẩm thành công!", {
+                  position: "top-right",
+                  autoClose: 3000,
+                });
       })
       .catch((error) => console.error("Lỗi khi xóa:", error));
   };

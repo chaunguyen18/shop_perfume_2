@@ -395,6 +395,34 @@ app.put("/api/storage/update/:id", (req, res) => {
 });
 
 
+/* API CLIENT */
+
+app.get("/api/client", (req, res) => {
+  const sql = `
+    SELECT 
+      khachhang.KH_MA,
+      khachhang.KH_SDT,
+      khachhang.KH_GIOI,
+      khachhang.KH_HOTEN,
+      khachhang.KH_DIACHI,
+      khachhang.KH_NGAYSINH,
+      login.role
+    FROM khachhang
+    LEFT JOIN login ON khachhang.KH_MA = login.KH_MA
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } 
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Không tìm thấy khách hàng nào!" });
+    }
+    res.json(results);
+  });
+});
+
+
 // CHẠY SERVER
 
 app.listen(5000, () => {
