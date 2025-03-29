@@ -325,6 +325,74 @@ app.put("/api/type-product/:id", (req, res) => {
 /* API DANH SÁCH SẢN PHẨM */
 
 
+/* API KHO */
+
+app.get("/api/storage", (req, res) => {
+  const sql = `
+    SELECT 
+      sp.SP_MA,
+      sp.SP_TEN,
+      ctsp.CTSP_SOLUONG
+      FROM sanpham sp
+      LEFT JOIN chitietsp ctsp ON sp.SP_MA = ctsp.SP_MA
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.put("/api/storage/:id", (req, res) => {
+  const { id } = req.params; 
+  const { CTSP_SOLUONG } = req.body; 
+
+  if (!CTSP_SOLUONG || CTSP_SOLUONG <= 0) {
+    return res.status(400).json({ error: "Số lượng phải lớn hơn 0!" });
+  }
+
+  const sql = "UPDATE chitietsp SET CTSP_SOLUONG = CTSP_SOLUONG + ? WHERE SP_MA = ?";
+  
+  db.query(sql, [CTSP_SOLUONG, id], (err, results) => {
+    if (err) {
+      console.error("Lỗi cập nhật:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Sản phẩm không tồn tại trong kho!" });
+    }
+
+    res.json({ message: `Đã thêm ${CTSP_SOLUONG} sản phẩm vào kho!` });
+  });
+});
+
+app.put("/api/storage/update/:id", (req, res) => {
+  const { id } = req.params; 
+  const { CTSP_SOLUONG } = req.body; 
+
+  if (!CTSP_SOLUONG || CTSP_SOLUONG <= 0) {
+    return res.status(400).json({ error: "Số lượng phải lớn hơn 0!" });
+  }
+
+  const sql = "UPDATE chitietsp SET CTSP_SOLUONG = ? WHERE SP_MA = ?";
+  
+  db.query(sql, [CTSP_SOLUONG, id], (err, results) => {
+    if (err) {
+      console.error("Lỗi cập nhật:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Sản phẩm không tồn tại trong kho!" });
+    }
+
+    res.json({ message: `Đã cập nhật ${CTSP_SOLUONG} sản phẩm vào kho!` });
+  });
+});
 
 
 // CHẠY SERVER
