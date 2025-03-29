@@ -175,7 +175,8 @@ app.get("/api/cart", (req, res) => {
 
 app.get("/api/checkout/:id", (req, res) => {
   const { id } = req.params;
-  const sql = "SELECT KH_HOTEN, KH_SDT, KH_DIACHI FROM khachhang WHERE KH_MA = ?";
+  const sql =
+    "SELECT KH_HOTEN, KH_SDT, KH_DIACHI FROM khachhang WHERE KH_MA = ?";
 
   db.query(sql, [id], (err, results) => {
     if (err) {
@@ -191,9 +192,6 @@ app.get("/api/checkout/:id", (req, res) => {
   });
 });
 
-
-
-
 /* API đặt hàng */
 
 app.post("/api/checkout", async (req, res) => {
@@ -203,7 +201,10 @@ app.post("/api/checkout", async (req, res) => {
     return res.status(400).json({ error: "Thông tin đơn hàng không hợp lệ" });
   }
 
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   const conn = await pool.getConnection();
   try {
@@ -256,27 +257,25 @@ app.get("/api/type-product", (req, res) => {
   });
 });
 
-
 app.post("/api/type-product", (req, res) => {
   const { LSP_MA, LSP_TEN } = req.body;
   const sql = "INSERT INTO loaisp (LSP_MA, LSP_TEN) VALUES (?, ?)";
   db.query(sql, [LSP_MA, LSP_TEN], (err, results) => {
-    if (err) return res.status(500).json({ error: "Lỗi khi thêm loại sản phẩm" });
+    if (err)
+      return res.status(500).json({ error: "Lỗi khi thêm loại sản phẩm" });
     res.json({ message: "Thêm thành công" });
   });
 });
-
 
 app.get("/api/type-product/max-code", (req, res) => {
   const sql = "SELECT MAX(LSP_MA) as maxCode FROM loaisp";
   db.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: "Lỗi lấy mã loại" });
 
-    const maxCode = results[0].maxCode || "L000"; 
+    const maxCode = results[0].maxCode || "L000";
     res.json({ maxCode });
   });
 });
-
 
 app.delete("/api/type-product/:id", (req, res) => {
   const { id } = req.params;
@@ -298,15 +297,17 @@ app.delete("/api/type-product/:id", (req, res) => {
 });
 
 app.put("/api/type-product/:id", (req, res) => {
-  const { id } = req.params; 
-  const { LSP_TEN } = req.body; 
+  const { id } = req.params;
+  const { LSP_TEN } = req.body;
 
   if (!LSP_TEN) {
-    return res.status(400).json({ error: "Vui lòng nhập tên loại sản phẩm mới!" });
+    return res
+      .status(400)
+      .json({ error: "Vui lòng nhập tên loại sản phẩm mới!" });
   }
 
   const sql = "UPDATE loaisp SET LSP_TEN = ? WHERE LSP_MA = ?";
-  
+
   db.query(sql, [LSP_TEN, id], (err, results) => {
     if (err) {
       console.error("Lỗi cập nhật:", err);
@@ -323,6 +324,70 @@ app.put("/api/type-product/:id", (req, res) => {
 
 /* API DANH SÁCH SẢN PHẨM */
 
+app.get("/api/product-management/max-code", (req, res) => {
+  const sql = "SELECT MAX(SP_MA) as maxCode FROM sanpham";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: "Lỗi lấy mã loại" });
+
+    const maxCode = results[0].maxCode || "SP00";
+    res.json({ maxCode });
+  });
+});
+
+app.get("/api/product-management", (req, res) => {
+  const sql = `
+     
+      SELECT 
+      sp.SP_MA, sp.SP_TEN, sp.SP_DIENGIAI, 
+      dg.DG_GIANIEMYET, brand.BRAND_TEN, 
+      lsp.LSP_TEN,
+      GROUP_CONCAT(ha.HA_PATH ORDER BY ha.HA_MA SEPARATOR '|') AS HA_PATHS 
+    FROM sanpham sp 
+    LEFT JOIN hinhanh ha ON sp.SP_MA = ha.SP_MA 
+    LEFT JOIN dongia dg ON sp.SP_MA = dg.SP_MA 
+    LEFT JOIN brand ON sp.BRAND_ID = brand.BRAND_ID 
+    LEFT JOIN loaisp lsp ON sp.LSP_MA = lsp.LSP_MA
+    GROUP BY sp.SP_MA
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.put("/api/product-management/:id", (req, res) => {
+  const { id } = req.params;
+  const { SP_TEN, LSP_TEN, BRAND_TEN, DG_GIANIEMYET, SP_DIENGIAI } = req.body;
+
+  const sql = `
+    UPDATE sp
+    SET SP_TEN = ?, LSP_MA = (SELECT LSP_MA FROM lsp WHERE LSP_TEN = ?), 
+        BRAND_ID = (SELECT BRAND_ID FROM brand WHERE BRAND_TEN = ?), 
+        DG_GIANIEMYET = ?, SP_DIENGIAI = ?
+    WHERE SP_MA = ?
+  `;
+
+  db.query(
+    sql,
+    [SP_TEN, LSP_TEN, BRAND_TEN, DG_GIANIEMYET, SP_DIENGIAI, id],
+    (err, results) => {
+      if (err) {
+        console.error("Lỗi cập nhật:", err);
+        return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
+      }
+
+      res.json({ message: "Cập nhật sản phẩm thành công!", data: results });
+    }
+  );
+});
 
 /* API KHO */
 
@@ -346,15 +411,16 @@ app.get("/api/storage", (req, res) => {
 });
 
 app.put("/api/storage/:id", (req, res) => {
-  const { id } = req.params; 
-  const { CTSP_SOLUONG } = req.body; 
+  const { id } = req.params;
+  const { CTSP_SOLUONG } = req.body;
 
   if (!CTSP_SOLUONG || CTSP_SOLUONG <= 0) {
     return res.status(400).json({ error: "Số lượng phải lớn hơn 0!" });
   }
 
-  const sql = "UPDATE chitietsp SET CTSP_SOLUONG = CTSP_SOLUONG + ? WHERE SP_MA = ?";
-  
+  const sql =
+    "UPDATE chitietsp SET CTSP_SOLUONG = CTSP_SOLUONG + ? WHERE SP_MA = ?";
+
   db.query(sql, [CTSP_SOLUONG, id], (err, results) => {
     if (err) {
       console.error("Lỗi cập nhật:", err);
@@ -362,7 +428,9 @@ app.put("/api/storage/:id", (req, res) => {
     }
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "Sản phẩm không tồn tại trong kho!" });
+      return res
+        .status(404)
+        .json({ error: "Sản phẩm không tồn tại trong kho!" });
     }
 
     res.json({ message: `Đã thêm ${CTSP_SOLUONG} sản phẩm vào kho!` });
@@ -370,15 +438,15 @@ app.put("/api/storage/:id", (req, res) => {
 });
 
 app.put("/api/storage/update/:id", (req, res) => {
-  const { id } = req.params; 
-  const { CTSP_SOLUONG } = req.body; 
+  const { id } = req.params;
+  const { CTSP_SOLUONG } = req.body;
 
   if (!CTSP_SOLUONG || CTSP_SOLUONG <= 0) {
     return res.status(400).json({ error: "Số lượng phải lớn hơn 0!" });
   }
 
   const sql = "UPDATE chitietsp SET CTSP_SOLUONG = ? WHERE SP_MA = ?";
-  
+
   db.query(sql, [CTSP_SOLUONG, id], (err, results) => {
     if (err) {
       console.error("Lỗi cập nhật:", err);
@@ -386,13 +454,14 @@ app.put("/api/storage/update/:id", (req, res) => {
     }
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "Sản phẩm không tồn tại trong kho!" });
+      return res
+        .status(404)
+        .json({ error: "Sản phẩm không tồn tại trong kho!" });
     }
 
     res.json({ message: `Đã cập nhật ${CTSP_SOLUONG} sản phẩm vào kho!` });
   });
 });
-
 
 /* API CLIENT */
 
@@ -413,24 +482,26 @@ app.get("/api/client", (req, res) => {
   db.query(sql, (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
-    } 
+    }
     if (results.length === 0) {
-      return res.status(404).json({ message: "Không tìm thấy khách hàng nào!" });
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy khách hàng nào!" });
     }
     res.json(results);
   });
 });
 
 app.put("/api/client/:id", (req, res) => {
-  const { id } = req.params; 
-  const { role } = req.body; 
+  const { id } = req.params;
+  const { role } = req.body;
 
   if (!role) {
     return res.status(400).json({ error: "Vui lòng nhập thông tin mới!" });
   }
 
   const sql = "UPDATE login SET role = ? WHERE KH_MA = ?";
-  
+
   db.query(sql, [role, id], (err, results) => {
     if (err) {
       console.error("Lỗi cập nhật:", err);
@@ -444,7 +515,6 @@ app.put("/api/client/:id", (req, res) => {
     res.json({ message: "Cập nhật thành công!", data: results });
   });
 });
-
 
 // CHẠY SERVER
 
