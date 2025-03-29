@@ -241,6 +241,89 @@ app.post("/api/checkout", async (req, res) => {
   }
 });
 
+// ADMIN
+
+/* API DANH SÁCH LOẠI SẢN PHẨM */
+app.get("/api/type-product", (req, res) => {
+  const sql = "SELECT * FROM loaisp";
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// Thêm loại sản phẩm với mã tự động
+app.post("/api/type-product", (req, res) => {
+  const { LSP_MA, LSP_TEN } = req.body;
+  const sql = "INSERT INTO loaisp (LSP_MA, LSP_TEN) VALUES (?, ?)";
+  db.query(sql, [LSP_MA, LSP_TEN], (err, results) => {
+    if (err) return res.status(500).json({ error: "Lỗi khi thêm loại sản phẩm" });
+    res.json({ message: "Thêm thành công" });
+  });
+});
+
+
+// Lấy mã loại sản phẩm lớn nhất
+app.get("/api/type-product/max-code", (req, res) => {
+  const sql = "SELECT MAX(LSP_MA) as maxCode FROM loaisp";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: "Lỗi lấy mã loại" });
+
+    const maxCode = results[0].maxCode || "L000"; 
+    res.json({ maxCode });
+  });
+});
+
+
+app.delete("/api/type-product/:id", (req, res) => {
+  const { id } = req.params;
+
+  const sql = "DELETE FROM loaisp WHERE LSP_MA = ?";
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error("Lỗi khi xóa:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Loại sản phẩm không tồn tại!" });
+    }
+
+    res.json({ message: "Xóa thành công!", data: results });
+  });
+});
+
+app.put("/api/type-product/:id", (req, res) => {
+  const { id } = req.params; 
+  const { LSP_TEN } = req.body; 
+
+  if (!LSP_TEN) {
+    return res.status(400).json({ error: "Vui lòng nhập tên loại sản phẩm mới!" });
+  }
+
+  const sql = "UPDATE loaisp SET LSP_TEN = ? WHERE LSP_MA = ?";
+  
+  db.query(sql, [LSP_TEN, id], (err, results) => {
+    if (err) {
+      console.error("Lỗi cập nhật:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Loại sản phẩm không tồn tại!" });
+    }
+
+    res.json({ message: "Cập nhật thành công!", data: results });
+  });
+});
+
+/* API DANH SÁCH SẢN PHẨM */
+
 
 
 

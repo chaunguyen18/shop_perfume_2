@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SidebarAdmin from "../../Components/SidebarAdmin";
 import { FaBars } from "react-icons/fa";
 import AccountManagement from "../../Components/Admin/AccountManagement";
-import CustomerManagement from "../../Components/Admin/AccountManagement";
+import CustomerManagement from "../../Components/Admin/CustomerManagement";
 import TypeProductManagement from "../../Components/Admin/TypeProductManagement";
 import ProductManagement from "../../Components/Admin/ProductManagement";
 import OrderManagement from "../../Components/Admin/OrderManagement";
