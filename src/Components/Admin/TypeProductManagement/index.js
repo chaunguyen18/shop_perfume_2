@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const TypeProductManagement = () => {
   const [typeProducts, setTypeProducts] = useState([]);
-  const [showModal, setShowModal] = useState(null); // 'add', 'edit', 'delete'
+  const [showModal, setShowModal] = useState(null); 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [newProductName, setNewProductName] = useState("");
   const [newProductCode, setNewProductCode] = useState("");

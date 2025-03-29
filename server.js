@@ -256,7 +256,7 @@ app.get("/api/type-product", (req, res) => {
   });
 });
 
-// Thêm loại sản phẩm với mã tự động
+
 app.post("/api/type-product", (req, res) => {
   const { LSP_MA, LSP_TEN } = req.body;
   const sql = "INSERT INTO loaisp (LSP_MA, LSP_TEN) VALUES (?, ?)";
@@ -267,7 +267,6 @@ app.post("/api/type-product", (req, res) => {
 });
 
 
-// Lấy mã loại sản phẩm lớn nhất
 app.get("/api/type-product/max-code", (req, res) => {
   const sql = "SELECT MAX(LSP_MA) as maxCode FROM loaisp";
   db.query(sql, (err, results) => {
@@ -407,8 +406,8 @@ app.get("/api/client", (req, res) => {
       khachhang.KH_DIACHI,
       khachhang.KH_NGAYSINH,
       login.role
-    FROM khachhang
-    LEFT JOIN login ON khachhang.KH_MA = login.KH_MA
+    FROM login
+    LEFT JOIN khachhang ON khachhang.KH_MA = login.KH_MA
   `;
 
   db.query(sql, (err, results) => {
@@ -419,6 +418,30 @@ app.get("/api/client", (req, res) => {
       return res.status(404).json({ message: "Không tìm thấy khách hàng nào!" });
     }
     res.json(results);
+  });
+});
+
+app.put("/api/client/:id", (req, res) => {
+  const { id } = req.params; 
+  const { role } = req.body; 
+
+  if (!role) {
+    return res.status(400).json({ error: "Vui lòng nhập thông tin mới!" });
+  }
+
+  const sql = "UPDATE login SET role = ? WHERE KH_MA = ?";
+  
+  db.query(sql, [role, id], (err, results) => {
+    if (err) {
+      console.error("Lỗi cập nhật:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Khách hàng không tồn tại!" });
+    }
+
+    res.json({ message: "Cập nhật thành công!", data: results });
   });
 });
 
