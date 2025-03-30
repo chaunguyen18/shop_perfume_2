@@ -11,6 +11,7 @@ const db = mysql.createConnection({
   user: "root",
   password: "",
   database: "db_perfumeshop",
+  multipleStatements: true,
 });
 
 // API ĐĂNG NHẬP
@@ -324,15 +325,43 @@ app.put("/api/type-product/:id", (req, res) => {
 
 /* API DANH SÁCH SẢN PHẨM */
 
+app.get("/api/brand", (req, res) => {
+  const sql = "SELECT * FROM brand";
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/unit", (req, res) => {
+  const sql = "SELECT * FROM donvitinh";
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.get("/api/product-management/max-code", (req, res) => {
   const sql = "SELECT MAX(SP_MA) as maxCode FROM sanpham";
   db.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ error: "Lỗi lấy mã loại" });
+    if (err) return res.status(500).json({ error: "Lỗi lấy mã sản phẩm" });
 
-    const maxCode = results[0].maxCode || "SP00";
-    res.json({ maxCode });
+    const maxCode = results[0].maxCode || "SP001";
+    const newCodeNumber = parseInt(maxCode.slice(2)) + 1;
+    const newCode = `SP${String(newCodeNumber).padStart(3, "0")}`;
+
+    res.json({ maxCode: newCode });
   });
 });
+
 
 app.get("/api/product-management", (req, res) => {
   const sql = `
@@ -347,6 +376,8 @@ app.get("/api/product-management", (req, res) => {
     LEFT JOIN dongia dg ON sp.SP_MA = dg.SP_MA 
     LEFT JOIN brand ON sp.BRAND_ID = brand.BRAND_ID 
     LEFT JOIN loaisp lsp ON sp.LSP_MA = lsp.LSP_MA
+    LEFT JOIN chitietsp ctsp ON ctsp.SP_MA = sp.SP_MA
+    LEFT JOIN donvitinh dvt ON dvt.DVT_ID = dg.DVT_ID
     GROUP BY sp.SP_MA
   `;
 
@@ -359,35 +390,70 @@ app.get("/api/product-management", (req, res) => {
   });
 });
 
+app.post("/api/product-management", (req, res) => {
+  const { SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, DG_GIANIEMYET } = req.body;
+
+  const sql = `
+    INSERT INTO sanpham (SP_MA, SP_TEN, LSP_MA, SP_DIENGIAI, BRAND_ID) 
+    VALUES (?, ?, ?, ?, ?);
+    
+    INSERT INTO chitietsp (SP_MA, CTSP_SOLUONG, CTSP_NOIDUNG, CTSP_SDBQ) VALUES (?, ?, ?, ?);
+    
+    INSERT INTO dongia (SP_MA, DVT_ID, DG_GIANIEMYET) VALUES (?, ?, ?);
+  `;
+
+  db.query(sql, [SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, SP_MA, SP_MA, DG_GIANIEMYET], (err, results) => {
+    if (err) return res.status(500).json({ error: "Lỗi khi thêm sản phẩm" });
+
+    res.json({ message: "Thêm sản phẩm thành công!" });
+  });
+});
+
+
 app.put("/api/product-management/:id", (req, res) => {
   const { id } = req.params;
   const { SP_TEN, LSP_TEN, BRAND_TEN, DG_GIANIEMYET, SP_DIENGIAI } = req.body;
 
   const sql = `
-    UPDATE sp
-    SET SP_TEN = ?, LSP_MA = (SELECT LSP_MA FROM lsp WHERE LSP_TEN = ?), 
-        BRAND_ID = (SELECT BRAND_ID FROM brand WHERE BRAND_TEN = ?), 
-        DG_GIANIEMYET = ?, SP_DIENGIAI = ?
-    WHERE SP_MA = ?
+    UPDATE sanpham 
+    SET SP_TEN = ?, 
+        LSP_MA = (SELECT LSP_MA FROM loaisp WHERE LSP_TEN = ?), 
+        BRAND_ID = (SELECT BRAND_ID FROM brand WHERE BRAND_TEN = ?),
+        SP_DIENGIAI = ?
+    WHERE SP_MA = ?;
+    
+    UPDATE dongia SET DG_GIANIEMYET = ? WHERE SP_MA = ?;
   `;
 
-  db.query(
-    sql,
-    [SP_TEN, LSP_TEN, BRAND_TEN, DG_GIANIEMYET, SP_DIENGIAI, id],
-    (err, results) => {
-      if (err) {
-        console.error("Lỗi cập nhật:", err);
-        return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
-      }
+  db.query(sql, [SP_TEN, LSP_TEN, BRAND_TEN, SP_DIENGIAI, id, DG_GIANIEMYET, id], (err, results) => {
+    if (err) return res.status(500).json({ error: "Lỗi cập nhật sản phẩm" });
 
-      if (results.affectedRows === 0) {
-        return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
-      }
+    if (results.affectedRows === 0) return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
 
-      res.json({ message: "Cập nhật sản phẩm thành công!", data: results });
-    }
-  );
+    res.json({ message: "Cập nhật sản phẩm thành công!" });
+  });
 });
+
+
+app.delete("/api/product-management/:id", (req, res) => {
+  const { id } = req.params;
+
+  const sql = `
+    DELETE FROM hinhanh WHERE SP_MA = ?;
+    DELETE FROM dongia WHERE SP_MA = ?;
+    DELETE FROM chitietsp WHERE SP_MA = ?;
+    DELETE FROM sanpham WHERE SP_MA = ?;
+  `;
+
+  db.query(sql, [id, id, id, id], (err, results) => {
+    if (err) return res.status(500).json({ error: "Lỗi khi xóa sản phẩm" });
+
+    if (results[3].affectedRows === 0) return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
+
+    res.json({ message: "Xóa sản phẩm thành công!" });
+  });
+});
+
 
 /* API KHO */
 
@@ -475,8 +541,8 @@ app.get("/api/client", (req, res) => {
       khachhang.KH_DIACHI,
       khachhang.KH_NGAYSINH,
       login.role
-    FROM login
-    LEFT JOIN khachhang ON khachhang.KH_MA = login.KH_MA
+    FROM khachhang
+    LEFT JOIN login ON khachhang.KH_MA = login.KH_MA
   `;
 
   db.query(sql, (err, results) => {
