@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {
   Button,
   TextField,
@@ -8,12 +8,23 @@ import {
   FormControl,
 } from "@mui/material";
 import userAvatar from "../../assets/images/user.jpg";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ProfileCustomer = () => {
-  const [name, setName] = useState("Nguyễn Văn A");
-  const [username, setUsername] = useState("chau123");
-  const [email, setEmail] = useState("nguyenvana@example.com");
-  const [phone, setPhone] = useState("0123 456 789");
+  const [customer, setCustomer] = useState({
+    KH_MA: "",
+    KH_HOTEN: "",
+    KH_TENDANGNHAP: "",
+    email: "",
+    KH_SDT: "",
+    KH_GIOITINH: "male",
+  });
+
+  const navigate = useNavigate();
+
   const [gender, setGender] = useState("male");
   const [avatar, setAvatar] = useState(userAvatar);
 
@@ -26,39 +37,64 @@ const ProfileCustomer = () => {
     }
   };
 
+  const userId = localStorage.getItem("KH_MA"); 
+
+  useEffect(() => {
+    if (!userId) {
+      toast.error("Vui lòng đăng nhập!");
+      navigate("/");
+      return;
+    }
+
+    const fetchCustomer = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/customer/${userId}`);
+        setCustomer(res.data);
+      } catch (error) {
+        console.error("Lỗi lấy thông tin khách hàng:", error);
+        toast.error("Không thể lấy thông tin khách hàng!");
+      }
+    };
+
+    fetchCustomer();
+  }, [userId, navigate]);
+
+
+  const handleChange = (e) => {
+    setCustomer({ ...customer, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="container mt-2 p-4 border rounded bg-white">
       <h3>Hồ Sơ Của Tôi</h3>
-      <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+      <p>Quản lý thông tin hồ sơ</p>     
+
       <div className="row">
-        {/* Thông tin cá nhân */}
         <div className="col-md-8 profile-content">
           <div className="mb-2">
             <label className="fw-bold mb-2">Tên đăng nhập:</label>
-            <TextField
-              fullWidth
-              value={username}
-              disabled
-            />
+            <TextField fullWidth value={customer.KH_TENDANGNHAP} disabled />
           </div>
           <div className="mb-2">
             <label className="fw-bold mb-2">Họ và tên:</label>
             <TextField
               fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              name="KH_HOTEN"
+              value={customer.KH_HOTEN}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-2">
             <label className="fw-bold mb-2">Email:</label>
-            <TextField fullWidth value={email} disabled />
+            <TextField fullWidth value={customer.email} disabled />
           </div>
           <div className="mb-2">
             <label className="fw-bold mb-2">Số điện thoại:</label>
             <TextField
               fullWidth
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              name="KH_SDT"
+              value={customer.KH_SDT}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-2">
@@ -66,8 +102,9 @@ const ProfileCustomer = () => {
             <FormControl>
               <RadioGroup
                 row
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
+                name="KH_GIOITINH"
+                value={customer.KH_GIOITINH}
+                onChange={handleChange}
               >
                 <FormControlLabel
                   value="male"
@@ -87,14 +124,11 @@ const ProfileCustomer = () => {
               </RadioGroup>
             </FormControl>
           </div>
-          <Button>
-            Lưu
-          </Button>
+          <Button>Lưu</Button>
         </div>
-
         <div className="col-md-4 text-center avatar-container">
           <img
-            src={avatar}
+            src={userAvatar}
             alt="Avatar"
             className="rounded-circle mb-3"
             style={{ width: "120px", height: "120px" }}

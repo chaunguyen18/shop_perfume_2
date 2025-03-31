@@ -191,22 +191,21 @@ app.get("/api/checkout/:id", (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy khách hàng" });
     }
 
-    res.json(results[0]); 
+    res.json(results[0]);
   });
 });
-
 
 /* API đặt hàng */
 
 app.post("/api/checkout", (req, res) => {
-  const { KH_MA, PTTT_ID, items } = req.body; 
+  const { KH_MA, PTTT_ID, items } = req.body;
 
   if (!KH_MA || !PTTT_ID || !items || items.length === 0) {
     return res.status(400).json({ error: "Dữ liệu không hợp lệ!" });
   }
 
-
-  const getLastOrderQuery = "SELECT DH_ID FROM donhang ORDER BY DH_ID DESC LIMIT 1";
+  const getLastOrderQuery =
+    "SELECT DH_ID FROM donhang ORDER BY DH_ID DESC LIMIT 1";
 
   db.query(getLastOrderQuery, (err, result) => {
     if (err) {
@@ -214,7 +213,7 @@ app.post("/api/checkout", (req, res) => {
       return res.status(500).json({ error: "Lỗi lấy mã đơn hàng" });
     }
 
-    let newDH_ID = "DH001"; 
+    let newDH_ID = "DH001";
 
     if (result.length > 0) {
       const lastNumber = parseInt(result[0].DH_ID.substring(2), 10);
@@ -223,67 +222,92 @@ app.post("/api/checkout", (req, res) => {
 
     console.log("Mã đơn hàng mới:", newDH_ID);
 
-
     const insertOrderQuery = `
       INSERT INTO donhang (DH_ID, DH_NGAYLAP, DH_GIOLAP, DH_THANHTIEN, KH_MA, TT_ID, PTTT_ID)
       VALUES (?, CURDATE(), CURTIME(), ?, ?, '1', ?)
     `;
 
-    const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const totalPrice = items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
 
-    db.query(insertOrderQuery, [newDH_ID, totalPrice, KH_MA, PTTT_ID], (err) => {
-      if (err) {
-        console.error("Lỗi thêm đơn hàng:", err);
-        return res.status(500).json({ error: "Lỗi thêm đơn hàng" });
-      }
+    db.query(
+      insertOrderQuery,
+      [newDH_ID, totalPrice, KH_MA, PTTT_ID],
+      (err) => {
+        if (err) {
+          console.error("Lỗi thêm đơn hàng:", err);
+          return res.status(500).json({ error: "Lỗi thêm đơn hàng" });
+        }
 
-      console.log("Thêm đơn hàng thành công!");
+        console.log("Thêm đơn hàng thành công!");
 
-   
-      const insertOrderDetailsQuery = `
+        const insertOrderDetailsQuery = `
         INSERT INTO chitietdh (DH_ID, SP_MA, CTDH_DVT, CTDH_SOLUONG, CTDH_DONGIA)
         VALUES ?
       `;
 
-      const orderDetailsValues = items.map((item) => [
-        newDH_ID,
-        item.SP_MA,
-        item.size,
-        item.quantity,
-        item.price,
-      ]);
+        const orderDetailsValues = items.map((item) => [
+          newDH_ID,
+          item.SP_MA,
+          item.size,
+          item.quantity,
+          item.price,
+        ]);
 
-      console.log("Dữ liệu chi tiết đơn hàng:", orderDetailsValues);
+        console.log("Dữ liệu chi tiết đơn hàng:", orderDetailsValues);
 
-      db.query(insertOrderDetailsQuery, [orderDetailsValues], (err) => {
-        if (err) {
-          console.error("Lỗi thêm chi tiết đơn hàng:", err);
-          return res.status(500).json({ error: "Lỗi thêm chi tiết đơn hàng" });
-        }
+        db.query(insertOrderDetailsQuery, [orderDetailsValues], (err) => {
+          if (err) {
+            console.error("Lỗi thêm chi tiết đơn hàng:", err);
+            return res
+              .status(500)
+              .json({ error: "Lỗi thêm chi tiết đơn hàng" });
+          }
 
-        console.log("Thêm chi tiết đơn hàng thành công!");
+          console.log("Thêm chi tiết đơn hàng thành công!");
 
-       
-        const updateStockQuery = `
+          const updateStockQuery = `
           UPDATE chitietsp 
           SET CTSP_SOLUONG = CTSP_SOLUONG - ? 
           WHERE SP_MA = ?
         `;
 
-        items.forEach((item) => {
-          db.query(updateStockQuery, [item.quantity, item.SP_MA], (err) => {
-            if (err) {
-              console.error("Lỗi cập nhật số lượng sản phẩm:", err);
-            }
+          items.forEach((item) => {
+            db.query(updateStockQuery, [item.quantity, item.SP_MA], (err) => {
+              if (err) {
+                console.error("Lỗi cập nhật số lượng sản phẩm:", err);
+              }
+            });
           });
-        });
 
-        res.status(201).json({ message: "Đặt hàng thành công!", DH_ID: newDH_ID });
-      });
-    });
+          res
+            .status(201)
+            .json({ message: "Đặt hàng thành công!", DH_ID: newDH_ID });
+        });
+      }
+    );
   });
 });
 
+/* ---------------- TÀI KHOẢN KH ------------------ */
+app.get("/api/customer/:id", (req, res) => {
+  const khachHangId = req.params.id; 
+  const sql = "SELECT khachhang.*, login.NAME AS KH_TENDANGNHAP, login.PASSWORD FROM khachhang LEFT JOIN login ON login.KH_MA = khachhang.KH_MA WHERE khachhang.KH_MA = ?";
+
+  db.query(sql, [khachHangId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      if (results.length > 0) {
+        res.json(results[0]); // Lấy khách hàng đầu tiên
+      } else {
+        res.status(404).json({ error: "Không tìm thấy khách hàng" });
+      }
+    }
+  });
+});
 
 
 
@@ -406,7 +430,6 @@ app.get("/api/product-management/max-code", (req, res) => {
   });
 });
 
-
 app.get("/api/product-management", (req, res) => {
   const sql = `
      
@@ -435,7 +458,8 @@ app.get("/api/product-management", (req, res) => {
 });
 
 app.post("/api/product-management", (req, res) => {
-  const { SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, DG_GIANIEMYET } = req.body;
+  const { SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, DG_GIANIEMYET } =
+    req.body;
 
   const sql = `
     INSERT INTO sanpham (SP_MA, SP_TEN, LSP_MA, SP_DIENGIAI, BRAND_ID) 
@@ -446,13 +470,16 @@ app.post("/api/product-management", (req, res) => {
     INSERT INTO dongia (SP_MA, DVT_ID, DG_GIANIEMYET) VALUES (?, ?, ?);
   `;
 
-  db.query(sql, [SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, SP_MA, SP_MA, DG_GIANIEMYET], (err, results) => {
-    if (err) return res.status(500).json({ error: "Lỗi khi thêm sản phẩm" });
+  db.query(
+    sql,
+    [SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, SP_MA, SP_MA, DG_GIANIEMYET],
+    (err, results) => {
+      if (err) return res.status(500).json({ error: "Lỗi khi thêm sản phẩm" });
 
-    res.json({ message: "Thêm sản phẩm thành công!" });
-  });
+      res.json({ message: "Thêm sản phẩm thành công!" });
+    }
+  );
 });
-
 
 app.put("/api/product-management/:id", (req, res) => {
   const { id } = req.params;
@@ -469,15 +496,19 @@ app.put("/api/product-management/:id", (req, res) => {
     UPDATE dongia SET DG_GIANIEMYET = ? WHERE SP_MA = ?;
   `;
 
-  db.query(sql, [SP_TEN, LSP_TEN, BRAND_TEN, SP_DIENGIAI, id, DG_GIANIEMYET, id], (err, results) => {
-    if (err) return res.status(500).json({ error: "Lỗi cập nhật sản phẩm" });
+  db.query(
+    sql,
+    [SP_TEN, LSP_TEN, BRAND_TEN, SP_DIENGIAI, id, DG_GIANIEMYET, id],
+    (err, results) => {
+      if (err) return res.status(500).json({ error: "Lỗi cập nhật sản phẩm" });
 
-    if (results.affectedRows === 0) return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
+      if (results.affectedRows === 0)
+        return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
 
-    res.json({ message: "Cập nhật sản phẩm thành công!" });
-  });
+      res.json({ message: "Cập nhật sản phẩm thành công!" });
+    }
+  );
 });
-
 
 app.delete("/api/product-management/:id", (req, res) => {
   const { id } = req.params;
@@ -492,12 +523,12 @@ app.delete("/api/product-management/:id", (req, res) => {
   db.query(sql, [id, id, id, id], (err, results) => {
     if (err) return res.status(500).json({ error: "Lỗi khi xóa sản phẩm" });
 
-    if (results[3].affectedRows === 0) return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
+    if (results[3].affectedRows === 0)
+      return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
 
     res.json({ message: "Xóa sản phẩm thành công!" });
   });
 });
-
 
 /* API KHO */
 

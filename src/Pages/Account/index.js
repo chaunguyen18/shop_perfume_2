@@ -12,11 +12,10 @@ import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import { IoExitOutline } from "react-icons/io5";
 
-
 const Account = () => {
   const navigate = useNavigate();
   const { option } = useParams(); // Lấy option từ URL
-  
+
   const vouchers = [
     { code: "FADE10", discount: "10%", expiry: "2024-03-01" },
     { code: "FADE50", discount: "50%", expiry: "2024-04-15" },
@@ -26,21 +25,13 @@ const Account = () => {
   const renderContent = () => {
     switch (option) {
       case "profile":
-        return (
-          <ProfileCustomer />
-        );
+        return <ProfileCustomer />;
       case "address":
-        return (
-          <AddressCustomer />
-        );
+        return <AddressCustomer />;
       case "reset-password":
-        return (
-          <ResetPwCustomer />
-        );
+        return <ResetPwCustomer />;
       case "orders":
-        return (
-          <OrderCustomer />
-        );
+        return <OrderCustomer />;
       case "voucher":
         return (
           <div>
@@ -83,62 +74,52 @@ const Account = () => {
 
   return (
     <>
-    <Header />
-    <div className="container account mb-3 mt-3">
-      <div className="row">
-        
-        <div className="col-md-4 mt-3 mb-2 account-menu">
-          <ul className="list-group">
-            <li
-              className="list-group-item"
-              onClick={() => navigate("/cat")}
-            >
-              <MdOutlineSell /> Siêu sale
-            </li>
-            <li
-              className="list-group-item"
-              onClick={() => navigate("/account/noti")}
-            >
-              <FaBell /> Thông báo
-            </li>
-            <div className="list-group-item my-account">
-              <h3>
-                <FaUserCog /> Tài khoản của tôi
-              </h3>
-              <li onClick={() => navigate("/account/profile")}>Hồ sơ</li>
-              <li onClick={() => navigate("/account/address")}>Địa chỉ</li>
-              <li onClick={() => navigate("/account/reset-password")}>
-                Đổi mật khẩu
+      <Header />
+      <div className="container account mb-3 mt-3">
+        <div className="row">
+          <div className="col-md-4 mt-3 mb-2 account-menu">
+            <ul className="list-group">
+              <li className="list-group-item" onClick={() => navigate("/cat")}>
+                <MdOutlineSell /> Siêu sale
               </li>
-            </div>
-            <li
-              className="list-group-item"
-              onClick={() => navigate("/account/orders")}
-            >
-              <FaBox /> Đơn mua
-            </li>
-            <li
-              className="list-group-item"
-              onClick={() => navigate("/account/voucher")}
-            >
-              <IoTicket /> Kho voucher
-            </li>
-            <li
-              className="list-group-item"
-              onClick={() => navigate("/")}
-            >
-              <IoExitOutline /> Đăng xuất
-            </li>
-          </ul>
-        </div>
+              <li
+                className="list-group-item"
+                onClick={() => navigate("/account/noti")}
+              >
+                <FaBell /> Thông báo
+              </li>
+              <div className="list-group-item my-account">
+                <h3>
+                  <FaUserCog /> Tài khoản của tôi
+                </h3>
+                <li onClick={() => navigate("/account/profile")}>Hồ sơ</li>
+                <li onClick={() => navigate("/account/address")}>Địa chỉ</li>
+                <li onClick={() => navigate("/account/reset-password")}>
+                  Đổi mật khẩu
+                </li>
+              </div>
+              <li
+                className="list-group-item"
+                onClick={() => navigate("/account/orders")}
+              >
+                <FaBox /> Đơn mua
+              </li>
+              <li
+                className="list-group-item"
+                onClick={() => navigate("/account/voucher")}
+              >
+                <IoTicket /> Kho voucher
+              </li>
+              <li className="list-group-item" onClick={() => navigate("/")}>
+                <IoExitOutline /> Đăng xuất
+              </li>
+            </ul>
+          </div>
 
-        
-        <div className="col-md-8 mb-2 account-content">
-          {renderContent()}
+          <div className="col-md-8 mb-2 account-content">{renderContent()}</div>
         </div>
       </div>
-    </div>
-<Footer />
+      <Footer />
     </>
   );
 };

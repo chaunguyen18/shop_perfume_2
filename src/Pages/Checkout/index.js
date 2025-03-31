@@ -50,7 +50,7 @@ const Checkout = () => {
   useEffect(() => {
     if (!userId) {
       toast.error("Vui lòng đăng nhập!");
-      navigate("/login");
+      navigate("/");
       return;
     }
 

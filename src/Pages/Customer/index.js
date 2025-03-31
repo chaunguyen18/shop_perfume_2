@@ -15,6 +15,7 @@ import { MdLocalAtm } from "react-icons/md";
 import { IoShieldCheckmark } from "react-icons/io5";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
+import { Link } from "react-router-dom";
 
 const Customer = () => {
   return (
@@ -35,9 +36,11 @@ const Customer = () => {
               </p>
             </div>
 
-            <Button className="viewAllBtn">
-              Xem tất cả <FaAngleRight />
-            </Button>
+            <Link to="/cat">
+              <Button className="viewAllBtn">
+                Xem tất cả <FaAngleRight />
+              </Button>
+            </Link>
           </div>
           <div className="product_row w-100 mt-4">
             <div className="productRow2 w-100 mt-4 d-flex">
@@ -55,9 +58,12 @@ const Customer = () => {
               </p>
             </div>
 
-            <Button className="viewAllBtn">
-              Xem tất cả <FaAngleRight />
-            </Button>
+            <Link to="/cat">
+              <Button className="viewAllBtn">
+                Xem tất cả <FaAngleRight />
+              </Button>
+            </Link>
+            
           </div>
           <div className="productRow2 w-100 mt-4 d-flex">
             <ProductItem />
