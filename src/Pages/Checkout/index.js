@@ -25,7 +25,6 @@ const Checkout = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/checkout", {
         KH_MA: userId,
-        cart,
         PTTT_ID: selectedPayment, // Lưu phương thức thanh toán
       });
 

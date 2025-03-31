@@ -46,7 +46,9 @@ const ProductManagement = () => {
   const fetchBrand = () => {
     axios
       .get("http://localhost:5000/api/brand")
-      .then((response) => setBrandList(response.data))
+      .then((response) => {
+        setBrandList(response.data);
+      })
       .catch((error) => console.error("Lỗi khi lấy thương hiệu:", error));
   };
 
@@ -327,9 +329,9 @@ const ProductManagement = () => {
                     onChange={(e) => setNewBrandName(e.target.value)}
                   >
                     <option value="">-- Chọn thương hiệu --</option>
-                    {brandList.map((brand) => (
-                      <option key={brand.BRAND_ID} value={brand.BRAND_ID}>
-                        {brand.BRAND_TEN}
+                    {brandList.map((index) => (
+                      <option key={index.BRAND_ID} value={index.BRAND_ID}>
+                          {index.BRAND_TEN || "Không có tên"}
                       </option>
                     ))}
                   </select>
@@ -341,7 +343,8 @@ const ProductManagement = () => {
                     value={newProductImage}
                     onChange={(e) => setNewProductImage(e.target.value)}
                   />
-                  <label>Chi tiết sản phẩm:</label>
+
+                  {/* <label>Chi tiết sản phẩm:</label>
                   <textarea
                     value={newPDContent}
                     onChange={(e) => setNewPDContent(e.target.value)}
@@ -353,7 +356,6 @@ const ProductManagement = () => {
                     value={newPDPreserve}
                     onChange={(e) => setNewPDPreserve(e.target.value)}
                   />
-
                   <label>Đơn vị tính:</label>
                   <select
                     value={newDVTName}
@@ -365,15 +367,15 @@ const ProductManagement = () => {
                         {dvt.DVT_TEN}
                       </option>
                     ))}
+                  </select> */}
 
-                    <label>Giá niêm yết:</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={newDG}
-                      onChange={(e) => setNewDG(e.target.value)}
-                    />
-                  </select>
+                  <label>Giá niêm yết:</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={newDG}
+                    onChange={(e) => setNewDG(e.target.value)}
+                  />
                 </div>
 
                 <div className="modal-footer">

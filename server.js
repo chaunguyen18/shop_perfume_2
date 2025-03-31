@@ -193,55 +193,30 @@ app.get("/api/checkout/:id", (req, res) => {
   });
 });
 
+
 /* API đặt hàng */
 
-app.post("/api/checkout", async (req, res) => {
-  const { KH_MA, cart, PTTT_ID } = req.body;
+app.post("/api/checkout/:id", async (req, res) => {
 
-  if (!KH_MA || !cart || cart.length === 0 || !PTTT_ID) {
-    return res.status(400).json({ error: "Thông tin đơn hàng không hợp lệ" });
-  }
+  const {DH_ID, KH_MA, PTTT_ID} = req.body;
 
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const sql = `INSERT INTO donhang (DH_ID, DH_NGAYLAP, DH_GIOLAP, DH_THANHTIEN, KH_MA, TT_ID, PTTT_ID) VALUES (?, ?, ?, ?, ?, Cho xac nhan, ?;
+   INSERT INTO chitietdh (CTDH_ID, DH_ID, SP_MA, CTDH_DVT, CTDH_SOLUONG, CTDH_DONGIA) VALUES (?, ?, ?, ?, ?, ?);
+   
+   UPDATE chitietsp SET CTSP_SOLUONG = ? WHERE SP_MA = ? 
+   `
+  
 
-  const conn = await pool.getConnection();
-  try {
-    await conn.beginTransaction();
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
 
-    // 1️⃣ Tạo đơn hàng mới
-    const [orderResult] = await conn.query(
-      "INSERT INTO donhang (KH_MA, DH_NGAYLAP, DH_GIOLAP, DH_THANHTIEN, TT_ID, PTTT_ID) VALUES (?, NOW(), NOW(), ?, 1, ?)",
-      [KH_MA, totalPrice, PTTT_ID]
-    );
-    const DH_ID = orderResult.insertId;
+  });
 
-    // 2️⃣ Thêm chi tiết đơn hàng
-    const orderDetails = cart.map((item) => [
-      DH_ID,
-      item.SP_MA,
-      item.size,
-      item.quantity,
-      item.price,
-    ]);
-
-    await conn.query(
-      "INSERT INTO chitietdh (DH_ID, SP_MA, CTDH_DVT, CTDH_SOLUONG, CTDH_DONGIA) VALUES ?",
-      [orderDetails]
-    );
-
-    await conn.commit();
-    res.status(201).json({ message: "Đặt hàng thành công!", DH_ID });
-  } catch (error) {
-    await conn.rollback();
-    console.error("Lỗi đặt hàng:", error);
-    res.status(500).json({ error: "Lỗi đặt hàng", details: error.message });
-  } finally {
-    conn.release();
-  }
-});
 
 // ADMIN
 
