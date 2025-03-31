@@ -6,7 +6,7 @@ import ProductModal from "../ProductModal";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const ProductItem = () => {
+const ProductItem = ({ priceRange, selectedBrands, selectedTProducts }) => {
   const navigate = useNavigate(); 
   const [isOpenProductModal, setIsOpenProductModal] = useState(false);
   const [products, setProducts] = useState([]);
@@ -36,11 +36,25 @@ const ProductItem = () => {
     setSelectedProductId(productId);
     setIsOpenProductModal(true);
   };
+
+  const filteredProducts = products.filter((product) => {
+    if (!Array.isArray(priceRange) || priceRange.length < 2) {
+      console.error("priceRange bị lỗi:", priceRange);
+      return true; // Nếu lỗi thì hiển thị hết sản phẩm, tránh crash
+    }
+    return (
+      product.DG_GIANIEMYET * 0.5 >= priceRange[0] &&
+      product.DG_GIANIEMYET * 0.5 <= priceRange[1] &&
+      (selectedBrands.length === 0 || selectedBrands.includes(product.BRAND_TEN)) &&
+      (selectedTProducts.length === 0 || selectedTProducts.includes(product.LSP_TEN))
+    );
+  });
+  
   
 
   return (
     <div className="product-list">
-      {products.map((product) => (
+      {filteredProducts.map((product) => (
         <div
           className="item productItem"
           key={product.SP_MA}
@@ -65,6 +79,7 @@ const ProductItem = () => {
 
           <div className="info">
             <h4>{product.SP_TEN}</h4>
+            <h6 className="text-muted">{product.LSP_TEN}</h6>
             <span className="text-success block">Còn hàng</span>
             <div className="d-flex">
               <span className="oldPrice">

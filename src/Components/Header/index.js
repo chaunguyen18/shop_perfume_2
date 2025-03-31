@@ -6,11 +6,13 @@ import { FaUserAlt } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import SearchBox from "./SearchBox";
 import Navigation from "./Navigation";
-import { useCart } from "../CartContext/CartContext";
 
 const Header = () => {
-
-  // const { cartCount } = useCart();
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   return (
     <>
@@ -36,17 +38,19 @@ const Header = () => {
               <SearchBox />
               <div className="part3 d-flex align-items-center ml-auto">
                 <Button className="circle mr-3">
-                  <Link to="/account"><FaUserAlt /></Link>
+                  <Link to="/account">
+                    <FaUserAlt />
+                  </Link>
                 </Button>
                 <div className="ml-auto cartTab d-flex align-items-center">
-                  <span className="price">$50</span>
+                  <span className="price">{totalPrice}đ</span>
+
                   <div className="position-relative ml-2">
-                  <Link to="/cart">
-                    <Button className="circle">
-                      <FaCartShopping />
-                    </Button>
+                    <Link to="/cart">
+                      <Button className="circle">
+                        <FaCartShopping />
+                      </Button>
                     </Link>
-                    {/* <span className="count align-items-center">{cartCount}</span> */}
                   </div>
                 </div>
               </div>

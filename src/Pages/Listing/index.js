@@ -21,6 +21,10 @@ const Listing = () => {
     setAnchorEl(null);
   };
 
+  const [priceRange, setPriceRange] = useState([100000, 5000000]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedTProducts, setSelectedTProducts] = useState([]);
+
   return (
     <>
       <Header />
@@ -29,7 +33,14 @@ const Listing = () => {
         <div className="container">
           <div className="row">
             <div className="sidebar col-md-4">
-              <Sidebar />
+              <Sidebar
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                selectedBrands={selectedBrands}
+                setSelectedBrands={setSelectedBrands}
+                selectedTProducts={selectedTProducts}
+                setSelectedTProducts={setSelectedTProducts}
+              />
               <Link to="/">
                 <img
                   src="https://theme.hstatic.net/1000340570/1000964732/14/brand-image.svg?v=6851"
@@ -72,7 +83,11 @@ const Listing = () => {
 
               <div className="product_row w-100 mt-4">
                 <div className="productRow2 w-100 mt-4 d-flex">
-                  <ProductItem />
+                  <ProductItem
+                    priceRange={priceRange} 
+                    selectedBrands={selectedBrands}
+                    selectedTProducts={selectedTProducts}
+                  />
                 </div>
               </div>
 

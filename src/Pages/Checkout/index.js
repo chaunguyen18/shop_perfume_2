@@ -36,7 +36,7 @@ const Checkout = () => {
       });
   
       if (response.status === 201) {
-        toast.success(`Đặt hàng thành công! Mã đơn hàng: ${response.data.DH_ID}`);
+        toast.success(`Đặt hàng thành công!`);
         setCart([]); 
         navigate("/customer-home");
       }

@@ -91,7 +91,7 @@ const Account = () => {
           <ul className="list-group">
             <li
               className="list-group-item"
-              onClick={() => navigate("/cat/:id")}
+              onClick={() => navigate("/cat")}
             >
               <MdOutlineSell /> Siêu sale
             </li>

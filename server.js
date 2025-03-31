@@ -63,7 +63,8 @@ app.get("/api/product", (req, res) => {
     SELECT 
       sanpham.SP_MA, 
       sanpham.SP_TEN, 
-      sanpham.LSP_MA, 
+      loaisp.LSP_MA, 
+      loaisp.LSP_TEN,
       sanpham.SP_DIENGIAI, 
       MIN(sanpham.SP_DIENGIAI) AS image, 
       dongia.DG_GIANIEMYET,
@@ -72,6 +73,7 @@ app.get("/api/product", (req, res) => {
     LEFT JOIN hinhanh ON sanpham.SP_MA = hinhanh.SP_MA
     LEFT JOIN dongia ON sanpham.SP_MA = dongia.SP_MA
     LEFT JOIN brand ON sanpham.BRAND_ID = brand.BRAND_ID
+    LEFT JOIN loaisp ON sanpham.LSP_MA = loaisp.LSP_MA
     GROUP BY sanpham.SP_MA
   `;
 
