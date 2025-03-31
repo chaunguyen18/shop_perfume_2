@@ -189,36 +189,103 @@ app.get("/api/checkout/:id", (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy khách hàng" });
     }
 
-    res.json(results[0]); // Trả về một object thay vì array
+    res.json(results[0]); 
   });
 });
 
 
 /* API đặt hàng */
 
-app.post("/api/checkout/:id", async (req, res) => {
+app.post("/api/checkout", (req, res) => {
+  const { KH_MA, PTTT_ID, items } = req.body; 
 
-  const {DH_ID, KH_MA, PTTT_ID} = req.body;
+  if (!KH_MA || !PTTT_ID || !items || items.length === 0) {
+    return res.status(400).json({ error: "Dữ liệu không hợp lệ!" });
+  }
 
-  const sql = `INSERT INTO donhang (DH_ID, DH_NGAYLAP, DH_GIOLAP, DH_THANHTIEN, KH_MA, TT_ID, PTTT_ID) VALUES (?, ?, ?, ?, ?, Cho xac nhan, ?;
-   INSERT INTO chitietdh (CTDH_ID, DH_ID, SP_MA, CTDH_DVT, CTDH_SOLUONG, CTDH_DONGIA) VALUES (?, ?, ?, ?, ?, ?);
-   
-   UPDATE chitietsp SET CTSP_SOLUONG = ? WHERE SP_MA = ? 
-   `
-  
 
-  db.query(sql, (err, results) => {
+  const getLastOrderQuery = "SELECT DH_ID FROM donhang ORDER BY DH_ID DESC LIMIT 1";
+
+  db.query(getLastOrderQuery, (err, result) => {
     if (err) {
-      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
-    } else {
-      res.json(results);
+      console.error("Lỗi lấy DH_ID:", err);
+      return res.status(500).json({ error: "Lỗi lấy mã đơn hàng" });
     }
+
+    let newDH_ID = "DH001"; 
+
+    if (result.length > 0) {
+      const lastNumber = parseInt(result[0].DH_ID.substring(2), 10);
+      newDH_ID = `DH${String(lastNumber + 1).padStart(3, "0")}`;
+    }
+
+    console.log("Mã đơn hàng mới:", newDH_ID);
+
+
+    const insertOrderQuery = `
+      INSERT INTO donhang (DH_ID, DH_NGAYLAP, DH_GIOLAP, DH_THANHTIEN, KH_MA, TT_ID, PTTT_ID)
+      VALUES (?, CURDATE(), CURTIME(), ?, ?, '1', ?)
+    `;
+
+    const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+    db.query(insertOrderQuery, [newDH_ID, totalPrice, KH_MA, PTTT_ID], (err) => {
+      if (err) {
+        console.error("Lỗi thêm đơn hàng:", err);
+        return res.status(500).json({ error: "Lỗi thêm đơn hàng" });
+      }
+
+      console.log("Thêm đơn hàng thành công!");
+
+   
+      const insertOrderDetailsQuery = `
+        INSERT INTO chitietdh (DH_ID, SP_MA, CTDH_DVT, CTDH_SOLUONG, CTDH_DONGIA)
+        VALUES ?
+      `;
+
+      const orderDetailsValues = items.map((item) => [
+        newDH_ID,
+        item.SP_MA,
+        item.size,
+        item.quantity,
+        item.price,
+      ]);
+
+      console.log("Dữ liệu chi tiết đơn hàng:", orderDetailsValues);
+
+      db.query(insertOrderDetailsQuery, [orderDetailsValues], (err) => {
+        if (err) {
+          console.error("Lỗi thêm chi tiết đơn hàng:", err);
+          return res.status(500).json({ error: "Lỗi thêm chi tiết đơn hàng" });
+        }
+
+        console.log("Thêm chi tiết đơn hàng thành công!");
+
+       
+        const updateStockQuery = `
+          UPDATE chitietsp 
+          SET CTSP_SOLUONG = CTSP_SOLUONG - ? 
+          WHERE SP_MA = ?
+        `;
+
+        items.forEach((item) => {
+          db.query(updateStockQuery, [item.quantity, item.SP_MA], (err) => {
+            if (err) {
+              console.error("Lỗi cập nhật số lượng sản phẩm:", err);
+            }
+          });
+        });
+
+        res.status(201).json({ message: "Đặt hàng thành công!", DH_ID: newDH_ID });
+      });
+    });
   });
+});
 
-  });
 
 
-// ADMIN
+
+/* ---------------- ADMIN ---------------------- */
 
 /* API DANH SÁCH LOẠI SẢN PHẨM */
 app.get("/api/type-product", (req, res) => {

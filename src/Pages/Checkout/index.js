@@ -21,23 +21,31 @@ const Checkout = () => {
       toast.error("Vui lòng chọn phương thức thanh toán!");
       return;
     }
-
+  
     try {
       const response = await axios.post("http://localhost:5000/api/checkout", {
         KH_MA: userId,
-        PTTT_ID: selectedPayment, // Lưu phương thức thanh toán
+        PTTT_ID: selectedPayment,
+        items: cart.map((item) => ({
+          SP_MA: item.product.SP_MA, 
+          size: item.size, 
+          quantity: item.quantity, 
+          price: item.price, 
+          totalPrice: item.price * item.quantity, 
+        })),
       });
-
+  
       if (response.status === 201) {
-        toast.success("Đặt hàng thành công!");
+        toast.success(`Đặt hàng thành công! Mã đơn hàng: ${response.data.DH_ID}`);
         setCart([]); 
-        navigate("/customer-home")
+        navigate("/customer-home");
       }
     } catch (error) {
       console.error("Lỗi thanh toán:", error);
       toast.error("Thanh toán thất bại!");
     }
   };
+  
 
   useEffect(() => {
     if (!userId) {
@@ -94,17 +102,19 @@ const Checkout = () => {
 
             <div className="checkout-payment">
               <h3>Phương thức thanh toán</h3>
-              {/* <div className="form-check">
+              <div className="form-check">
                 <input
                   className="form-check-input"
                   type="radio"
                   name="payment"
                   id="cod"
+                  value="3"
+                  onChange={(e) => setSelectedPayment(e.target.value)}
                 />
                 <label className="form-check-label" htmlFor="cod">
                   Thanh toán khi nhận hàng (COD)
                 </label>
-              </div> */}
+              </div>
               <div className="form-check">
                 <input
                   className="form-check-input"
