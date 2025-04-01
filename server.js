@@ -18,7 +18,7 @@ const db = mysql.createConnection({
 
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
-  const sql = "SELECT * FROM login WHERE NAME = ? AND PASSWORD = ?";
+  const sql = "SELECT * FROM login WHERE USERNAME = ? AND PASSWORD = ?";
 
   db.query(sql, [username, password], (err, result) => {
     if (err) return res.json({ success: false, message: "Lỗi server!" });
@@ -314,12 +314,12 @@ app.get("/api/customer/:id", (req, res) => {
 
 app.put("/api/customer/:id", (req, res) => {
   const { id } = req.params;
-  const { KH_HOTEN, KH_GIOI, KH_SDT } = req.body;  // Extract values from the request body
+  const { KH_HOTEN, KH_GIOI, KH_SDT } = req.body; // Extract values from the request body
 
   if (!KH_HOTEN || !KH_GIOI || !KH_SDT) {
     return res.status(400).json({ error: "Vui lòng nhập đầy đủ thông tin!" });
   }
-  
+
   const sql = `UPDATE khachhang SET KH_HOTEN = ?, KH_GIOI = ?, KH_SDT = ? WHERE KH_MA = ?;`;
 
   db.query(sql, [KH_HOTEN, KH_GIOI, KH_SDT, id], (err, results) => {
@@ -332,7 +332,7 @@ app.put("/api/customer/:id", (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy khách hàng" });
     }
 
-    const customerData = results[0] || {}; 
+    const customerData = results[0] || {};
     res.json(customerData);
   });
 });
@@ -680,6 +680,98 @@ app.put("/api/client/:id", (req, res) => {
     }
 
     res.json({ message: "Cập nhật thành công!", data: results });
+  });
+});
+
+/* API ORDER */
+app.get("/api/order", (req, res) => {
+  const sql = `
+    SELECT 
+      dh.*,
+      tt.*,
+      ctdh.*, 
+      kh.*, 
+      pttt.*
+      FROM donhang dh
+      LEFT JOIN chitietdh ctdh ON ctdh.DH_ID = dh.DH_ID
+      LEFT JOIN khachhang kh ON dh.KH_MA = kh.KH_MA
+      LEFT JOIN trangthai tt ON dh.TT_ID = tt.TT_ID
+      LEFT JOIN phuongthucthanhtoan pttt ON pttt.PTTT_ID = dh.PTTT_ID      
+      GROUP BY dh.DH_ID 
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/order-details/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `
+    SELECT 
+      dh.*,
+      tt.*,
+      ctdh.*, 
+      kh.*, 
+      pttt.*,
+      sp.*
+      FROM donhang dh
+      LEFT JOIN chitietdh ctdh ON ctdh.DH_ID = dh.DH_ID
+      LEFT JOIN khachhang kh ON dh.KH_MA = kh.KH_MA
+      LEFT JOIN trangthai tt ON dh.TT_ID = tt.TT_ID
+      LEFT JOIN phuongthucthanhtoan pttt ON pttt.PTTT_ID = dh.PTTT_ID      
+      LEFT JOIN sanpham sp ON sp.SP_MA = ctdh.SP_MA
+  `;
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Không tìm thấy đơn hàng!" });
+    }
+  });
+});
+
+app.put("/api/order/:id", (req, res) => {
+  const { id } = req.params;
+  const { TT_TEN } = req.body;
+
+  if (!TT_TEN) {
+    return res.status(400).json({ error: "Vui lòng nhập trạng thái mới!" });
+  }
+
+  const getStatusIdQuery = "SELECT TT_ID FROM trangthai WHERE TT_TEN = ?";
+  db.query(getStatusIdQuery, [TT_TEN], (err, results) => {
+    if (err) {
+      console.error("Lỗi khi lấy TT_ID:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Trạng thái không hợp lệ!" });
+    }
+
+    const TT_ID = results[0].TT_ID;
+
+    const updateQuery = "UPDATE donhang SET TT_ID = ? WHERE DH_ID = ?";
+    db.query(updateQuery, [TT_ID, id], (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error("Lỗi cập nhật:", updateErr);
+        return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+      }
+
+      if (updateResults.affectedRows === 0) {
+        return res.status(404).json({ error: "Đơn hàng không tồn tại!" });
+      }
+
+      res.json({ message: "Cập nhật thành công!", data: updateResults });
+    });
   });
 });
 
