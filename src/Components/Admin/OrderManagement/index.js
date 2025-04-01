@@ -104,7 +104,6 @@ const OrderManagement = () => {
                           onClick={() => {
                             setSelectedOrder(order);
                             fetchDetailsOrderData(order.DH_ID);
-
                             setShowModal("showdetails");
                           }}
                         >
@@ -206,7 +205,7 @@ const OrderManagement = () => {
                   <table className="table table-bordered">
                     <thead>
                       <tr className="table-primary">
-                        <th>Hình ảnh</th>
+                        <th >Hình ảnh</th>
                         <th>Tên sản phẩm</th>
                         <th>Đơn vị tính</th>
                         <th>Số lượng</th>
@@ -223,8 +222,8 @@ const OrderManagement = () => {
                                 src={item.SP_DIENGIAI}
                                 alt={item.SP_TEN || "Sản phẩm"}
                                 style={{
-                                  width: "50px",
-                                  height: "50px",
+                                  width: "100px",
+                                  height: "100px",
                                   objectFit: "cover",
                                 }}
                               />
@@ -251,7 +250,7 @@ const OrderManagement = () => {
                   </table>
                 </div>
 
-                <div className="text-end mt-3">
+                <div className="text-start mt-3">
                   <strong
                     style={{
                       fontSize: "20px",
@@ -260,10 +259,11 @@ const OrderManagement = () => {
                     }}
                   >
                     Tổng tiền:
-                  </strong>{" "}
-                  <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+                    <p style={{ fontSize: "20px", fontWeight: "bold" }}>
                     {selectedOrder?.DH_THANHTIEN?.toLocaleString()} VNĐ
-                  </span>
+                  </p>
+                  </strong>
+                  
                 </div>
               </div>
 

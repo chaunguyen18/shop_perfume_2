@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FaUserAlt } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { FaBox } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa";
@@ -32,13 +31,7 @@ const SidebarAdmin = ({ isOpen, toggleSidebar, setActiveContent }) => {
             <IoClose className="sidebar-icon-close" onClick={toggleSidebar} />
             <h1 className="sidebar-title">Quản lý</h1>
             <div className="row sidebar-admin-content">
-              <div
-                className="sidebar-admin-content-action"
-                onClick={() => setActiveContent("account")}
-              >
-                <FaUserAlt className="mx-3 mb-1" />
-                Quản lý tài khoản
-              </div>
+              
               <div
                 className="sidebar-admin-content-action"
                 onClick={() => setActiveContent("customer")}
@@ -74,6 +67,15 @@ const SidebarAdmin = ({ isOpen, toggleSidebar, setActiveContent }) => {
                 <GrStorage className="mx-3 mb-1" />
                 Quản lý kho hàng
               </div>
+
+              <div
+                className="sidebar-admin-content-action"
+                onClick={() => setActiveContent("warehouse-import")}
+              >
+                <FaUsers className="mx-3 mb-1" />
+                Quản lý phiếu nhập
+              </div>
+
               <div
                 className="sidebar-admin-content-action"
                 onClick={() => setActiveContent("statistic")}

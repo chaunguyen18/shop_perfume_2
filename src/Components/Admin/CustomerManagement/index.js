@@ -113,9 +113,7 @@ const CustomerManagement = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Thay đổi vai trò</h5>
-                <button className="close" onClick={() => setShowModal(null)}>
-                  <span>&times;</span>
-                </button>
+                
               </div>
               <div className="modal-body">
                 <label>Mã khách hàng:</label>

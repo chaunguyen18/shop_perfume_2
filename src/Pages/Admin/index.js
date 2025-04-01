@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SidebarAdmin from "../../Components/SidebarAdmin";
 import { FaBars } from "react-icons/fa";
-import AccountManagement from "../../Components/Admin/AccountManagement";
 import CustomerManagement from "../../Components/Admin/CustomerManagement";
 import TypeProductManagement from "../../Components/Admin/TypeProductManagement";
 import ProductManagement from "../../Components/Admin/ProductManagement";
@@ -9,6 +8,7 @@ import OrderManagement from "../../Components/Admin/OrderManagement";
 import StorageManagement from "../../Components/Admin/StorageManagement";
 import Statistic from "../../Components/Admin/Statistic";
 import Report from "../../Components/Admin/Report";
+import WarehouseImport from "../../Components/Admin/WarehouseImport";
 
 const Admin = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -17,10 +17,10 @@ const Admin = () => {
 
   const renderContent = () => {
     switch (activeContent) {
-      case "account":
-        return <AccountManagement />;
       case "customer":
         return <CustomerManagement />;
+      case "warehouse-import":
+        return <WarehouseImport />;
       case "product":
         return <ProductManagement />;
       case "typeproduct":

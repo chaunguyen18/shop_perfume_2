@@ -155,12 +155,7 @@ const StorageManagement = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Thêm số lượng sản phẩm</h5>
-                <button
-                  className="close"
-                  onClick={() => setShowAddModal(false)}
-                >
-                  <span>&times;</span>
-                </button>
+                
               </div>
               <div className="modal-body">
                 <p>
@@ -198,12 +193,7 @@ const StorageManagement = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Cập nhật số lượng sản phẩm</h5>
-                <button
-                  className="close"
-                  onClick={() => setShowUpdateModal(false)}
-                >
-                  <span>&times;</span>
-                </button>
+                
               </div>
               <div className="modal-body">
                 <p>
