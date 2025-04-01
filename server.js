@@ -312,6 +312,31 @@ app.get("/api/customer/:id", (req, res) => {
   });
 });
 
+app.put("/api/customer/:id", (req, res) => {
+  const { id } = req.params;
+  const { KH_HOTEN, KH_GIOI, KH_SDT } = req.body;  // Extract values from the request body
+
+  if (!KH_HOTEN || !KH_GIOI || !KH_SDT) {
+    return res.status(400).json({ error: "Vui lòng nhập đầy đủ thông tin!" });
+  }
+  
+  const sql = `UPDATE khachhang SET KH_HOTEN = ?, KH_GIOI = ?, KH_SDT = ? WHERE KH_MA = ?;`;
+
+  db.query(sql, [KH_HOTEN, KH_GIOI, KH_SDT, id], (err, results) => {
+    if (err) {
+      console.error("Lỗi truy vấn cơ sở dữ liệu:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Không tìm thấy khách hàng" });
+    }
+
+    const customerData = results[0] || {}; 
+    res.json(customerData);
+  });
+});
+
 /* ---------------- ADMIN ---------------------- */
 
 /* API DANH SÁCH LOẠI SẢN PHẨM */

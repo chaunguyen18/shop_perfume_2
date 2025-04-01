@@ -15,10 +15,12 @@ import { useNavigate } from "react-router-dom";
 
 const ProfileCustomer = () => {
   const [customer, setCustomer] = useState({});
+  const [gender, setGender] = useState(customer.KH_GIOI || "nam"); // Khởi tạo giá trị mặc định từ dữ liệu khách hàng hoặc "nam"
+
 
   const navigate = useNavigate();
 
-  const [gender, setGender] = useState("male");
+  // const [gender, setGender] = useState("male");
   const [avatar, setAvatar] = useState(userAvatar);
 
   const handleAvatarChange = (event) => {
@@ -31,7 +33,6 @@ const ProfileCustomer = () => {
   };
 
   const userId = localStorage.getItem("userId");
-  console.log("User ID từ localStorage:", userId);
 
   useEffect(() => {
     if (!userId) {
@@ -45,11 +46,13 @@ const ProfileCustomer = () => {
         const res = await axios.get(
           `http://localhost:5000/api/customer/${userId}`
         );
-        console.log("Dữ liệu khách hàng:", res.data);
-        setCustomer({
-          ...res.data,
-          KH_GIOI: res.data.KH_GIOI.toLowerCase(),
-        });
+        console.log("Giá trị KH_GIOI:", res.data.KH_GIOI);
+        // setCustomer({
+        //   ...res.data,
+        //   KH_GIOI: res.data.KH_GIOI.toLowerCase(),
+        // });
+
+        setCustomer(res.data);
       } catch (error) {
         console.error("Lỗi lấy thông tin khách hàng:", error);
         toast.error("Không thể lấy thông tin khách hàng!");
@@ -60,8 +63,39 @@ const ProfileCustomer = () => {
   }, [userId, navigate]);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+  if (name === "KH_GIOI") {
+    setGender(value); // Cập nhật giá trị gender khi người dùng chọn radio button
+  }
     setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
+
+  const handleUpdateCustomer = async () => {
+    const updatedCustomer = {
+      KH_HOTEN: customer.KH_HOTEN,
+      KH_GIOI: gender, 
+      KH_SDT: customer.KH_SDT,
+    };
+  
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/customer/${userId}`,
+        updatedCustomer
+      );
+      toast.success("Cập nhật thông tin khách hàng thành công!");
+      
+      setCustomer((prevCustomer) => ({
+        ...prevCustomer,
+        KH_HOTEN: updatedCustomer.KH_HOTEN,
+        KH_GIOI: updatedCustomer.KH_GIOI,
+        KH_SDT: updatedCustomer.KH_SDT,
+      }));
+    } catch (error) {
+      console.error("Lỗi khi cập nhật thông tin khách hàng:", error);
+      toast.error("Cập nhật không thành công!");
+    }
+  };
+  
 
   return (
     <div className="container mt-2 p-4 border rounded bg-white">
@@ -109,7 +143,7 @@ const ProfileCustomer = () => {
               <RadioGroup
                 row
                 name="KH_GIOI"
-                value={customer.KH_GIOI}
+                value={customer.KH_GIOI || ""}
                 onChange={handleChange}
               >
                 <FormControlLabel value="nam" control={<Radio />} label="Nam" />
@@ -122,7 +156,7 @@ const ProfileCustomer = () => {
               </RadioGroup>
             </FormControl>
           </div>
-          <Button>Lưu</Button>
+          <Button onClick={handleUpdateCustomer}>Lưu</Button>
         </div>
         <div className="col-md-4 text-center avatar-container">
           <img
