@@ -293,23 +293,24 @@ app.post("/api/checkout", (req, res) => {
 
 /* ---------------- TÀI KHOẢN KH ------------------ */
 app.get("/api/customer/:id", (req, res) => {
-  const khachHangId = req.params.id; 
-  const sql = "SELECT khachhang.*, login.NAME AS KH_TENDANGNHAP, login.PASSWORD FROM khachhang LEFT JOIN login ON login.KH_MA = khachhang.KH_MA WHERE khachhang.KH_MA = ?";
+  const { id } = req.params;
+  const sql =
+    "SELECT khachhang.*, login.USERNAME, login.PASSWORD FROM khachhang LEFT JOIN login ON login.KH_MA = khachhang.KH_MA WHERE khachhang.KH_MA = ?";
 
-  db.query(sql, [khachHangId], (err, results) => {
+  db.query(sql, [id], (err, results) => {
     if (err) {
-      res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
-    } else {
-      if (results.length > 0) {
-        res.json(results[0]); // Lấy khách hàng đầu tiên
-      } else {
-        res.status(404).json({ error: "Không tìm thấy khách hàng" });
-      }
+      console.error("Lỗi truy vấn cơ sở dữ liệu:", err);
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
     }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Không tìm thấy khách hàng" });
+    }
+
+    const customerData = results[0] || {}; // Nếu không có, trả về object rỗng
+    res.json(customerData);
   });
 });
-
-
 
 /* ---------------- ADMIN ---------------------- */
 

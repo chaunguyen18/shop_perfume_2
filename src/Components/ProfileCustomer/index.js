@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -14,14 +14,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const ProfileCustomer = () => {
-  const [customer, setCustomer] = useState({
-    KH_MA: "",
-    KH_HOTEN: "",
-    KH_TENDANGNHAP: "",
-    email: "",
-    KH_SDT: "",
-    KH_GIOITINH: "male",
-  });
+  const [customer, setCustomer] = useState({});
 
   const navigate = useNavigate();
 
@@ -37,7 +30,8 @@ const ProfileCustomer = () => {
     }
   };
 
-  const userId = localStorage.getItem("KH_MA"); 
+  const userId = localStorage.getItem("userId");
+  console.log("User ID từ localStorage:", userId);
 
   useEffect(() => {
     if (!userId) {
@@ -48,8 +42,14 @@ const ProfileCustomer = () => {
 
     const fetchCustomer = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/customer/${userId}`);
-        setCustomer(res.data);
+        const res = await axios.get(
+          `http://localhost:5000/api/customer/${userId}`
+        );
+        console.log("Dữ liệu khách hàng:", res.data);
+        setCustomer({
+          ...res.data,
+          KH_GIOI: res.data.KH_GIOI.toLowerCase(),
+        });
       } catch (error) {
         console.error("Lỗi lấy thông tin khách hàng:", error);
         toast.error("Không thể lấy thông tin khách hàng!");
@@ -59,7 +59,6 @@ const ProfileCustomer = () => {
     fetchCustomer();
   }, [userId, navigate]);
 
-
   const handleChange = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
@@ -67,14 +66,21 @@ const ProfileCustomer = () => {
   return (
     <div className="container mt-2 p-4 border rounded bg-white">
       <h3>Hồ Sơ Của Tôi</h3>
-      <p>Quản lý thông tin hồ sơ</p>     
+      <p>Quản lý thông tin hồ sơ</p>
 
       <div className="row">
         <div className="col-md-8 profile-content">
-          <div className="mb-2">
-            <label className="fw-bold mb-2">Tên đăng nhập:</label>
-            <TextField fullWidth value={customer.KH_TENDANGNHAP} disabled />
-          </div>
+          {customer && (
+            <div className="mb-2">
+              <label className="fw-bold mb-2">Tên đăng nhập:</label>
+              <TextField
+                fullWidth
+                value={customer?.USERNAME || "Chưa có tài khoản"}
+                disabled
+              />
+            </div>
+          )}
+
           <div className="mb-2">
             <label className="fw-bold mb-2">Họ và tên:</label>
             <TextField
@@ -102,22 +108,14 @@ const ProfileCustomer = () => {
             <FormControl>
               <RadioGroup
                 row
-                name="KH_GIOITINH"
-                value={customer.KH_GIOITINH}
+                name="KH_GIOI"
+                value={customer.KH_GIOI}
                 onChange={handleChange}
               >
+                <FormControlLabel value="nam" control={<Radio />} label="Nam" />
+                <FormControlLabel value="nữ" control={<Radio />} label="Nữ" />
                 <FormControlLabel
-                  value="male"
-                  control={<Radio />}
-                  label="Nam"
-                />
-                <FormControlLabel
-                  value="female"
-                  control={<Radio />}
-                  label="Nữ"
-                />
-                <FormControlLabel
-                  value="other"
+                  value="khác"
                   control={<Radio />}
                   label="Khác"
                 />
