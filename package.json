@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.4",
@@ -15,6 +16,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
     "cors": "^2.8.5",
+    "emailjs-com": "^3.2.0",
     "express": "^4.21.2",
     "file-saver": "^2.0.5",
     "mysql": "^2.18.1",
