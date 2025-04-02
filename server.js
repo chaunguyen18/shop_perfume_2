@@ -430,7 +430,6 @@ app.put("/api/account/update-password/:id", (req, res) => {
   const { id } = req.params;
   const { oldPassword, newPassword } = req.body;
 
-
   const checkPasswordSql = `SELECT * FROM login WHERE KH_MA = ? AND PASSWORD = ?`;
   db.query(checkPasswordSql, [id, oldPassword], (err, results) => {
     if (err) {
@@ -441,14 +440,19 @@ app.put("/api/account/update-password/:id", (req, res) => {
       return res.status(400).json({ error: "Mật khẩu cũ không đúng!" });
     }
 
-
     const updatePasswordSql = `UPDATE login SET PASSWORD = ? WHERE KH_MA = ?`;
-    db.query(updatePasswordSql, [newPassword, id], (updateErr, updateResult) => {
-      if (updateErr) {
-        return res.status(500).json({ error: "Lỗi cập nhật mật khẩu" });
+    db.query(
+      updatePasswordSql,
+      [newPassword, id],
+      (updateErr, updateResult) => {
+        if (updateErr) {
+          return res.status(500).json({ error: "Lỗi cập nhật mật khẩu" });
+        }
+        return res.json({
+          message: "Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại.",
+        });
       }
-      return res.json({ message: "Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại." });
-    });
+    );
   });
 });
 
@@ -489,6 +493,25 @@ app.put("/api/account/update-address/:id", (req, res) => {
       return res.status(500).json({ error: "Lỗi cập nhật địa chỉ!" });
     }
     return res.json({ message: "Cập nhật địa chỉ thành công!" });
+  });
+});
+
+/* Tim kiem san pham */
+app.get("/api/products/search", (req, res) => {
+  const { name } = req.query;
+  const sql = `
+    SELECT sp.SP_MA, sp.SP_TEN, SP_DIENGIAI, dg.DG_GIANIEMYET
+    FROM sanpham sp
+    LEFT JOIN dongia dg ON sp.SP_MA = dg.SP_MA
+    WHERE sp.SP_TEN LIKE ?;
+  `;
+
+  db.query(sql, [`%${name}%`], (err, results) => {
+    if (err) {
+      console.error("Lỗi truy vấn:", err);
+      return res.status(500).json({ error: "Lỗi tìm kiếm sản phẩm" });
+    }
+    return res.json(results);
   });
 });
 

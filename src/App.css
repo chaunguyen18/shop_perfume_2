@@ -2323,14 +2323,65 @@ ul {
 }
 
 .whimport-header h2 {
-  text-align: center; /* Căn giữa tiêu đề */
+  text-align: center; 
 }
 
 .whimport-content {
-  text-align: left; /* Căn lề trái cho bảng và nội dung */
+  text-align: left; 
 }
 
 .modal-content {
   box-shadow: 0px 4px 10px #04a0ac !important;
 }
 
+/* Search Box */
+.search-results {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.search-results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search-result-item {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  background: white;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: block;
+  border: none;
+  cursor: pointer;
+}
+
+.search-result-item:hover {
+  background: #757575;
+ 
+}
+
+.product-results-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+
+}
+
+.product-info {
+  flex-grow: 1;
+}
