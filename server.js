@@ -337,7 +337,7 @@ app.put("/api/customer/:id", (req, res) => {
   });
 });
 
-/* API lấy hóa đơn của khách */
+/* API hóa đơn của khách */
 app.get("/api/account/orders/:id", (req, res) => {
   const { id } = req.params;
   const sql = `
@@ -400,6 +400,32 @@ app.get("/api/account/order-details/:id", (req, res) => {
     return res.json(results);
   });
 });
+
+app.put("/api/account/cancel-order/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `UPDATE donhang SET TT_ID = (SELECT TT_ID FROM trangthai WHERE TT_ID = '5') WHERE DH_ID = ?`;
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi cập nhật đơn hàng" });
+    }
+    return res.json({ message: "Đơn hàng đã hủy thành công!" });
+  });
+});
+
+app.put("/api/account/update-order/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `UPDATE donhang SET TT_ID = (SELECT TT_ID FROM trangthai WHERE TT_ID = '1') WHERE DH_ID = ?`;
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi cập nhật đơn hàng" });
+    }
+    return res.json({ message: "Đơn hàng đã hủy thành công!" });
+  });
+});
+
+/* API đổi mật khẩu của khách */
 
 /* ---------------- ADMIN ---------------------- */
 

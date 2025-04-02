@@ -20,20 +20,24 @@ const OrderCustomer = () => {
       navigate("/");
       return;
     }
-  
+
     const fetchOrderCustomer = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/account/orders/${userId}`);
-        console.log("Dữ liệu đơn hàng từ server:", JSON.stringify(res.data, null, 2));
+        const res = await axios.get(
+          `http://localhost:5000/api/account/orders/${userId}`
+        );
+        console.log(
+          "Dữ liệu đơn hàng từ server:",
+          JSON.stringify(res.data, null, 2)
+        );
 
-        setOrders(res.data); 
+        setOrders(res.data);
       } catch (error) {
         console.error("Lỗi lấy thông tin đơn hàng:", error);
         toast.error("Không thể lấy thông tin đơn hàng!");
       }
     };
 
-    
     fetchOrderCustomer();
   }, [userId, navigate]);
 
@@ -43,7 +47,7 @@ const OrderCustomer = () => {
         `http://localhost:5000/api/account/order-details/${orderId}`
       );
       console.log("Dữ liệu chi tiết đơn hàng:", response.data);
-      
+
       setSelectedOrder((prev) => ({
         ...prev,
         details: response.data, // Lưu danh sách sản phẩm của đơn hàng
@@ -52,13 +56,51 @@ const OrderCustomer = () => {
       console.error("Lỗi khi lấy dữ liệu:", error);
     }
   };
-  
 
-  const filteredOrders = orders.filter(order =>
-    order.DH_ID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (order.SP_TEN && order.SP_TEN.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredOrders = orders.filter(
+    (order) =>
+      order.DH_ID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (order.SP_TEN &&
+        order.SP_TEN.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
+  const handleCancelOrder = async (orderId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?")) return;
+  
+    try {
+      await axios.put(`http://localhost:5000/api/account/cancel-order/${orderId}`);
+      toast.success("Đơn hàng đã được hủy!");
+      
+      
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.DH_ID === orderId ? { ...order, TT_TEN: "Đã hủy" } : order
+        )
+      );
+    } catch (error) {
+      console.error("Lỗi khi hủy đơn hàng:", error);
+      toast.error("Không thể hủy đơn hàng!");
+    }
+  };
+
+  const handleUpdateOrder = async (orderId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn đặt lại đơn hàng này không?")) return;
+  
+    try {
+      await axios.put(`http://localhost:5000/api/account/update-order/${orderId}`);
+      toast.success("Đơn hàng đã được đặt lại!");
+      
+      
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.DH_ID === orderId ? { ...order, TT_TEN: "Chờ xác nhận" } : order
+        )
+      );
+    } catch (error) {
+      console.error("Lỗi khi đặt lại đơn hàng:", error);
+      toast.error("Không thể đặt lại đơn hàng!");
+    }
+  };
   
 
   return (
@@ -70,9 +112,8 @@ const OrderCustomer = () => {
             className=""
             type="text"
             placeholder="Nhập mã đơn để tìm kiếm..."
-            
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <FaSearch />
         </div>
@@ -82,7 +123,7 @@ const OrderCustomer = () => {
               <tr>
                 <th>Mã đơn</th>
                 <th>Ngày đặt</th>
-                <th>Giờ đặt</th>                
+                <th>Giờ đặt</th>
                 <th>Trạng thái</th>
                 <th>Thành tiền</th>
                 <th>Hành động</th>
@@ -121,35 +162,39 @@ const OrderCustomer = () => {
               )}
             </tbody> */}
             <tbody>
-            {filteredOrders.length > 0 ? (
-              filteredOrders.map((order) => (
-                <tr key={order.DH_ID}>
-                  <td>{order.DH_ID}</td>
-                  <td>{new Date(order.DH_NGAYLAP).toLocaleDateString("vi-VN")}</td>
-                  <td>{order.DH_GIOLAP}</td>
-                
-                  <td>{order.TT_TEN}</td>
-                  <td>{order.DH_THANHTIEN.toLocaleString("vi-VN")}</td>
-                  <td>
-                    <button
-                      className="btn btn-success mx-2"
-                      onClick={() => {
-                        setSelectedOrder(order);
-                        setShowModal("showdetails");
-                        fetchDetailsOrderData(order.DH_ID);
-                      }}
-                    >
-                      Xem chi tiết
-                    </button>
+              {filteredOrders.length > 0 ? (
+                filteredOrders.map((order) => (
+                  <tr key={order.DH_ID}>
+                    <td>{order.DH_ID}</td>
+                    <td>
+                      {new Date(order.DH_NGAYLAP).toLocaleDateString("vi-VN")}
+                    </td>
+                    <td>{order.DH_GIOLAP}</td>
+
+                    <td>{order.TT_TEN}</td>
+                    <td>{order.DH_THANHTIEN.toLocaleString("vi-VN")}</td>
+                    <td>
+                      <button
+                        className="btn btn-success mx-2"
+                        onClick={() => {
+                          setSelectedOrder(order);
+                          setShowModal("showdetails");
+                          fetchDetailsOrderData(order.DH_ID);
+                        }}
+                      >
+                        Xem chi tiết
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center">
+                    Không tìm thấy đơn hàng
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="text-center">Không tìm thấy đơn hàng</td>
-              </tr>
-            )}
-          </tbody>
+              )}
+            </tbody>
           </table>
         </div>
       </div>
@@ -185,7 +230,7 @@ const OrderCustomer = () => {
                   <table className="table table-bordered">
                     <thead>
                       <tr className="table-primary">
-                        <th >Hình ảnh</th>
+                        <th>Hình ảnh</th>
                         <th>Tên sản phẩm</th>
                         <th>Đơn vị tính</th>
                         <th>Số lượng</th>
@@ -240,14 +285,31 @@ const OrderCustomer = () => {
                   >
                     Tổng tiền:
                     <p style={{ fontSize: "20px", fontWeight: "bold" }}>
-                    {selectedOrder?.DH_THANHTIEN?.toLocaleString()} VNĐ
-                  </p>
+                      {selectedOrder?.DH_THANHTIEN?.toLocaleString()} VNĐ
+                    </p>
                   </strong>
-                  
                 </div>
               </div>
 
               <div className="modal-footer">
+                {selectedOrder?.TT_TEN !== "Đã hủy" && (
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleCancelOrder(selectedOrder.DH_ID)}
+                  >
+                    Hủy đơn
+                  </button>
+                )}
+
+                {selectedOrder?.TT_TEN == "Đã hủy" && (
+                  <button
+                    className="btn btn-warning"
+                    onClick={() => handleUpdateOrder(selectedOrder.DH_ID)}
+                  >
+                    Đặt lại
+                  </button>
+                )}
+
                 <button
                   className="btn btn-secondary"
                   onClick={() => setShowModal(null)}
@@ -264,4 +326,3 @@ const OrderCustomer = () => {
 };
 
 export default OrderCustomer;
-
