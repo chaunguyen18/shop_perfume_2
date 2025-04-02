@@ -2322,4 +2322,11 @@ ul {
   display: none !important;
 }
 
+.whimport-header h2 {
+  text-align: center; /* Căn giữa tiêu đề */
+}
+
+.whimport-content {
+  text-align: left; /* Căn lề trái cho bảng và nội dung */
+}
 

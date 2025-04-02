@@ -825,12 +825,14 @@ app.get("/api/warehouse-import", (req, res) => {
       pn.*, 
       sp.*,
       ctpn.*,
-      ctsp.*
+      ctsp.*,
+      ncc.*
     FROM phieunhap pn 
     LEFT JOIN chitietphieunhap ctpn ON ctpn.PN_ID = pn.PN_ID
     LEFT JOIN sanpham sp ON sp.SP_MA = ctpn.SP_MA
     LEFT JOIN chitietsp ctsp ON sp.SP_MA = ctsp.SP_MA
-    WHERE pn.PN_ID = ?
+    LEFT JOIN nhacungcap ncc ON ncc.NCC_ID = pn.NCC_ID
+    GROUP BY pn.PN_ID 
   `;
 
   db.query(sql, (err, results) => {

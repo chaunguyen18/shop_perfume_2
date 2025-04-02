@@ -30,7 +30,7 @@ const WarehouseImport = () => {
       <div className="container-fluid">
         <div className="whimport ">
           <div className="whimport-header">
-            <h2>Danh sách phiếu nhập</h2>
+            <h2 className="text-align-center">Danh sách phiếu nhập</h2>
           </div>
           <div className="whimport-content ">
             <button
@@ -55,20 +55,19 @@ const WarehouseImport = () => {
                   phieunhap.map((index) => (
                     <tr key={index.PN_ID}>
                       <td style={{ width: "50px" }}>{index.PN_ID}</td>
-                      <td>{index.PN_NGAY}</td>
+                     
                       <td>
-                        {new Date(index.KH_NGAYSINH).toLocaleDateString(
+                        {new Date(index.PN_NGAY).toLocaleDateString(
                           "vi-VN"
                         )}
                       </td>
-                      <td>{index.PN_THANHTIEN}</td>
+                      <td>{index.PN_THANHTIEN.toLocaleString("vi-VN")}</td>
                       <td>{index.NCC_TEN}</td>
                       <td>
                         <button
                           className="btn btn-warning mx-2"
                           onClick={() => {
                             setSelectedPN(index);
-
                             setShowUpdateModal("edit");
                           }}
                         >
@@ -89,6 +88,85 @@ const WarehouseImport = () => {
           </div>
         </div>
       </div>
+
+      {/* {showAddModal && (
+        <div className="modal fade show d-block">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Thêm số lượng sản phẩm</h5>
+                
+              </div>
+              <div className="modal-body">
+                <p>
+                  Sản phẩm: <strong>{selectedProduct?.SP_TEN}</strong>
+                </p>
+                <input
+                  type="number"
+                  className="form-control"
+                  value={newQuantity}
+                  onChange={(e) =>
+                    setNewQuantity(parseInt(e.target.value) || 0)
+                  }
+                  placeholder="Nhập số lượng muốn thêm"
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowAddModal(false)}
+                >
+                  Hủy
+                </button>
+                <button className="btn btn-primary" onClick={handleAddQuantity}>
+                  Thêm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUpdateModal && (
+        <div className="modal fade show d-block">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Cập nhật số lượng sản phẩm</h5>
+                
+              </div>
+              <div className="modal-body">
+                <p>
+                  Sản phẩm: <strong>{selectedProduct?.SP_TEN}</strong>
+                </p>
+                <input
+                  type="number"
+                  className="form-control"
+                  value={newQuantity}
+                  onChange={(e) =>
+                    setNewQuantity(parseInt(e.target.value) || 0)
+                  }
+                  placeholder="Nhập số lượng muốn cập nhật"
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowUpdateModal(false)}
+                >
+                  Hủy
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleUpdateQuantity}
+                >
+                  Cập nhật
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */}
     </div>
   );
 };
