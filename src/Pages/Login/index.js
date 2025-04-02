@@ -24,7 +24,7 @@ const Login = () => {
       if (res.data.success) {
         // localStorage.setItem("user", JSON.stringify(res.data.user));
         const user = res.data.user;
-      localStorage.setItem("userId", user.KH_MA); // Lưu userId vào localStorage
+      localStorage.setItem("userId", user.KH_MA); 
       localStorage.setItem("user", JSON.stringify(user));
 
         if (res.data.user.role === "admin") {

@@ -85,7 +85,7 @@ const OrderManagement = () => {
                         {new Date(order.DH_NGAYLAP).toLocaleDateString("vi-VN")}
                       </td>
                       <td>{order.DH_GIOLAP}</td>
-                      <td>{order.DH_THANHTIEN}</td>
+                      <td>{order.DH_THANHTIEN.toLocaleString("vi-VN")}</td>
                       <td>{order.TT_TEN}</td>
                       <td>
                         <button
@@ -130,9 +130,7 @@ const OrderManagement = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Thay đổi trạng thái đơn hàng</h5>
-                <button className="close" onClick={() => setShowModal(null)}>
-                  <span>&times;</span>
-                </button>
+                
               </div>
               <div className="modal-body">
                 <label>Mã đơn hàng:</label>

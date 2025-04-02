@@ -343,14 +343,14 @@ app.get("/api/account/orders/:id", (req, res) => {
   const sql = `
       SELECT 
       dh.*,
-      tt.*,      
-      kh.*, 
-      pttt.* 
+      tt.TT_TEN,      
+      kh.KH_MA,
+      kh.KH_HOTEN, 
+      pttt.PTTT_TEN 
     FROM donhang dh    
     LEFT JOIN khachhang kh ON dh.KH_MA = kh.KH_MA
     LEFT JOIN trangthai tt ON dh.TT_ID = tt.TT_ID
     LEFT JOIN phuongthucthanhtoan pttt ON pttt.PTTT_ID = dh.PTTT_ID  
-       
     WHERE dh.KH_MA = ?
   `;
 
@@ -364,8 +364,7 @@ app.get("/api/account/orders/:id", (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy khách hàng" });
     }
 
-    const orderData = results[0] || {};
-    res.json(orderData);
+    res.json(results);
   });
 });
 

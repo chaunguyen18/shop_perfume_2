@@ -23,7 +23,8 @@ const OrderCustomer = () => {
     const fetchOrderCustomer = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/api/account/orders/${userId}`);
-        console.log("Dữ liệu đơn hàng từ server:", res.data);  
+        console.log("Dữ liệu đơn hàng từ server:", JSON.stringify(res.data, null, 2));
+
         setOrders(res.data); 
       } catch (error) {
         console.error("Lỗi lấy thông tin đơn hàng:", error);
@@ -79,7 +80,7 @@ const OrderCustomer = () => {
                     </td>
                     <td>{order.DH_GIOLAP}</td>
                     <td>{order.TT_TEN}</td>
-                    <td>{order.DH_THANHTIEN}</td>
+                    <td>{order.DH_THANHTIEN.toLocaleString("vi-VN")}</td>
                     <td>
                       <button
                         className="btn btn-success mx-2"
