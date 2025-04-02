@@ -430,7 +430,7 @@ app.put("/api/account/update-password/:id", (req, res) => {
   const { id } = req.params;
   const { oldPassword, newPassword } = req.body;
 
-  // Kiểm tra mật khẩu cũ có đúng không
+
   const checkPasswordSql = `SELECT * FROM login WHERE KH_MA = ? AND PASSWORD = ?`;
   db.query(checkPasswordSql, [id, oldPassword], (err, results) => {
     if (err) {
@@ -441,7 +441,7 @@ app.put("/api/account/update-password/:id", (req, res) => {
       return res.status(400).json({ error: "Mật khẩu cũ không đúng!" });
     }
 
-    // Nếu mật khẩu cũ đúng, tiến hành cập nhật
+
     const updatePasswordSql = `UPDATE login SET PASSWORD = ? WHERE KH_MA = ?`;
     db.query(updatePasswordSql, [newPassword, id], (updateErr, updateResult) => {
       if (updateErr) {
@@ -449,6 +449,46 @@ app.put("/api/account/update-password/:id", (req, res) => {
       }
       return res.json({ message: "Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại." });
     });
+  });
+});
+
+/* API đổi địa chỉ của khách */
+
+app.get("/api/account/address-customer/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `
+    SELECT             
+      kh.KH_MA,
+      kh.KH_HOTEN,       
+      kh.KH_DIACHI      
+    FROM khachhang kh       
+    WHERE kh.KH_MA = ?
+  `;
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Không tìm thấy đơn hàng!" });
+    }
+
+    return res.json(results);
+  });
+});
+
+app.put("/api/account/update-address/:id", (req, res) => {
+  const { id } = req.params;
+  const { address } = req.body;
+
+  const sql = `UPDATE khachhang SET KH_DIACHI = ? WHERE KH_MA = ?`;
+
+  db.query(sql, [address, id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi cập nhật địa chỉ!" });
+    }
+    return res.json({ message: "Cập nhật địa chỉ thành công!" });
   });
 });
 

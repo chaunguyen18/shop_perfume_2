@@ -71,7 +71,7 @@ const OrderCustomer = () => {
       await axios.put(`http://localhost:5000/api/account/cancel-order/${orderId}`);
       toast.success("Đơn hàng đã được hủy!");
       
-      
+      setShowModal(false);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.DH_ID === orderId ? { ...order, TT_TEN: "Đã hủy" } : order
@@ -90,7 +90,7 @@ const OrderCustomer = () => {
       await axios.put(`http://localhost:5000/api/account/update-order/${orderId}`);
       toast.success("Đơn hàng đã được đặt lại!");
       
-      
+      setShowModal(false);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.DH_ID === orderId ? { ...order, TT_TEN: "Chờ xác nhận" } : order
@@ -129,38 +129,7 @@ const OrderCustomer = () => {
                 <th>Hành động</th>
               </tr>
             </thead>
-            {/* <tbody>
-              {orders.length > 0 ? (
-                orders.map((order) => (
-                  <tr key={order.DH_ID}>
-                    <td style={{ width: "50px" }}>{order.DH_ID}</td>
-                    <td>
-                      {new Date(order.DH_NGAYLAP).toLocaleDateString("vi-VN")}
-                    </td>
-                    <td>{order.DH_GIOLAP}</td>
-                    <td>{order.TT_TEN}</td>
-                    <td>{order.DH_THANHTIEN.toLocaleString("vi-VN")}</td>
-                    <td>
-                      <button
-                        className="btn btn-success mx-2"
-                        onClick={() => {
-                          setSelectedOrder(order);
-                          setShowModal("showdetails");
-                        }}
-                      >
-                        Xem chi tiết
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center">
-                    Không có dữ liệu
-                  </td>
-                </tr>
-              )}
-            </tbody> */}
+
             <tbody>
               {filteredOrders.length > 0 ? (
                 filteredOrders.map((order) => (
