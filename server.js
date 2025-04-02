@@ -843,41 +843,69 @@ app.get("/api/warehouse-import", (req, res) => {
   });
 });
 
-app.post("/api/warehouse-import/:id", (req, res) => {
-  const {id} = req.params;
-  const {newPNNgay, newPNThanhTien, newNCC, newSPTen, newCTPNSL, newCTPNDG, newCTPNThue} = req.body;
-
-  const sqlInsertPhieuNhap = `
-    INSERT INTO phieunhap (PN_ID, NCC_ID, PN_NGAY, PN_THANHTIEN)
-    VALUES (?, ?, ?, ?);
+app.get("/api/warehouse-import/:month", (req, res) => {
+  const { month } = req.params;
+  const sql = `
+    SELECT 
+      pn.*, 
+      sp.SP_TEN,
+      sp.SP_MA,
+      ctpn.CTPN_SOLUONG,
+      ctpn.CTPN_DONGIA,
+      ctpn.CTPN_THUE,
+      ncc.NCC_TEN
+    FROM phieunhap pn 
+    LEFT JOIN chitietphieunhap ctpn ON ctpn.PN_ID = pn.PN_ID
+    LEFT JOIN sanpham sp ON sp.SP_MA = ctpn.SP_MA
+    LEFT JOIN nhacungcap ncc ON ncc.NCC_ID = pn.NCC_ID
+    WHERE MONTH(pn.PN_NGAY) = ? 
+    ORDER BY pn.PN_NGAY DESC
   `;
-  const sqlInsertCTPhieuNhap = `
-    INSERT INTO chitietphieunhap (PN_ID, SP_MA, CTPN_SOLUONG, CTPN_DONGIA, CTPN_THUE)
-    VALUES (?, ?, ?, ?, ?);
-  `;
-  const sqlUpdateCTSP = `
-    UPDATE chitietsp 
-    SET CTSP_SOLUONG = CTSP_SOLUONG + ?
-    WHERE SP_MA = ?;
-  `;
 
-  // First, insert into `phieunhap`
-  db.query(sqlInsertPhieuNhap, [id, newNCC, newPNNgay, newPNThanhTien], (err, results) => {
-    if (err) return res.status(500).json({ error: "Lỗi truy vấn phieu nhap" });
-
-    // Then insert into `chitietphieunhap`
-    db.query(sqlInsertCTPhieuNhap, [id, newSPTen, newCTPNSL, newCTPNDG, newCTPNThue], (err, results) => {
-      if (err) return res.status(500).json({ error: "Lỗi truy vấn chitietphieunhap" });
-
-      // Finally update `chitietsp`
-      db.query(sqlUpdateCTSP, [newCTPNSL, newSPTen], (err, results) => {
-        if (err) return res.status(500).json({ error: "Lỗi truy vấn chitietsp" });
-        
-        res.json({ message: "Cập nhật thành công!" });
-      });
-    });
+  db.query(sql, [month], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
+    res.json(results);
   });
 });
+
+
+// app.post("/api/warehouse-import/:id", (req, res) => {
+//   const {id} = req.params;
+//   const {newPNNgay, newPNThanhTien, newNCC, newSPTen, newCTPNSL, newCTPNDG, newCTPNThue} = req.body;
+
+//   const sqlInsertPhieuNhap = `
+//     INSERT INTO phieunhap (PN_ID, NCC_ID, PN_NGAY, PN_THANHTIEN)
+//     VALUES (?, ?, ?, ?);
+//   `;
+//   const sqlInsertCTPhieuNhap = `
+//     INSERT INTO chitietphieunhap (PN_ID, SP_MA, CTPN_SOLUONG, CTPN_DONGIA, CTPN_THUE)
+//     VALUES (?, ?, ?, ?, ?);
+//   `;
+//   const sqlUpdateCTSP = `
+//     UPDATE chitietsp 
+//     SET CTSP_SOLUONG = CTSP_SOLUONG + ?
+//     WHERE SP_MA = ?;
+//   `;
+
+  
+//   db.query(sqlInsertPhieuNhap, [id, newNCC, newPNNgay, newPNThanhTien], (err, results) => {
+//     if (err) return res.status(500).json({ error: "Lỗi truy vấn phieu nhap" });
+
+    
+//     db.query(sqlInsertCTPhieuNhap, [id, newSPTen, newCTPNSL, newCTPNDG, newCTPNThue], (err, results) => {
+//       if (err) return res.status(500).json({ error: "Lỗi truy vấn chitietphieunhap" });
+
+     
+//       db.query(sqlUpdateCTSP, [newCTPNSL, newSPTen], (err, results) => {
+//         if (err) return res.status(500).json({ error: "Lỗi truy vấn chitietsp" });
+        
+//         res.json({ message: "Cập nhật thành công!" });
+//       });
+//     });
+//   });
+// });
 
 
 
