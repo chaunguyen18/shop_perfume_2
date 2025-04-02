@@ -20,7 +20,9 @@ const ProductManagement = () => {
   const [newPDQuantity, setNewPDQuantity] = useState("");
   const [newPDContent, setNewPDContent] = useState("");
   const [newPDPreserve, setNewPDPreserve] = useState("");
-  const [newDGTime, setNewDGTime] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     fetchProductData();
@@ -35,7 +37,7 @@ const ProductManagement = () => {
       .then((response) => setProducts(response.data))
       .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));
   };
-
+ 
   const fetchTProduct = () => {
     axios
       .get("http://localhost:5000/api/type-product")
@@ -55,7 +57,7 @@ const ProductManagement = () => {
   const fetchUnit = () => {
     axios
       .get("http://localhost:5000/api/unit")
-      .then((response) => setBrandList(response.data))
+      .then((response) => setDVTList(response.data))
       .catch((error) => console.error("Lỗi khi lấy thương hiệu:", error));
   };
 
@@ -69,20 +71,17 @@ const ProductManagement = () => {
   };
 
   const handleAddProduct = () => {
-    axios
-      .post("http://localhost:5000/api/product-management", {
-        SP_MA: newProductCode,
-        SP_TEN: newProductName,
-        LSP_TEN: newTPName,
-        BRAND_TEN: newBrandName,
-        DG_GIANIEMYET: newDG,
-        SP_DIENGIAI: newProductImage,
-        CTSP_SOLUONG: newPDQuantity,
-        DVT_TEN: newDVTName,
-        CTSP_NOIDUNG: newPDContent,
-        CTSP_SDBQ: newPDPreserve,
-        STT_THANG: newDGTime,
-      })
+    axios.post("http://localhost:5000/api/product-management", {
+      SP_MA: newProductCode,
+      SP_TEN: newProductName,
+      LSP_MA: newTPName,
+      SP_DIENGIAI: newProductImage,
+      BRAND_ID: newBrandName,
+      DVT_ID: newDVTName, 
+      DG_GIANIEMYET: newDG,
+      
+
+    })
       .then(() => {
         setNewProductName("");
         setShowModal(null);
@@ -139,6 +138,22 @@ const ProductManagement = () => {
       })
       .catch((error) => console.error("Lỗi khi xóa:", error));
   };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files?.[0]; // Kiểm tra files trước khi truy cập
+    if (!file) {
+      console.error("Không có tệp nào được chọn.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result); // Hiển thị ảnh xem trước
+    };
+    reader.readAsDataURL(file);
+  };
+
+
 
   return (
     <div>
@@ -248,7 +263,6 @@ const ProductManagement = () => {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">Thay đổi vai trò</h5>
-                  
                 </div>
                 <div className="modal-body">
                   <label>Mã khách hàng:</label>
@@ -284,7 +298,6 @@ const ProductManagement = () => {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">Thêm sản phẩm mới</h5>
-                  
                 </div>
                 <div className="modal-body">
                   <label>Mã sản phẩm:</label>
@@ -327,43 +340,17 @@ const ProductManagement = () => {
                     <option value="">-- Chọn thương hiệu --</option>
                     {brandList.map((index) => (
                       <option key={index.BRAND_ID} value={index.BRAND_ID}>
-                          {index.BRAND_TEN || "Không có tên"}
+                        {index.BRAND_TEN || "Không có tên"}
                       </option>
                     ))}
                   </select>
 
-                  <label>Hình ảnh:</label>
+                  <label>Ảnh sản phẩm:</label>
                   <input
-                    type="text"
-                    className="form-control"
-                    value={newProductImage}
-                    onChange={(e) => setNewProductImage(e.target.value)}
+                    type="file"
+                    onChange={handleImageUpload}
+                    accept="image/*"
                   />
-
-                  {/* <label>Chi tiết sản phẩm:</label>
-                  <textarea
-                    value={newPDContent}
-                    onChange={(e) => setNewPDContent(e.target.value)}
-                  ></textarea>
-
-                  <label>Sử dụng bảo quản:</label>
-                  <input
-                    type="text"
-                    value={newPDPreserve}
-                    onChange={(e) => setNewPDPreserve(e.target.value)}
-                  />
-                  <label>Đơn vị tính:</label>
-                  <select
-                    value={newDVTName}
-                    onChange={(e) => setNewDVTName(e.target.value)}
-                  >
-                    <option value="">Chọn đơn vị</option>
-                    {dvtList.map((dvt) => (
-                      <option key={dvt.DVT_ID} value={dvt.DVT_ID}>
-                        {dvt.DVT_TEN}
-                      </option>
-                    ))}
-                  </select> */}
 
                   <label>Giá niêm yết:</label>
                   <input
@@ -372,6 +359,22 @@ const ProductManagement = () => {
                     value={newDG}
                     onChange={(e) => setNewDG(e.target.value)}
                   />
+
+                  <label>Đơn vị tính:</label>
+                  <select
+                    className="form-control"
+                    value={newDVTName}
+                    onChange={(e) => {
+                      setNewDVTName(e.target.value);
+                    }}
+                  >
+                    <option value="">-- Chọn đơn vị --</option>
+                    {dvtList.map((dvt) => (
+                      <option key={dvt.DVT_ID} value={dvt.DVT_ID}>
+                        {dvt.DVT_TEN}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="modal-footer">
@@ -382,7 +385,7 @@ const ProductManagement = () => {
                     Đóng
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-success"
                     onClick={handleAddProduct}
                   >
                     Thêm

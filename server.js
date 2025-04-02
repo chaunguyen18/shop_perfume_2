@@ -663,47 +663,87 @@ app.get("/api/product-management", (req, res) => {
 });
 
 app.post("/api/product-management", (req, res) => {
-  const { SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, DG_GIANIEMYET } =
-    req.body;
+  console.log("DỮ LIỆU CLIENT GỬI LÊN:", req.body); // In dữ liệu ra console
+  
+  const { SP_MA, SP_TEN, LSP_MA, SP_DIENGIAI, BRAND_ID, DG_GIANIEMYET, DVT_ID } = req.body;
+
+  if (!DVT_ID) {
+    return res.status(400).json({ error: "DVT_ID bị thiếu!" });
+  }
 
   const sql = `
     INSERT INTO sanpham (SP_MA, SP_TEN, LSP_MA, SP_DIENGIAI, BRAND_ID) 
     VALUES (?, ?, ?, ?, ?);
     
-    INSERT INTO chitietsp (SP_MA, CTSP_SOLUONG, CTSP_NOIDUNG, CTSP_SDBQ) VALUES (?, ?, ?, ?);
-    
-    INSERT INTO dongia (SP_MA, DVT_ID, DG_GIANIEMYET) VALUES (?, ?, ?);
+    INSERT INTO dongia (SP_MA, DVT_ID, DG_GIANIEMYET) 
+    VALUES (?, ?, ?);
   `;
 
   db.query(
     sql,
-    [SP_MA, SP_TEN, SP_DIENGIAI, LSP_MA, BRAND_ID, SP_MA, SP_MA, DG_GIANIEMYET],
+    [SP_MA, SP_TEN, LSP_MA, SP_DIENGIAI, BRAND_ID, SP_MA, DVT_ID, DG_GIANIEMYET],
     (err, results) => {
-      if (err) return res.status(500).json({ error: "Lỗi khi thêm sản phẩm" });
-
+      if (err) {
+        console.error("LỖI MYSQL:", err);
+        return res.status(500).json({ error: err.message });
+      }
       res.json({ message: "Thêm sản phẩm thành công!" });
     }
   );
 });
 
+
+// app.put("/api/product-management/:id", (req, res) => {
+
+//   const { id } = req.params;
+//   const { SP_TEN, LSP_TEN, BRAND_TEN, DG_GIANIEMYET, SP_DIENGIAI } = req.body;
+
+//   const sql = `
+//     UPDATE sanpham 
+//     SET SP_TEN = ?, 
+//         LSP_MA = (SELECT LSP_MA FROM loaisp WHERE LSP_TEN = ?), 
+//         BRAND_ID = (SELECT BRAND_ID FROM brand WHERE BRAND_TEN = ?),
+//         SP_DIENGIAI = ?
+//     WHERE SP_MA = ?;
+    
+//     UPDATE dongia SET DG_GIANIEMYET = ? WHERE SP_MA = ?;
+//   `;
+
+//   db.query(
+//     sql,
+//     [SP_TEN, LSP_TEN, BRAND_TEN, SP_DIENGIAI, id, DG_GIANIEMYET, id],
+//     (err, results) => {
+//       if (err) return res.status(500).json({ error: "Lỗi cập nhật sản phẩm" });
+
+//       if (results.affectedRows === 0)
+//         return res.status(404).json({ error: "Sản phẩm không tồn tại!" });
+
+//       res.json({ message: "Cập nhật sản phẩm thành công!" });
+//     }
+//   );
+// });
+
+
 app.put("/api/product-management/:id", (req, res) => {
   const { id } = req.params;
-  const { SP_TEN, LSP_TEN, BRAND_TEN, DG_GIANIEMYET, SP_DIENGIAI } = req.body;
+  const { SP_TEN, LSP_TEN, BRAND_TEN, DG_GIANIEMYET, SP_DIENGIAI, DVT_ID } = req.body;
 
   const sql = `
     UPDATE sanpham 
     SET SP_TEN = ?, 
         LSP_MA = (SELECT LSP_MA FROM loaisp WHERE LSP_TEN = ?), 
         BRAND_ID = (SELECT BRAND_ID FROM brand WHERE BRAND_TEN = ?),
-        SP_DIENGIAI = ?
+        SP_DIENGIAI = ? 
     WHERE SP_MA = ?;
-    
-    UPDATE dongia SET DG_GIANIEMYET = ? WHERE SP_MA = ?;
+
+    UPDATE dongia 
+    SET DG_GIANIEMYET = ?, DVT_ID = ? 
+    WHERE SP_MA = ?;
   `;
 
   db.query(
     sql,
-    [SP_TEN, LSP_TEN, BRAND_TEN, SP_DIENGIAI, id, DG_GIANIEMYET, id],
+    [SP_TEN, LSP_TEN, BRAND_TEN, SP_DIENGIAI, id, DG_GIANIEMYET, DVT_ID, id],
     (err, results) => {
       if (err) return res.status(500).json({ error: "Lỗi cập nhật sản phẩm" });
 
@@ -714,6 +754,7 @@ app.put("/api/product-management/:id", (req, res) => {
     }
   );
 });
+
 
 app.delete("/api/product-management/:id", (req, res) => {
   const { id } = req.params;
@@ -734,6 +775,44 @@ app.delete("/api/product-management/:id", (req, res) => {
     res.json({ message: "Xóa sản phẩm thành công!" });
   });
 });
+
+
+const multer = require('multer');
+const path = require('path');
+
+// Cấu hình multer để lưu ảnh vào thư mục 'uploads'
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// API tải ảnh sản phẩm
+app.post("/api/upload-product-image", upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Không tìm thấy file ảnh.' });
+  }
+
+  // Lưu đường dẫn ảnh vào cơ sở dữ liệu
+  const imagePath = `/uploads/${req.file.filename}`;
+
+  // Bạn có thể thêm logic để lưu URL ảnh vào bảng 'hinhanh' trong cơ sở dữ liệu
+  const sql = "INSERT INTO hinhanh (SP_MA, HA_PATH) VALUES (?, ?)";
+  
+  db.query(sql, [req.body.SP_MA, imagePath], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi lưu ảnh vào cơ sở dữ liệu." });
+    }
+
+    res.json({ message: "Tải ảnh thành công!", imagePath });
+  });
+});
+
 
 /* API KHO */
 
