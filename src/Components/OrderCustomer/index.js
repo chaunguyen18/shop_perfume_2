@@ -1,34 +1,49 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OrderCustomer = () => {
-  const orders = [
-    {
-      id: "001",
-      product: "Nước hoa Chanel",
-      status: "Đang giao",
-      date: "2024-02-20",
-    },
-    {
-      id: "002",
-      product: "Nước hoa Dior",
-      status: "Hoàn thành",
-      date: "2024-02-18",
-    },
-    {
-        id: "002",
-        product: "Nước hoa Dior",
-        status: "Hoàn thành",
-        date: "2024-02-18",
-      },
-      {
-        id: "002",
-        product: "Nước hoa Dior",
-        status: "Hoàn thành",
-        date: "2024-02-18",
-      },
+  const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showModal, setShowModal] = useState(null);
+  const navigate = useNavigate();
 
-  ];
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    if (!userId) {
+      toast.error("Vui lòng đăng nhập!");
+      navigate("/");
+      return;
+    }
+  
+    const fetchOrderCustomer = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/account/orders/${userId}`);
+        console.log("Dữ liệu đơn hàng từ server:", res.data);  
+        setOrders(res.data); 
+      } catch (error) {
+        console.error("Lỗi lấy thông tin đơn hàng:", error);
+        toast.error("Không thể lấy thông tin đơn hàng!");
+      }
+    };
+  
+    fetchOrderCustomer();
+  }, [userId, navigate]);
+
+  // const fetchDetailsOrderData = (orderId) => {
+  //   axios
+  //     .get(`http://localhost:5000/api/account/order-details/${orderId}`)
+  //     .then((response) => {
+  //       console.log("Dữ liệu chi tiết đơn hàng:", response.data);
+
+  //       setSelectedOrder((prev) => ({ ...prev, details: response.data }));
+  //     })
+  //     .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));
+  // };
 
   return (
     <div className="container order-cus mt-3 p-4 border rounded bg-white">
@@ -47,20 +62,44 @@ const OrderCustomer = () => {
             <thead>
               <tr>
                 <th>Mã đơn</th>
-                <th>Sản phẩm</th>
-                <th>Trạng thái</th>
                 <th>Ngày đặt</th>
+                <th>Giờ đặt</th>
+                <th>Trạng thái</th>
+                <th>Thành tiền</th>
+                <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
-                <tr key={order.id}>
-                  <td>{order.id}</td>
-                  <td>{order.product}</td>
-                  <td>{order.status}</td>
-                  <td>{order.date}</td>
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <tr key={order.DH_ID}>
+                    <td style={{ width: "50px" }}>{order.DH_ID}</td>
+                    <td>
+                      {new Date(order.DH_NGAYLAP).toLocaleDateString("vi-VN")}
+                    </td>
+                    <td>{order.DH_GIOLAP}</td>
+                    <td>{order.TT_TEN}</td>
+                    <td>{order.DH_THANHTIEN}</td>
+                    <td>
+                      <button
+                        className="btn btn-success mx-2"
+                        onClick={() => {
+                          setSelectedOrder(order);
+                          setShowModal("showdetails");
+                        }}
+                      >
+                        Xem chi tiết
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center">
+                    Không có dữ liệu
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

@@ -29,7 +29,6 @@ const OrderManagement = () => {
       .get(`http://localhost:5000/api/order-details/${orderId}`)
       .then((response) => {
         console.log("Dữ liệu chi tiết đơn hàng:", response.data);
-        // setOrders(response.data);
         setSelectedOrder((prev) => ({ ...prev, details: response.data }));
       })
       .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));

@@ -15,12 +15,9 @@ import { useNavigate } from "react-router-dom";
 
 const ProfileCustomer = () => {
   const [customer, setCustomer] = useState({});
-  const [gender, setGender] = useState(customer.KH_GIOI || "nam"); // Khởi tạo giá trị mặc định từ dữ liệu khách hàng hoặc "nam"
-
+  const [gender, setGender] = useState(customer.KH_GIOI || "nam"); 
 
   const navigate = useNavigate();
-
-  // const [gender, setGender] = useState("male");
   const [avatar, setAvatar] = useState(userAvatar);
 
   const handleAvatarChange = (event) => {
