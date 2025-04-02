@@ -426,6 +426,32 @@ app.put("/api/account/update-order/:id", (req, res) => {
 });
 
 /* API đổi mật khẩu của khách */
+app.put("/api/account/update-password/:id", (req, res) => {
+  const { id } = req.params;
+  const { oldPassword, newPassword } = req.body;
+
+  // Kiểm tra mật khẩu cũ có đúng không
+  const checkPasswordSql = `SELECT * FROM login WHERE KH_MA = ? AND PASSWORD = ?`;
+  db.query(checkPasswordSql, [id, oldPassword], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi kiểm tra mật khẩu cũ" });
+    }
+
+    if (results.length === 0) {
+      return res.status(400).json({ error: "Mật khẩu cũ không đúng!" });
+    }
+
+    // Nếu mật khẩu cũ đúng, tiến hành cập nhật
+    const updatePasswordSql = `UPDATE login SET PASSWORD = ? WHERE KH_MA = ?`;
+    db.query(updatePasswordSql, [newPassword, id], (updateErr, updateResult) => {
+      if (updateErr) {
+        return res.status(500).json({ error: "Lỗi cập nhật mật khẩu" });
+      }
+      return res.json({ message: "Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại." });
+    });
+  });
+});
+
 
 /* ---------------- ADMIN ---------------------- */
 
