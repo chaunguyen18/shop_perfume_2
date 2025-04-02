@@ -368,37 +368,38 @@ app.get("/api/account/orders/:id", (req, res) => {
   });
 });
 
-// app.get("/api/account/order-details/:id", (req, res) => {
-//   const { id } = req.params;
-//   const sql = `
-//     SELECT 
-//       dh.*,
-//       tt.*,
-//       ctdh.*, 
-//       kh.*, 
-//       pttt.*,
-//       sp.*
-//       FROM donhang dh
-//       LEFT JOIN chitietdh ctdh ON ctdh.DH_ID = dh.DH_ID
-//       LEFT JOIN khachhang kh ON dh.KH_MA = kh.KH_MA
-//       LEFT JOIN trangthai tt ON dh.TT_ID = tt.TT_ID
-//       LEFT JOIN phuongthucthanhtoan pttt ON pttt.PTTT_ID = dh.PTTT_ID      
-//       LEFT JOIN sanpham sp ON sp.SP_MA = ctdh.SP_MA
-//       WHERE dh.DH_ID = ?
-//   `;
+app.get("/api/account/order-details/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `
+    SELECT    
+      dh.*,
+      tt.TT_TEN,      
+      kh.KH_MA,
+      kh.KH_HOTEN, 
+      pttt.PTTT_TEN,
+      sp.*,
+      ctdh.*
+    FROM donhang dh    
+    LEFT JOIN khachhang kh ON dh.KH_MA = kh.KH_MA
+    LEFT JOIN trangthai tt ON dh.TT_ID = tt.TT_ID
+    LEFT JOIN chitietdh ctdh ON dh.DH_ID = ctdh.DH_ID
+    LEFT JOIN sanpham sp ON sp.SP_MA = ctdh.SP_MA
+    LEFT JOIN phuongthucthanhtoan pttt ON pttt.PTTT_ID = dh.PTTT_ID  
+    WHERE dh.DH_ID = ?
+  `;
 
-//   db.query(sql, [id], (err, results) => {
-//     if (err) {
-//       return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
-//     }
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Lỗi truy vấn cơ sở dữ liệu" });
+    }
 
-//     if (results.length === 0) {
-//       return res.status(404).json({ error: "Không tìm thấy đơn hàng!" });
-//     }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Không tìm thấy đơn hàng!" });
+    }
 
-//     return res.json(results);
-//   });
-// });
+    return res.json(results);
+  });
+});
 
 /* ---------------- ADMIN ---------------------- */
 

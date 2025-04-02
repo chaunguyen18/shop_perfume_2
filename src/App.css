@@ -2330,3 +2330,7 @@ ul {
   text-align: left; /* Căn lề trái cho bảng và nội dung */
 }
 
+.modal-content {
+  box-shadow: 0px 4px 10px #04a0ac !important;
+}
+
