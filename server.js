@@ -662,8 +662,9 @@ app.get("/api/product-management", (req, res) => {
   });
 });
 
+//Thêm sản phẩm
+
 app.post("/api/product-management", (req, res) => {
-  console.log("DỮ LIỆU CLIENT GỬI LÊN:", req.body); // In dữ liệu ra console
   
   const { SP_MA, SP_TEN, LSP_MA, SP_DIENGIAI, BRAND_ID, DG_GIANIEMYET, DVT_ID } = req.body;
 
@@ -776,14 +777,17 @@ app.delete("/api/product-management/:id", (req, res) => {
   });
 });
 
+//Upload ảnh vào SP_DIENGIAI
 
 const multer = require('multer');
 const path = require('path');
 
-// Cấu hình multer để lưu ảnh vào thư mục 'uploads'
+// Đường dẫn thư mục lưu ảnh
+const IMAGE_UPLOAD_PATH = "E:/workspace/workspace/reactjs/project/shop_perfume_premium/src/assets/images/product/";
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, IMAGE_UPLOAD_PATH);
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -792,26 +796,31 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// API tải ảnh sản phẩm
+
 app.post("/api/upload-product-image", upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'Không tìm thấy file ảnh.' });
   }
 
-  // Lưu đường dẫn ảnh vào cơ sở dữ liệu
-  const imagePath = `/uploads/${req.file.filename}`;
+  const imagePath = `/assets/images/product/${req.file.filename}`; 
+  const { SP_MA } = req.body; 
 
-  // Bạn có thể thêm logic để lưu URL ảnh vào bảng 'hinhanh' trong cơ sở dữ liệu
-  const sql = "INSERT INTO hinhanh (SP_MA, HA_PATH) VALUES (?, ?)";
-  
-  db.query(sql, [req.body.SP_MA, imagePath], (err, result) => {
+  if (!SP_MA) {
+    return res.status(400).json({ error: "Thiếu mã sản phẩm." });
+  }
+
+
+  const sql = "UPDATE sanpham SET SP_DIENGIAI = ? WHERE SP_MA = ?";
+
+  db.query(sql, [imagePath, SP_MA], (err, result) => {
     if (err) {
-      return res.status(500).json({ error: "Lỗi lưu ảnh vào cơ sở dữ liệu." });
+      return res.status(500).json({ error: "Lỗi cập nhật đường dẫn ảnh." });
     }
 
     res.json({ message: "Tải ảnh thành công!", imagePath });
   });
 });
+
 
 
 /* API KHO */

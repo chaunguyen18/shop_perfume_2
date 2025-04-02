@@ -140,18 +140,22 @@ const ProductManagement = () => {
   };
 
   const handleImageUpload = (event) => {
-    const file = event.target.files?.[0]; // Kiểm tra files trước khi truy cập
+    const file = event.target.files?.[0];
+    console.log("File được chọn:", file); // Kiểm tra file có đúng không
+  
     if (!file) {
-      console.error("Không có tệp nào được chọn.");
+      console.error("Không có file nào được chọn");
       return;
     }
-
+  
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImagePreview(reader.result); // Hiển thị ảnh xem trước
+      console.log("File đã được đọc:", reader.result); // Kiểm tra dữ liệu có đọc được không
+      setImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
   };
+  
 
 
 

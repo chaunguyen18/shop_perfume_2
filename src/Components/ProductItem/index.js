@@ -40,7 +40,7 @@ const ProductItem = ({ priceRange, selectedBrands, selectedTProducts }) => {
   const filteredProducts = products.filter((product) => {
     if (!Array.isArray(priceRange) || priceRange.length < 2) {
       console.error("priceRange bị lỗi:", priceRange);
-      return true; // Nếu lỗi thì hiển thị hết sản phẩm, tránh crash
+      return true; 
     }
     return (
       product.DG_GIANIEMYET * 0.5 >= priceRange[0] &&
