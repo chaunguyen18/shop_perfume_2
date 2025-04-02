@@ -9,6 +9,7 @@ const OrderCustomer = () => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
@@ -35,6 +36,11 @@ const OrderCustomer = () => {
     fetchOrderCustomer();
   }, [userId, navigate]);
 
+  const filteredOrders = orders.filter(order =>
+    order.DH_ID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (order.SP_TEN && order.SP_TEN.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
   // const fetchDetailsOrderData = (orderId) => {
   //   axios
   //     .get(`http://localhost:5000/api/account/order-details/${orderId}`)
@@ -55,6 +61,9 @@ const OrderCustomer = () => {
             className=""
             type="text"
             placeholder="Nhập tên sản phẩm hoặc mã đơn để tìm kiếm..."
+            
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           />
           <FaSearch />
         </div>
@@ -65,12 +74,13 @@ const OrderCustomer = () => {
                 <th>Mã đơn</th>
                 <th>Ngày đặt</th>
                 <th>Giờ đặt</th>
+                
                 <th>Trạng thái</th>
                 <th>Thành tiền</th>
                 <th>Hành động</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {orders.length > 0 ? (
                 orders.map((order) => (
                   <tr key={order.DH_ID}>
@@ -101,7 +111,36 @@ const OrderCustomer = () => {
                   </td>
                 </tr>
               )}
-            </tbody>
+            </tbody> */}
+            <tbody>
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => (
+                <tr key={order.DH_ID}>
+                  <td>{order.DH_ID}</td>
+                  <td>{new Date(order.DH_NGAYLAP).toLocaleDateString("vi-VN")}</td>
+                  <td>{order.DH_GIOLAP}</td>
+                
+                  <td>{order.TT_TEN}</td>
+                  <td>{order.DH_THANHTIEN.toLocaleString("vi-VN")}</td>
+                  <td>
+                    <button
+                      className="btn btn-success mx-2"
+                      onClick={() => {
+                        setSelectedOrder(order);
+                        setShowModal("showdetails");
+                      }}
+                    >
+                      Xem chi tiết
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center">Không tìm thấy đơn hàng</td>
+              </tr>
+            )}
+          </tbody>
           </table>
         </div>
       </div>
@@ -110,3 +149,4 @@ const OrderCustomer = () => {
 };
 
 export default OrderCustomer;
+
